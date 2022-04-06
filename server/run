@@ -1,0 +1,3 @@
+#!/usr/bin/bash
+
+pipenv run flask run --host=ticket.lan --cert=server.cer --key=server.key
