@@ -4,15 +4,16 @@
       class="pa-3 d-flex justify-space-between" 
       elevation="0"
     >
-      <h1>{{item.name}}</h1>
-      <h1>{{item.price}}€</h1>
+      <h1>{{ item.name }}</h1>
+      <h1>{{ fix(item.price) }}€</h1>
+      
     </v-card>
     <v-card 
       elevation="0"
       @click="append()"
     >
       <v-img
-        src="https://www.prost.com/img/de/hannover/bars/k4-bar-2-slider_item.jpeg"
+        :src="item.img"
         height="200px"
         class="white--text align-center justify-center"
       >
@@ -79,7 +80,10 @@ export default {
         number: this.n
       })
       this.n=1
-    }
+    },
+    fix(str){
+      return parseFloat(str).toFixed(2)
+    },
   }
 }
 </script>

@@ -3,6 +3,7 @@
     <v-btn 
       class="mx-auto" 
       width="100%"
+      height="60px"
       :disabled="order.length == 0"
       @click="clearOrder()"
       color="error"
@@ -36,7 +37,7 @@
               {{ o.number }}
             </td>
             <td class="text-right">
-              {{ o.price }}€
+              {{ fix(o.price) }}€
             </td>
           </tr>
         </tbody>
@@ -67,6 +68,9 @@ export default {
     ...mapMutations([
       'clearOrder'
     ]),
+    fix(str){
+      return parseFloat(str).toFixed(2)
+    },
   },
 }
 

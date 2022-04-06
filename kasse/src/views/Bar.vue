@@ -1,8 +1,11 @@
 <template>
   <v-container>
-    <div v-for="item in items" :key="item.id">
-      <BarCard class="mx-auto my-5" :id="item.id"/>
-    </div>
+    <v-row>
+      <v-col v-for="item in items" :key="item.id">
+        <BarCard class="mx-auto my-5" :id="item.id"/>
+      </v-col>
+    </v-row>
+    <div height="200px"></div>
   </v-container>
 </template>
 
