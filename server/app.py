@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, make_response, send_from_directory, redirect, jsonify
+from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from datetime import datetime
 
 app = Flask(__name__)
@@ -17,7 +17,7 @@ test = {
 
 @app.route('/')
 def index():
-  return "INDEX"
+  return render_template('index.html')
 
 ### KASSE ###
 
@@ -28,7 +28,6 @@ def kasse_index():
 @app.route('/<path:path>',subdomain="kasse")
 def kasse_pwa(path):
   return send_from_directory('../kasse/dist',path)
-
 
 
 ### TICKET ###
@@ -44,19 +43,19 @@ def ticket_pwa(path):
 
 ### API ###
 
-@app.route('/api/ping', host='ticket.lan')
+@app.route('/api/ping')
 def ping():
   return jsonify({
       'ping':True
     }), 200
 
-@app.route('/api/tickets', methods = ['GET'], host='ticket.lan')
+@app.route('/api/tickets', methods = ['GET'])
 def tickets():
   return jsonify({
       'data':test
     }), 200
   
-@app.route('/api/tickets/<id>', methods = ['PUT', 'GET'], host='ticket.lan')
+@app.route('/api/tickets/<id>', methods = ['PUT', 'GET'])
 def ticket(id):
   if id not in test:
     return jsonify({
@@ -96,5 +95,5 @@ def normalRequestCors(response):
     return response
   
 if __name__ == "__main__":
-  app.config['SERVER_NAME']='server.lan:443'
+  app.config['SERVER_NAME']='sp:443'
   app.run(debug=True, ssl_context=('server.cer', 'server.key'))
