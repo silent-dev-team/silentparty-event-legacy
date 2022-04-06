@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <center>
-    <v-btn width="300px" color="primary" class="ma-15" @click="$router.push('/bar')">Bar</v-btn>
+    <v-btn width="300px" color="primary" class="ma-15" @click="$router.replace('/bar')">Bar</v-btn>
     </center>
   </div>
 </template>
