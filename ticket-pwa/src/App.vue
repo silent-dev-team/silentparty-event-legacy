@@ -59,6 +59,7 @@ export default Vue.extend({
   },
 
   data: () => ({
+    apiUrl: 'https://api.sp/',
     camera: 'auto',
     scans: [] as Scan[],
     apiPing: false,
@@ -74,14 +75,6 @@ export default Vue.extend({
       type: ""
     }
   }),
-  computed:{
-    apiUrl () {
-      var getUrl = window.location
-      var apiUrl = getUrl .protocol + "//" + getUrl.host + "/" + 'api/'
-      //return apiUrl
-      return 'http://127.0.0.1:443/api/'
-    }
-  },
   methods: {
     now() {
       function addZero(i:number) {

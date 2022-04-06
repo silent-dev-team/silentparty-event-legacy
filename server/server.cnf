@@ -28,5 +28,6 @@ subjectAltName = @alt_names
 # Multiple Alternate Names are possible
 [alt_names]
 DNS.1 = sp
-DNS.2 = ticket.sp
-DNS.3 = kasse.sp
+DNS.2 = api.sp
+DNS.3 = ticket.sp
+DNS.4 = kasse.sp

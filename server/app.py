@@ -15,6 +15,8 @@ test = {
   }
 }
 
+### STARTPAGE ###
+
 @app.route('/')
 def startpage_index():
   return redirect('index.html')
@@ -22,6 +24,7 @@ def startpage_index():
 @app.route('/<path:path>')
 def startpage_pwa(path):
   return send_from_directory('../startpage/',path)
+
 
 ### KASSE ###
 
@@ -40,26 +43,26 @@ def kasse_pwa(path):
 def ticket_index():
   return redirect('index.html')
 
-
 @app.route('/<path:path>', subdomain='ticket')
 def ticket_pwa(path):
   return send_from_directory('../ticket-pwa/dist',path)
 
+
 ### API ###
 
-@app.route('/api/ping')
+@app.route('/ping', subdomain='api')
 def ping():
   return jsonify({
       'ping':True
     }), 200
 
-@app.route('/api/tickets', methods = ['GET'])
+@app.route('/tickets', subdomain='api', methods = ['GET'])
 def tickets():
   return jsonify({
       'data':test
     }), 200
   
-@app.route('/api/tickets/<id>', methods = ['PUT', 'GET'])
+@app.route('/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
 def ticket(id):
   if id not in test:
     return jsonify({
@@ -83,6 +86,8 @@ def ticket(id):
     }), 200
 
 
+### OPTIONS ###
+
 @app.before_request
 def optionRequestCors():
     if request.method == "OPTIONS":
@@ -97,7 +102,9 @@ def normalRequestCors(response):
     if not request.method == "OPTIONS":
         response.headers.add("Access-Control-Allow-Origin", "*")
     return response
-  
+
+### MAIN ###
+
 if __name__ == "__main__":
   app.config['SERVER_NAME']='sp:443'
   app.run(debug=True, ssl_context=('server.cer', 'server.key'))
