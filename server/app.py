@@ -17,25 +17,27 @@ test = {
 
 @app.route('/')
 def index():
-  return redirect('/index.html')
+  return redirect('./templates/index.html')
+
+### TICKET ###
 
 @app.route('/<path:path>')
-def pwa(path):
+def ticket_pwa(path):
   return send_from_directory('../ticket-pwa/dist',path)
 
-@app.route('/api/ping')
+@app.route('/api/ping', host='ticket.lan')
 def ping():
   return jsonify({
       'ping':True
     }), 200
 
-@app.route('/api/tickets', methods = ['GET'])
+@app.route('/api/tickets', methods = ['GET'], host='ticket.lan')
 def tickets():
   return jsonify({
       'data':test
     }), 200
   
-@app.route('/api/tickets/<id>', methods = ['PUT', 'GET'])
+@app.route('/api/tickets/<id>', methods = ['PUT', 'GET'], host='ticket.lan')
 def ticket(id):
   if id not in test:
     return jsonify({
@@ -57,6 +59,14 @@ def ticket(id):
       'valid':True,
       'data':card
     }), 200
+
+
+### KASSE ###
+
+@app.route('/<path:path>', host='kasse.lan')
+def kasse_pwa(path):
+  return send_from_directory('../kasse/dist',path)
+
 
 @app.before_request
 def optionRequestCors():

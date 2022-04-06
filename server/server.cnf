@@ -17,7 +17,7 @@ x509_extensions    = x509_ext
 
 countryName = de
 organizationName = SilentParty
-commonName = ticket.lan
+commonName = SilentParty Local
 
 [ x509_ext ]
 
@@ -28,3 +28,4 @@ subjectAltName = @alt_names
 # Multiple Alternate Names are possible
 [alt_names]
 DNS.1 = ticket.lan
+DNS.1 = kasse.lan
