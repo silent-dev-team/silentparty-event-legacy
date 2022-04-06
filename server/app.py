@@ -16,8 +16,12 @@ test = {
 }
 
 @app.route('/')
-def index():
-  return render_template('index.html')
+def startpage_index():
+  return redirect('index.html')
+
+@app.route('/<path:path>')
+def startpage_pwa(path):
+  return send_from_directory('../startpage/',path)
 
 ### KASSE ###
 
