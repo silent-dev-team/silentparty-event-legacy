@@ -17,13 +17,32 @@ test = {
 
 @app.route('/')
 def index():
-  return redirect('./templates/index.html')
+  return "INDEX"
+
+### KASSE ###
+
+@app.route('/', subdomain="kasse")
+def kasse_index():
+  return redirect('index.html')
+
+@app.route('/<path:path>',subdomain="kasse")
+def kasse_pwa(path):
+  return send_from_directory('../kasse/dist',path)
+
+
 
 ### TICKET ###
 
-@app.route('/<path:path>')
+@app.route('/', subdomain='ticket')
+def ticket_index():
+  return redirect('index.html')
+
+
+@app.route('/<path:path>', subdomain='ticket')
 def ticket_pwa(path):
   return send_from_directory('../ticket-pwa/dist',path)
+
+### API ###
 
 @app.route('/api/ping', host='ticket.lan')
 def ping():
@@ -61,13 +80,6 @@ def ticket(id):
     }), 200
 
 
-### KASSE ###
-
-@app.route('/<path:path>', host='kasse.lan')
-def kasse_pwa(path):
-  return send_from_directory('../kasse/dist',path)
-
-
 @app.before_request
 def optionRequestCors():
     if request.method == "OPTIONS":
@@ -82,3 +94,7 @@ def normalRequestCors(response):
     if not request.method == "OPTIONS":
         response.headers.add("Access-Control-Allow-Origin", "*")
     return response
+  
+if __name__ == "__main__":
+  app.config['SERVER_NAME']='server.lan:443'
+  app.run(debug=True, ssl_context=('server.cer', 'server.key'))
