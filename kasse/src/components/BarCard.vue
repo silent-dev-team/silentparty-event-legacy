@@ -1,5 +1,5 @@
 <template>
-  <v-card width="350px" elevation="5">
+  <v-card max-width="200px" min-width="160px" elevation="5">
     <v-card 
       class="pa-3 d-flex justify-space-between" 
       elevation="0"
@@ -14,7 +14,7 @@
     >
       <v-img
         :src="item.img"
-        height="200px"
+        height="100px"
         class="white--text align-center justify-center"
       >
         <!--<v-icon width="1000px" class="mx-auto" color="white">mdi-plus</v-icon>-->

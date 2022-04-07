@@ -7,6 +7,7 @@
       right
       fixed
       :permanent="locked"
+      mobile-breakpoint="xs"
     >
       <OrderList 
         v-model="order"
@@ -106,7 +107,11 @@ export default {
   },
   methods: {
     checkOrder() {
-      this.showOrder = this.order.length > 0
+      if (this.$vuetify.breakpoint.xsOnly){
+        this.showOrder = false
+      } else {
+        this.showOrder = this.order.length > 0
+      }
     }
   },
   watch: {
