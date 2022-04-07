@@ -18,7 +18,7 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
-          <v-toolbar-title>Checkout</v-toolbar-title>
+          <h2>BEZAHLEN</h2>
           <v-spacer></v-spacer>
           
           <h1>{{sum}}€</h1>
