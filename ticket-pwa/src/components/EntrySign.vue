@@ -1,7 +1,7 @@
 <template>
   <v-btn 
     v-if="value"
-    class="btn ma-2"
+    class="btn pulse ma-2"
     color="red"
     icon
     dark
