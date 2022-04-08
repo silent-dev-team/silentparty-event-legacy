@@ -15,6 +15,31 @@ test = {
   }
 }
 
+items = [
+  {
+    'id': 100,
+    'name': 'Bier',
+    'img': 'https://www.fuessenaktuell.de/wp-content/uploads/2019/08/FA_09_19_Bier.jpg',
+    'price': 2.5,
+    'cup': True
+  },
+  {
+    'id': 101,
+    'name': 'Cola',
+    'img': 'https://www.cocacolaep.com/assets/Uploads/resources/04996d7841/Neue-Verschlusse-Coca-Cola900x550__ScaleMaxWidthWzk0MF0.jpg',
+    'price': 1.5,
+    'cup': True
+  },
+  {
+    'id': 102,
+    'name': 'Fanta',
+    'img': 'https://www.bestinfood-shop.de/media/image/ff/23/b3/fanta-orange-dose-24x-330ml-95451-7771534.jpg',
+    'price': 1.5,
+    'cup': True
+  }
+]
+
+
 ### STARTPAGE ###
 
 @app.route('/')
@@ -57,13 +82,13 @@ def ping():
     }), 200
 
 @app.route('/tickets', subdomain='api', methods = ['GET'])
-def tickets():
+def get_tickets():
   return jsonify({
       'data':test
     }), 200
   
 @app.route('/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
-def ticket(id):
+def get_ticket(id):
   if id not in test:
     return jsonify({
       'id':id,
@@ -84,6 +109,10 @@ def ticket(id):
       'valid':True,
       'data':card
     }), 200
+
+@app.route('/items', subdomain='api', methods = ['GET'])
+def get_items():
+  return jsonify({'data':items}), 200
 
 
 ### OPTIONS ###

@@ -79,7 +79,7 @@
 <script>
 import OrderList from '@/components/OrderList.vue'
 import CheckOut from '@/components/CheckOut.vue'
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -106,6 +106,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'fetch'
+    ]),
     checkOrder() {
       if (this.$vuetify.breakpoint.xsOnly){
         this.showOrder = false
@@ -124,6 +127,7 @@ export default {
   },
   mounted() {
     this.checkOrder()
+    this.fetch('items')
   },
 };
 </script>

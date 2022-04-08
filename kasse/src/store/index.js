@@ -10,27 +10,15 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   state: {
-    order: [],
-    items: [
-      {
-        id: 100,
-        name: 'Bier',
-        img: 'https://www.fuessenaktuell.de/wp-content/uploads/2019/08/FA_09_19_Bier.jpg',
-        price: 2.5
-      },
-      {
-        id: 101,
-        name: 'Cola',
-        img: 'https://www.cocacolaep.com/assets/Uploads/resources/04996d7841/Neue-Verschlusse-Coca-Cola900x550__ScaleMaxWidthWzk0MF0.jpg',
-        price: 1.5
-      },
-      {
-        id: 102,
-        name: 'Fanta',
-        img: 'https://www.bestinfood-shop.de/media/image/ff/23/b3/fanta-orange-dose-24x-330ml-95451-7771534.jpg',
-        price: 1.5
+    api: 'https://api.sp/',
+    targets: {
+      items: {
+        route: 'items',
+        mutation: 'setItems'
       }
-    ],
+    },
+    order: [],
+    items: [],
   },
   getters:{
     sum(state) {
@@ -61,9 +49,19 @@ export default new Vuex.Store({
     },
     clearOrder (state) {
       state.order = []
+    },
+    setItems (state, items) {
+      state.items = items
     }
   },
   actions: {
+    async fetch ({ commit, state }, target) {
+      console.log('fetching '+target)
+      const params = state.targets[target]
+      const response = await fetch(state.api+params.route)
+      const response_json = await response.json()
+      commit(params.mutation, response_json.data)
+    }
   },
   modules: {
   },
