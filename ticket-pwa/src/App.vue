@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <PingBtn value="apiPing" @click="ping()" />
-      <EntrySign value="entry" @click="fetch_entry()"/>
+      <PingBtn :value="apiPing" @click="refetch()" />
+      <EntrySign :value="!entry" @click="refetch()"/>
       <HistoryBtn v-model="history" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
@@ -50,6 +50,9 @@ export default Vue.extend({
     scans: [] as Scan[],
     apiPing: false,
     entry: true,
+    refetchRateDefault: 60,
+    refetchRateFast: 10,
+    refreshInterval: setInterval(() => {}, 10*10),
     history: false,
     snackbar: {
       show: false,
@@ -62,6 +65,13 @@ export default Vue.extend({
       type: ""
     }
   }),
+  computed: {
+    refetchRate():number {
+      const fast:Boolean = !this.entry
+      const rate:number = fast ? this.refetchRateFast : this.refetchRateDefault
+      return rate*1000
+    },
+  },
   methods: {
     now() {
       function addZero(i:number) {
@@ -126,7 +136,7 @@ export default Vue.extend({
       this.scans.push(scan)
     },
     async onDecode (id:string) {
-      this.interval()
+      this.refetch()
       this.turnCameraOff()
       const r = await this.checkin(id)
       console.log(r)
@@ -168,23 +178,30 @@ export default Vue.extend({
       const r = await response.json()
       this.entry = r.entry
     },
-    interval(){
+    refetch(){
       this.ping()
       this.fetch_entry()
+    },
+    refetchInterval(){
+      clearInterval(this.refreshInterval)
+      this.refreshInterval = setInterval(() => {
+        this.refetch()
+      }, this.refetchRate)
     }
   },
   mounted() {
     if (localStorage.scans) {
       this.scans = JSON.parse(localStorage.scans)
     }
-    this.interval()
-    setInterval(() => {
-      this.interval()
-    }, 60000)
+    this.refetch()
+    this.refetchInterval()
   },
   watch: {
     scans() {
       localStorage.scans = JSON.stringify(this.scans)
+    },
+    refetchRate() {
+      this.refetchInterval()
     }
   }
 });
@@ -201,4 +218,39 @@ export default Vue.extend({
   position: fixed;
   z-index: 5;
 }
+.pulse {
+  display: block;
+  cursor: pointer;
+  animation: pulse 1s infinite;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0.4);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 20px rgba(204, 44, 44, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0.4);
+    box-shadow: 0 0 0 0 rgba(204, 44, 44, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 20px rgba(204, 44, 44, 0);
+    box-shadow: 0 0 0 20px rgba(204, 44, 44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 44, 44, 0);
+  }
+}
+
 </style>
