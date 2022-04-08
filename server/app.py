@@ -1,8 +1,20 @@
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
+#from dataclasses import dataclass
 from datetime import datetime
 
-app = Flask(__name__)
+### VAR ###
+#### Classes ####
 
+
+class Entry:
+  def __init__(self, value:bool = False):
+    self._value = value
+  def start(self):
+    self._value = True
+  def stop(self):
+    self._value = False
+  def get(self):
+    return self._value
 
 test = {
   '9999' : {
@@ -39,6 +51,10 @@ items = [
   }
 ]
 
+### INSTANCES ###
+
+app = Flask(__name__)
+entry = Entry(True)
 
 ### STARTPAGE ###
 
@@ -81,6 +97,23 @@ def ping():
       'ping':True
     }), 200
 
+@app.route('/entry', subdomain='api', methods = ['PUT', 'GET'])
+def control_entry():
+  # PUT 
+  if request.method == 'PUT':
+    data = request.get_json()
+    if 'entry' not in data:
+      return jsonify({'error':'missing entry'}), 400
+    if data['entry']:
+      entry.start()
+    else:
+      entry.stop()
+  # GET & PUT
+  return jsonify({
+      'entry': entry.get()
+    }), 200
+
+
 @app.route('/tickets', subdomain='api', methods = ['GET'])
 def get_tickets():
   return jsonify({
@@ -88,7 +121,7 @@ def get_tickets():
     }), 200
   
 @app.route('/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
-def get_ticket(id):
+def tickets(id):
   if id not in test:
     return jsonify({
       'id':id,
