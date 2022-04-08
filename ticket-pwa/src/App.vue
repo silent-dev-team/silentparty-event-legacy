@@ -232,7 +232,7 @@ export default Vue.extend({
     -webkit-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0.4);
   }
   70% {
-    -webkit-box-shadow: 0 0 0 20px rgba(204, 44, 44, 0);
+    -webkit-box-shadow: 0 0 0 40px rgba(204, 44, 44, 0);
   }
   100% {
     -webkit-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0);
