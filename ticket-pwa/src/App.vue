@@ -1,29 +1,9 @@
 <template>
   <v-app>
     <v-main>
-      <v-btn 
-        class="btn ma-2"
-        style="top: 5px; left: 5px;"
-        :color="apiPing ? 'green' : 'red'"
-        fab
-        dark
-        @click="ping()"
-      >
-        <v-icon
-          large
-        >mdi-access-point</v-icon>
-      </v-btn>
-      <v-btn 
-        class="btn ma-2"
-        style="top: 5px; right: 5px;"
-        fab
-        :dark="history"
-        @click="history = !history"
-      >
-        <v-icon
-          large
-        >mdi-history</v-icon>
-      </v-btn>
+      <PingBtn value="apiPing" @click="ping()" />
+      <EntrySign value="entry" @click="fetch_entry()"/>
+      <HistoryBtn v-model="history" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
       </div>
@@ -39,6 +19,9 @@ import Vue from 'vue';
 import LocalTable from './components/LocalTable.vue'
 import Noti from './components/Noti.vue'
 import ServerHistory from './components/ServerHistory.vue'
+import PingBtn from './components/PingBtn.vue'
+import HistoryBtn from './components/HistoryBtn.vue'
+import EntrySign from './components/EntrySign.vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
 
 export interface Scan {
@@ -55,7 +38,10 @@ export default Vue.extend({
     QrcodeStream,
     LocalTable,
     Noti,
-    ServerHistory
+    ServerHistory,
+    PingBtn,
+    HistoryBtn,
+    EntrySign
   },
 
   data: () => ({
@@ -63,6 +49,7 @@ export default Vue.extend({
     camera: 'auto',
     scans: [] as Scan[],
     apiPing: false,
+    entry: true,
     history: false,
     snackbar: {
       show: false,
@@ -139,7 +126,7 @@ export default Vue.extend({
       this.scans.push(scan)
     },
     async onDecode (id:string) {
-      this.ping()
+      this.interval()
       this.turnCameraOff()
       const r = await this.checkin(id)
       console.log(r)
@@ -174,13 +161,26 @@ export default Vue.extend({
       const response = await fetch(URL)
       const r = await response.json()
       this.apiPing = r.ping || false
+    },
+    async fetch_entry(){
+      const URL = this.apiUrl + 'entry'
+      const response = await fetch(URL)
+      const r = await response.json()
+      this.entry = r.entry
+    },
+    interval(){
+      this.ping()
+      this.fetch_entry()
     }
   },
   mounted() {
     if (localStorage.scans) {
       this.scans = JSON.parse(localStorage.scans)
     }
-    this.ping()
+    this.interval()
+    setInterval(() => {
+      this.interval()
+    }, 60000)
   },
   watch: {
     scans() {
@@ -191,7 +191,7 @@ export default Vue.extend({
 </script>
 
 
-<style scoped>
+<style>
 .qr {
   position: fixed;
   height: 100vh;
