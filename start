@@ -1,0 +1,14 @@
+#! /bin/bash
+
+dir=( kasse ticket-pwa )
+
+for d in "${dir[@]}"
+do 
+    cd $d
+    npm install
+    npm run build
+    cd ..
+done
+
+cd server
+sudo sh run
