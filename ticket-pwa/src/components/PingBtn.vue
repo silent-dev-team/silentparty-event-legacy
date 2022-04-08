@@ -29,7 +29,6 @@ export default Vue.extend({
 
 <style scoped>
 .btn{
-  position: absolute;
   top: 5px;
   left: 5px;
 }

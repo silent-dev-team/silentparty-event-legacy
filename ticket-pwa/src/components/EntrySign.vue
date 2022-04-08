@@ -29,10 +29,8 @@ export default Vue.extend({
 
 <style scoped>
 .btn{
-  position: absolute;
-  top: 25px; 
+  top: 15px; 
   left: 50%; 
-  margin-right: -50%; 
-  transform: translate(-50%, -50%)
+  transform: translate(-75%)
 }
 </style>
