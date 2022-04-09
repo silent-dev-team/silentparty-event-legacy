@@ -1,5 +1,6 @@
 <template>
   <v-btn 
+    v-if="!value"
     class="btn ma-2"
     style="top: 5px; left: 5px;"
     :color="value ? 'green' : 'red'"
