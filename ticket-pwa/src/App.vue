@@ -50,8 +50,8 @@ export default Vue.extend({
     scans: [] as Scan[],
     apiPing: false,
     entry: true,
-    refetchRateDefault: 60,
-    refetchRateFast: 10,
+    refetchRateDefault: 1,//60,
+    refetchRateFast: 1,//10,
     refreshInterval: setInterval(() => {}, 10*10),
     history: false,
     snackbar: {
