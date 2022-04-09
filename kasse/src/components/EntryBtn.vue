@@ -64,11 +64,17 @@ export default {
   },
   mounted(){
     this.fetch()
-    var that = this;
+    
+    var that = this
     this.eventSource.addEventListener('entry', function(event) {
         var data = JSON.parse(event.data)
         that.entry = data.entry
-    }.bind(that), false);
+    }.bind(that), false)
+
+    setInterval(() => {
+        this.refetch()
+      }, 60*1000
+    )
   },
   update(){
     this.fetch()
