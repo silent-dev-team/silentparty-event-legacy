@@ -10,5 +10,6 @@ do
     cd ..
 done
 
+redis-server &
 cd server
 sudo sh run
