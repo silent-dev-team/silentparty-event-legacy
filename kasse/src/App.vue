@@ -50,6 +50,7 @@
         <router-view />
       </div>
     </v-main>
+    <EntryBtn />
     <div height="200px"></div>
     <v-footer 
       padless
@@ -79,13 +80,15 @@
 <script>
 import OrderList from '@/components/OrderList.vue'
 import CheckOut from '@/components/CheckOut.vue'
+import EntryBtn from '@/components/EntryBtn.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
   name: 'App',
   components: {
     OrderList,
-    CheckOut
+    CheckOut,
+    EntryBtn
   },
 
   data: () => ({
@@ -143,5 +146,40 @@ export default {
   position: fixed;
   bottom: 75px;
   right: 256px;
+}
+
+.pulse {
+  display: block;
+  cursor: pointer;
+  animation: pulse 1s infinite;
+}
+.pulse:hover {
+  animation: none;
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0.4);
+  }
+  70% {
+    -webkit-box-shadow: 0 0 0 10px rgba(204, 44, 44, 0);
+  }
+  100% {
+    -webkit-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0);
+  }
+}
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0.4);
+    box-shadow: 0 0 0 0 rgba(204, 44, 44, 0.4);
+  }
+  70% {
+    -moz-box-shadow: 0 0 0 10px rgba(204, 44, 44, 0);
+    box-shadow: 0 0 0 10px rgba(204, 44, 44, 0);
+  }
+  100% {
+    -moz-box-shadow: 0 0 0 0 rgba(204, 44, 44, 0);
+    box-shadow: 0 0 0 0 rgba(204, 44, 44, 0);
+  }
 }
 </style>
