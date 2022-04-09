@@ -51,7 +51,7 @@ export default Vue.extend({
     apiPing: false,
     entry: true,
     eventSource: new EventSource('https://sp/stream'),
-    refetchRate: 60,
+    refetchRate: 10,
     history: false,
     snackbar: {
       show: false,
