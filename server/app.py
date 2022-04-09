@@ -1,4 +1,5 @@
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
+from flask_sse import sse
 #from dataclasses import dataclass
 from datetime import datetime
 
@@ -54,13 +55,20 @@ items = [
 ### INSTANCES ###
 
 app = Flask(__name__)
+app.config["REDIS_URL"] = "redis://sp"
+app.register_blueprint(sse, url_prefix='/stream')
+
 entry = Entry(True)
 
 ### STARTPAGE ###
 
-@app.route('/')
-def startpage_index():
-  return redirect('index.html')
+@app.route('/', subdomain='api')
+def index():
+    return render_template("index.html")
+
+#@app.route('/')
+#def startpage_index():
+#  return redirect('index.html')
 
 @app.route('/<path:path>')
 def startpage_pwa(path):
@@ -109,9 +117,9 @@ def control_entry():
     else:
       entry.stop()
   # GET & PUT
-  return jsonify({
-      'entry': entry.get()
-    }), 200
+  response = {"entry": entry.get()}
+  sse.publish(response, type='entry')
+  return jsonify(**response), 200
 
 
 @app.route('/tickets', subdomain='api', methods = ['GET'])
