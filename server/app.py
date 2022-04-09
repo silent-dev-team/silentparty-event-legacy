@@ -62,13 +62,9 @@ entry = Entry(True)
 
 ### STARTPAGE ###
 
-@app.route('/', subdomain='api')
-def index():
-    return render_template("index.html")
-
-#@app.route('/')
-#def startpage_index():
-#  return redirect('index.html')
+@app.route('/')
+def startpage_index():
+  return redirect('index.html')
 
 @app.route('/<path:path>')
 def startpage_pwa(path):
