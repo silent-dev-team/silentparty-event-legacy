@@ -18,18 +18,23 @@ export default {
   data() {
     return {
       entry: true,
-      loading: false
+      loading: false,
+      eventSource: new EventSource("https://sp/stream")
     }
   },
-  computed: 
-    mapState([
+  computed: {
+    ...mapState([
       'api'
     ]),
+    },
   methods: {
-    onClick() {
+    setEntry(value){
+      this.entry = value
+    },
+    async onClick() {
       this.loading = true
-      this.update(!this.entry)
-      this.fetch()
+      await this.update(!this.entry)
+      await this.fetch()
       this.loading = false
     },
     async fetch() {
@@ -56,9 +61,15 @@ export default {
   },
   mounted(){
     this.fetch()
-    setInterval(() => {
-      this.fetch()
-    }, 1000)
+    var that = this;
+    this.eventSource.addEventListener('entry', function(event) {
+        var data = JSON.parse(event.data)
+        console.log(data.entry)
+        that.entry = data.entry
+    }.bind(that), false);
+  },
+  update(){
+    this.fetch()
   }
 }
 </script>
