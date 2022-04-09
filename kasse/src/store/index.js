@@ -11,6 +11,7 @@ const vuexLocal = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     api: 'https://api.sp/',
+    stream: 'https://sp/stream',
     targets: {
       items: {
         route: 'items',

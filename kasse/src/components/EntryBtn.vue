@@ -18,14 +18,17 @@ export default {
   data() {
     return {
       entry: true,
-      loading: false,
-      eventSource: new EventSource("https://sp/stream")
+      loading: false
     }
   },
   computed: {
     ...mapState([
-      'api'
+      'api',
+      'stream'
     ]),
+    eventSource(){
+      return new EventSource(this.stream)
+    }
     },
   methods: {
     setEntry(value){
@@ -64,7 +67,6 @@ export default {
     var that = this;
     this.eventSource.addEventListener('entry', function(event) {
         var data = JSON.parse(event.data)
-        console.log(data.entry)
         that.entry = data.entry
     }.bind(that), false);
   },
