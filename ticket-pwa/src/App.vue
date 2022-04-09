@@ -50,9 +50,8 @@ export default Vue.extend({
     scans: [] as Scan[],
     apiPing: false,
     entry: true,
-    refetchRateDefault: 1,//60,
-    refetchRateFast: 1,//10,
-    refreshInterval: setInterval(() => {}, 10*10),
+    eventSource: new EventSource('https://sp/stream'),
+    refetchRate: 60,
     history: false,
     snackbar: {
       show: false,
@@ -66,11 +65,6 @@ export default Vue.extend({
     }
   }),
   computed: {
-    refetchRate():number {
-      const fast:Boolean = !this.entry
-      const rate:number = fast ? this.refetchRateFast : this.refetchRateDefault
-      return rate*1000
-    },
   },
   methods: {
     now() {
@@ -181,12 +175,6 @@ export default Vue.extend({
     refetch(){
       this.ping()
       this.fetch_entry()
-    },
-    refetchInterval(){
-      clearInterval(this.refreshInterval)
-      this.refreshInterval = setInterval(() => {
-        this.refetch()
-      }, this.refetchRate)
     }
   },
   mounted() {
@@ -194,14 +182,21 @@ export default Vue.extend({
       this.scans = JSON.parse(localStorage.scans)
     }
     this.refetch()
-    this.refetchInterval()
+
+    var that = this
+    this.eventSource.addEventListener('entry', function(event:any) {
+        var data = JSON.parse(event.data)
+        that.entry = data.entry
+    }.bind(that), false)
+
+    setInterval(() => {
+        this.refetch()
+      }, this.refetchRate*1000
+    )
   },
   watch: {
     scans() {
       localStorage.scans = JSON.stringify(this.scans)
-    },
-    refetchRate() {
-      this.refetchInterval()
     }
   }
 });
