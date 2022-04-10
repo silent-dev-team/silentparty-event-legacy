@@ -2,14 +2,16 @@
 
 dir=( kasse ticket-pwa )
 
-for d in "${dir[@]}"
-do 
-    cd $d
-    npm install
-    npm run build
-    cd ..
-done
+if $1 == 'build'; then
+    for d in "${dir[@]}"
+    do 
+        cd $d
+        npm install
+        npm run build
+        cd ..
+    done
+fi
 
-redis-server &
+redis-server ./redis/redis.conf &
 cd server
 sudo sh run

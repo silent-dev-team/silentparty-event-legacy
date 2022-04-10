@@ -1,7 +1,9 @@
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
-#from dataclasses import dataclass
 from datetime import datetime
+import redis, json
+from pickle import loads, dumps
+import models
 
 ### VAR ###
 #### Classes ####
@@ -57,6 +59,7 @@ items = [
 app = Flask(__name__)
 app.config["REDIS_URL"] = "redis://sp"
 app.register_blueprint(sse, url_prefix='/stream')
+db = redis.Redis()
 
 entry = Entry(True)
 

@@ -1,0 +1,5 @@
+redis-server &
+sleep 3
+redis-cli BGREWRITEAOF;
+sleep 3
+redis-cli SHUTDOWN
