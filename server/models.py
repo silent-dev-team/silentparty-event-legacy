@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List, Dict
 
 @dataclass
 class Item:
@@ -14,3 +15,5 @@ class Ticket:
   checked: bool = False
   time: int = None
   
+def objList(objs:List[dict],T:type) -> list:
+  return [T(**obj) for obj in objs]

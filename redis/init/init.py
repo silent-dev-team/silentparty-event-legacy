@@ -2,12 +2,12 @@ import redis, json, sys
 from pickle import loads, dumps
 from dataclasses import dataclass
 from typing import List, Dict
-sys.path.append('../../server')
+sys.path.append('./server')
 from models import *
 
 r = redis.Redis()
 
-items_j = [
+items = [
   {
     'id': 100,
     'name': 'Bier',
@@ -28,20 +28,18 @@ items_j = [
     'img': 'https://www.bestinfood-shop.de/media/image/ff/23/b3/fanta-orange-dose-24x-330ml-95451-7771534.jpg',
     'price': 1.5,
     'cup': True
+  },
+  {
+    'id': 103,
+    'name': 'Wasser',
+    'img': 'https://www.hammer.de/media/fitnesswissen/ernaehrung-blog/wasser/wasser-teaser_300.jpg',
+    'price': 1,
+    'cup': True
   }
 ]
 
-  
-def objList(objs:List[dict],T:type) -> list:
-  return [T(**obj) for obj in objs]
-  
-
-
-#items = dumps([Item(**item) for item in items_j])
-items = dumps(objList(items_j,Item))
-#print(pbytes(items).loads()[0].name)
+items = dumps(objList(items,Item))
 
 r.mset({
   "items": items
 })
-print(loads(r.get("items")))

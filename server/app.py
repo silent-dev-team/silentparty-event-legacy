@@ -3,7 +3,7 @@ from flask_sse import sse
 from datetime import datetime
 import redis, json
 from pickle import loads, dumps
-import models
+from models import *
 
 ### VAR ###
 #### Classes ####
@@ -29,30 +29,6 @@ test = {
     "time": None
   }
 }
-
-items = [
-  {
-    'id': 100,
-    'name': 'Bier',
-    'img': 'https://www.fuessenaktuell.de/wp-content/uploads/2019/08/FA_09_19_Bier.jpg',
-    'price': 2.5,
-    'cup': True
-  },
-  {
-    'id': 101,
-    'name': 'Cola',
-    'img': 'https://www.cocacolaep.com/assets/Uploads/resources/04996d7841/Neue-Verschlusse-Coca-Cola900x550__ScaleMaxWidthWzk0MF0.jpg',
-    'price': 1.5,
-    'cup': True
-  },
-  {
-    'id': 102,
-    'name': 'Fanta',
-    'img': 'https://www.bestinfood-shop.de/media/image/ff/23/b3/fanta-orange-dose-24x-330ml-95451-7771534.jpg',
-    'price': 1.5,
-    'cup': True
-  }
-]
 
 ### INSTANCES ###
 
@@ -152,6 +128,7 @@ def tickets(id):
 
 @app.route('/items', subdomain='api', methods = ['GET'])
 def get_items():
+  items = loads(db.get('items'))
   return jsonify({'data':items}), 200
 
 
@@ -173,6 +150,12 @@ def normalRequestCors(response):
     return response
 
 ### MAIN ###
+
+def init():
+  db.mset({
+    #'tickets': dumps(objList(test,Ticket)),
+    'items': dumps(objList(items,Item))
+  })
 
 if __name__ == "__main__":
   app.config['SERVER_NAME']='sp:443'
