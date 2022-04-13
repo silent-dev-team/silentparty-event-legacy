@@ -2,7 +2,7 @@
 
 dir=( kasse ticket-pwa )
 
-if $1 == 'build'; then
+#if $1 == 'build'; then
     for d in "${dir[@]}"
     do 
         cd $d
@@ -10,7 +10,7 @@ if $1 == 'build'; then
         npm run build
         cd ..
     done
-fi
+#fi
 
 redis-server ./redis/redis.conf &
 #sh backup_loop.sh &

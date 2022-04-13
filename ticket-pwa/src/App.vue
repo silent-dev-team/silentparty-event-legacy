@@ -62,7 +62,7 @@ export default Vue.extend({
       show: false,
       message: "",
       type: ""
-    }
+    },
   }),
   computed: {
   },
@@ -129,7 +129,16 @@ export default Vue.extend({
       scan.status = status
       this.scans.push(scan)
     },
-    async onDecode (id:string) {
+    async onDecode (input:string) {
+      if (!this.apiPing) {
+        this.notify('API nicht erreichbar... \n' + input, false)
+        this.turnCameraOff()
+        this.turnCameraOn()
+        return 1
+      }
+      const inputs = input.split(';')
+      const id = inputs[0]
+      const hash = inputs[1]
       this.refetch()
       this.turnCameraOff()
       const r = await this.checkin(id)
@@ -159,12 +168,15 @@ export default Vue.extend({
     turnCameraOff () {
       this.camera = 'off'
     },
-    async ping(){
+    ping(){
       const URL = this.apiUrl + 'ping'
-      this.apiPing = false
-      const response = await fetch(URL)
-      const r = await response.json()
-      this.apiPing = r.ping || false
+      fetch(URL)
+        .then(response => response.json())
+        .then(data => {
+          this.apiPing = data.ping
+        }).catch(err => {
+          this.apiPing = false
+        })
     },
     async fetch_entry(){
       const URL = this.apiUrl + 'entry'
@@ -182,17 +194,15 @@ export default Vue.extend({
       this.scans = JSON.parse(localStorage.scans)
     }
     this.refetch()
-
+    const interval = setInterval(() => {
+        this.refetch()
+      }, this.refetchRate*1000
+    )
     var that = this
     this.eventSource.addEventListener('entry', function(event:any) {
         var data = JSON.parse(event.data)
         that.entry = data.entry
     }.bind(that), false)
-
-    setInterval(() => {
-        this.refetch()
-      }, this.refetchRate*1000
-    )
   },
   watch: {
     scans() {
