@@ -13,6 +13,6 @@ if $1 == 'build'; then
 fi
 
 redis-server ./redis/redis.conf &
-sh backup_loop.sh &
+#sh backup_loop.sh &
 cd server
-sudo sh run &
+sudo ./run
