@@ -5,7 +5,12 @@ import redis, json, sys
 from pickle import loads, dumps
 from models import *
 
+### CONST ###
+
+LOCAL:bool = sys.argv[1] == 'local'
+
 ### VAR ###
+
 #### Classes ####
 
 
@@ -33,7 +38,7 @@ test = {
 ### INSTANCES ###
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = 'redis://localhost' if sys.argv[1] == 'dev' else "redis://sp"
+app.config["REDIS_URL"] = 'redis://localhost' if LOCAL else "redis://sp"
 app.register_blueprint(sse, url_prefix='/stream')
 db = redis.Redis()
 
@@ -194,7 +199,7 @@ def normalRequestCors(response):
 ### MAIN ###
 
 if __name__ == "__main__":
-  if 'dev' in sys.argv:
+  if LOCAL:
     app.config['SERVER_NAME']='localhost:5000'
     app.run(debug=True)
   else:
