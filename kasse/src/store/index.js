@@ -10,8 +10,8 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   state: {
-    api: 'https://api.sp/',
-    stream: 'https://sp/stream',
+    api: 'http://localhost:5000', //'https://api.sp/',
+    stream: 'http://localhost:5000/stream', //'https://sp/stream',
     targets: {
       items: {
         route: 'items',

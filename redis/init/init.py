@@ -38,8 +38,26 @@ items = [
   }
 ]
 
-items = dumps(objList(items,Item))
+tickets = {
+  '1001': {
+    'hash': 'jnksjagfhlkdshjflhdgfka',
+    'checked': '0',
+    'activeted': '0',
+    'time': '',
+  },
+  '1002': {
+    'hash': 'ashdghsagdsjakdghsjad',
+    'checked': '0',
+    'activeted': '0',
+    'time': '',
+  }
+}
 
+for id, content in tickets.items():
+  r.hset('ticket:'+id,mapping=content)
+
+items = dumps(objList(items,Item))
 r.mset({
-  "items": items
+  "items": items,
+  "seed": 'jdjdjdjdjdjdjdj'
 })

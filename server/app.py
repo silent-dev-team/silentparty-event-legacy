@@ -1,7 +1,7 @@
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
 from datetime import datetime
-import redis, json
+import redis, json, sys
 from pickle import loads, dumps
 from models import *
 
@@ -33,7 +33,7 @@ test = {
 ### INSTANCES ###
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = "redis://sp"
+app.config["REDIS_URL"] = 'redis://localhost' #"redis://sp"
 app.register_blueprint(sse, url_prefix='/stream')
 db = redis.Redis()
 
@@ -151,12 +151,10 @@ def normalRequestCors(response):
 
 ### MAIN ###
 
-def init():
-  db.mset({
-    #'tickets': dumps(objList(test,Ticket)),
-    'items': dumps(objList(items,Item))
-  })
-
 if __name__ == "__main__":
-  app.config['SERVER_NAME']='sp:443'
-  app.run(debug=True, ssl_context=('server.cer', 'server.key'))
+  if 'dev' in sys.argv:
+    app.config['SERVER_NAME']='localhost:5000'
+    app.run(debug=True)
+  else:
+    app.config['SERVER_NAME']='sp:443'
+    app.run(debug=True, ssl_context=('server.cer', 'server.key'))
