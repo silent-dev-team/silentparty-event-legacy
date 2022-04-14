@@ -107,7 +107,6 @@ def get_tickets():
 def ticket_checkin(id):
   ticket_b = db.hgetall('ticket:'+str(id))
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
-
   return jsonify({'data':ticket}), 200
 
 @app.route('/legacy/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
