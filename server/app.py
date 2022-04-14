@@ -13,7 +13,6 @@ LOCAL:bool = sys.argv[1] == 'local'
 
 #### Classes ####
 
-
 class Entry:
   def __init__(self, value:bool = False):
     self._value = value
@@ -114,13 +113,15 @@ def get_ticket(id):
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
   return jsonify({'data':ticket}), 200
 
-@app.route('/tickets/<id>', subdomain='api', methods = ['PUT']) #in progress
+#in progress
+@app.route('/tickets/<id>', subdomain='api', methods = ['PUT'])
 def ticket_checkin(id): 
   ticket_b = db.hgetall('ticket:'+str(id))
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
   return jsonify({'data':ticket}), 200
 
-@app.route('/legacy/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
+#legacy
+@app.route('/legacy/tickets/<id>', subdomain='api', methods = ['PUT', 'GET']) 
 def tickets_checkin_legacy(id):
   if id not in test:
     return jsonify({
