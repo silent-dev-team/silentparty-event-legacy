@@ -13,6 +13,17 @@ LOCAL:bool = sys.argv[1] == 'local'
 
 #### Classes ####
 
+
+class Subdomain:
+  def __init__(self, local:bool=False):
+    self.api='api'
+    self.ticket='ticket'
+    self.kasse='kasse'
+    if local:
+      self.api=None
+      self.ticket=None
+      self.kasse=None
+
 class Entry:
   def __init__(self, value:bool = False):
     self._value = value
@@ -41,6 +52,8 @@ app.config["REDIS_URL"] = 'redis://localhost' if LOCAL else "redis://sp"
 app.register_blueprint(sse, url_prefix='/stream')
 db = redis.Redis()
 
+sd = Subdomain(LOCAL)
+
 entry = Entry(True)
 
 ### STARTPAGE ###
@@ -56,35 +69,35 @@ def startpage_pwa(path):
 
 ### KASSE ###
 
-@app.route('/', subdomain="kasse")
+@app.route('/', subdomain=sd.kasse)
 def kasse_index():
   return redirect('index.html')
 
-@app.route('/<path:path>',subdomain="kasse")
+@app.route('/<path:path>',subdomain=sd.kasse)
 def kasse_pwa(path):
   return send_from_directory('../kasse/dist',path)
 
 
 ### TICKET ###
 
-@app.route('/', subdomain='ticket')
+@app.route('/', subdomain=sd.ticket)
 def ticket_index():
   return redirect('index.html')
 
-@app.route('/<path:path>', subdomain='ticket')
+@app.route('/<path:path>', subdomain=sd.ticket)
 def ticket_pwa(path):
   return send_from_directory('../ticket-pwa/dist',path)
 
 
 ### API ###
 
-@app.route('/ping', subdomain='api')
+@app.route('/ping', subdomain=sd.api)
 def ping():
   return jsonify({
       'ping':True
     }), 200
 
-@app.route('/entry', subdomain='api', methods = ['PUT', 'GET'])
+@app.route('/entry', subdomain=sd.api, methods = ['PUT', 'GET'])
 def control_entry():
   # PUT 
   if request.method == 'PUT':
@@ -101,27 +114,37 @@ def control_entry():
   return jsonify(**response), 200
 
 
-@app.route('/tickets', subdomain='api', methods = ['GET'])
+@app.route('/tickets', subdomain=sd.api, methods = ['GET'])
 def get_tickets():
+  tickets = [ticket.decode() for ticket in db.keys('ticket:*')]
+  filtered_tickets = [] if len(request.args) > 0 else tickets
+  for k, v in request.args.to_dict().items():
+    for ticket in tickets:
+      hash = db.hget(ticket,k)
+      if not hash:
+        continue
+      if hash.decode() == v:
+        filtered_tickets+=[ticket]
+  tickets = list(dict.fromkeys(filtered_tickets))
   return jsonify({
-      'data':test
+      'data':tickets
     }), 200
 
-@app.route('/tickets/<id>', subdomain='api', methods = ['GET'])
+@app.route('/tickets/<id>', subdomain=sd.api, methods = ['GET'])
 def get_ticket(id): 
   ticket_b = db.hgetall('ticket:'+str(id))
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
   return jsonify({'data':ticket}), 200
 
 #in progress
-@app.route('/tickets/<id>', subdomain='api', methods = ['PUT'])
+@app.route('/tickets/<id>', subdomain=sd.api, methods = ['PUT'])
 def ticket_checkin(id): 
   ticket_b = db.hgetall('ticket:'+str(id))
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
   return jsonify({'data':ticket}), 200
 
 #legacy
-@app.route('/legacy/tickets/<id>', subdomain='api', methods = ['PUT', 'GET']) 
+@app.route('/legacy/tickets/<id>', subdomain=sd.api, methods = ['PUT', 'GET']) 
 def tickets_checkin_legacy(id):
   if id not in test:
     return jsonify({
@@ -144,7 +167,7 @@ def tickets_checkin_legacy(id):
       'data':card
     }), 200
 
-@app.route('/shopItems', subdomain='api', methods = ['GET'])
+@app.route('/shopItems', subdomain=sd.api, methods = ['GET'])
 def get_shopItems():
   """Lädt die Items (Getränke, Angebote, HP) aus der Datenbank
 
@@ -154,7 +177,7 @@ def get_shopItems():
   items = loads(db.get('shopItems'))
   return jsonify({'data':items}), 200
 
-@app.route('/orders', subdomain='api', methods = ['GET'])
+@app.route('/orders', subdomain=sd.api, methods = ['GET'])
 def get_order() -> list:
   """Gibt die Liste (oder einen Ausschnitt) der Bestellungen aus.
   Pos 0 ist die neuste Bestellung.
@@ -170,7 +193,7 @@ def get_order() -> list:
   orders = [loads(order) for order in db.lrange('orders',start,stop)]
   return jsonify({'data':orders}), 200
 
-@app.route('/orders', subdomain='api', methods = ['POST'])
+@app.route('/orders', subdomain=sd.api, methods = ['POST'])
 def new_order():
   """Anhängen einer neuen Bestellung.
   Schema entspricht der dataclass 'Order'
