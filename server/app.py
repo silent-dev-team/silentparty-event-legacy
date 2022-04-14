@@ -108,14 +108,20 @@ def get_tickets():
       'data':test
     }), 200
 
-@app.route('/tickets/<id>', methods = ['PUT'])
-def ticket_checkin(id):
+@app.route('/tickets/<id>', subdomain='api', methods = ['GET'])
+def get_ticket(id): 
+  ticket_b = db.hgetall('ticket:'+str(id))
+  ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
+  return jsonify({'data':ticket}), 200
+
+@app.route('/tickets/<id>', subdomain='api', methods = ['PUT']) #in progress
+def ticket_checkin(id): 
   ticket_b = db.hgetall('ticket:'+str(id))
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
   return jsonify({'data':ticket}), 200
 
 @app.route('/legacy/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
-def tickets(id):
+def tickets_checkin_legacy(id):
   if id not in test:
     return jsonify({
       'id':id,
@@ -139,10 +145,15 @@ def tickets(id):
 
 @app.route('/shopItems', subdomain='api', methods = ['GET'])
 def get_shopItems():
+  """Lädt die Items (Getränke, Angebote, HP) aus der Datenbank
+
+  Returns:
+      list<Itmes>: Liste aller Items
+  """
   items = loads(db.get('shopItems'))
   return jsonify({'data':items}), 200
 
-@app.route('/orders', methods = ['GET'])
+@app.route('/orders', subdomain='api', methods = ['GET'])
 def get_order() -> list:
   """Gibt die Liste (oder einen Ausschnitt) der Bestellungen aus.
   Pos 0 ist die neuste Bestellung.
@@ -158,7 +169,7 @@ def get_order() -> list:
   orders = [loads(order) for order in db.lrange('orders',start,stop)]
   return jsonify({'data':orders}), 200
 
-@app.route('/orders', methods = ['POST'])
+@app.route('/orders', subdomain='api', methods = ['POST'])
 def new_order():
   """Anhängen einer neuen Bestellung.
   Schema entspricht der dataclass 'Order'
