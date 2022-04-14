@@ -33,7 +33,7 @@ test = {
 ### INSTANCES ###
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = 'redis://localhost' #"redis://sp"
+app.config["REDIS_URL"] = 'redis://localhost' if sys.argv[1] == 'dev' else "redis://sp"
 app.register_blueprint(sse, url_prefix='/stream')
 db = redis.Redis()
 
@@ -102,8 +102,15 @@ def get_tickets():
   return jsonify({
       'data':test
     }), 200
-  
-@app.route('/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
+
+@app.route('/tickets/<id>', methods = ['PUT'])
+def ticket_checkin(id):
+  ticket_b = db.hgetall('ticket:'+str(id))
+  ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
+
+  return jsonify({'data':ticket}), 200
+
+@app.route('/legacy/tickets/<id>', subdomain='api', methods = ['PUT', 'GET'])
 def tickets(id):
   if id not in test:
     return jsonify({
@@ -126,11 +133,47 @@ def tickets(id):
       'data':card
     }), 200
 
-@app.route('/items', subdomain='api', methods = ['GET'])
-def get_items():
-  items = loads(db.get('items'))
+@app.route('/shopItems', subdomain='api', methods = ['GET'])
+def get_shopItems():
+  items = loads(db.get('shopItems'))
   return jsonify({'data':items}), 200
 
+@app.route('/orders', methods = ['GET'])
+def get_order() -> list:
+  """Gibt die Liste (oder einen Ausschnitt) der Bestellungen aus.
+  Pos 0 ist die neuste Bestellung.
+  
+  Params:
+      start: Startposition der Ausgabe
+      stop: Endposition der Ausgabe
+  Returns:
+      list: Liste der Bestellungen
+  """
+  start = request.args.get('start') or 0
+  stop = request.args.get('stop') or db.llen('orders')
+  orders = [loads(order) for order in db.lrange('orders',start,stop)]
+  return jsonify({'data':orders}), 200
+
+@app.route('/orders', methods = ['POST'])
+def new_order():
+  """Anhängen einer neuen Bestellung.
+  Schema entspricht der dataclass 'Order'
+  Returns:
+      dict('success':bool): Vorgang erfolgreich?
+  """
+  data = request.get_json()
+  try:
+    items = [Item(**item) for item in data['items']]
+  except TypeError:
+    return jsonify({'success':False, 'message':'Schema Item nicht korrekt'}), 200
+  data['items'] = items
+  try:
+    order = Order(**data)
+  except TypeError:
+    return jsonify({'success':False, 'message':'Schema Order nicht korrekt'}), 200
+  db.lpush("orders",dumps(order))
+  return jsonify({'success': True}), 200
+  
 
 ### OPTIONS ###
 
