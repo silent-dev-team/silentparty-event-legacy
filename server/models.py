@@ -4,13 +4,20 @@ from datetime import datetime
 
 
 @dataclass
-class Item:
+class ShopItem:
   id: int
   name: str
   price: float
-  number: int = 0
   cup: bool = None
   img: str = None
+
+@dataclass
+class OrderItem:
+  id: int
+  name: str
+  price: float
+  number: int
+  sum: float
 
 @dataclass
 class Order:

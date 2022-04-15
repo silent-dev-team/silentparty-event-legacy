@@ -63,7 +63,7 @@ tickets = {
 for id, content in tickets.items():
   r.hset('ticket:'+id,mapping=content)
 
-items = dumps(objList(items,Item))
+items = dumps(objList(items,ShopItem))
 r.mset({
   "shopItems": items,
   "seed": 'jdjdjdjdjdjdjdj'

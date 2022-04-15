@@ -195,7 +195,7 @@ def new_order():
   data:dict = request.get_json()
   data.update({'timestamp': datetime.now()})
   try:
-    items = [Item(**item) for item in data['items']]
+    items = [OrderItem(**item) for item in data['items']]
   except TypeError:
     return jsonify({'success':False, 'message':'Schema Item nicht korrekt'}), 200
   data['items'] = items

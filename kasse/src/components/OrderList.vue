@@ -37,7 +37,7 @@
               {{ o.number }}
             </td>
             <td class="text-right">
-              {{ fix(o.price) }}€
+              {{ fix(o.sum) }}€
             </td>
           </tr>
         </tbody>

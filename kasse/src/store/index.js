@@ -23,11 +23,12 @@ export default new Vuex.Store({
       }
     },
     order: [],
+    orders: [],
     items: [],
   },
   getters:{
     sum(state) {
-      let sum = state.order.reduce((acc, cur) => acc + cur.price, 0)
+      let sum = state.order.reduce((acc, cur) => acc + cur.sum, 0)
       return (parseFloat(sum).toFixed(2))
     },
     item: (state) => (id) => {
@@ -43,13 +44,14 @@ export default new Vuex.Store({
         id: payload.id,
         name: item.name,
         number: payload.number,
-        price: item.price * payload.number * factor,
+        price: item.price * factor,
+        sum: item.price * payload.number * factor,
       }
       console.log(indexOrder)
       if (indexOrder < 0) {
         state.order.push(newOrder)
       } else {
-        state.order[indexOrder].price = state.order[indexOrder].price + newOrder.price
+        state.order[indexOrder].sum = state.order[indexOrder].sum + newOrder.sum
         state.order[indexOrder].number = state.order[indexOrder].number + newOrder.number
       }
     },
