@@ -3,10 +3,10 @@
     <v-card 
       class="pa-3 d-flex justify-space-between" 
       elevation="0"
-      :color="item.price < 0 ? 'yellow' : null"
+      :color="item.deposit ? 'yellow' : null"
     >
       <h1>{{ item.name }}</h1>
-      <h1>{{ fix(item.price) }}€</h1>
+      <h1>{{item.deposit ? '-' : ''}}{{ fix(item.price) }}€</h1>
       
     </v-card>
     <v-card 
@@ -76,16 +76,16 @@ export default {
       }
     },
     append(){
-      const factor = this.item.price < 0 ? -1 : 1
-      if (this.item.cup) {
+      const deposit_factor = this.item.deposit ? -1 : 1
+      if (this.item.reference !== null) {
         this.appendOrder({
-          id: 100,
+          id: this.item.reference,
           number: this.n
         })
       }
       this.appendOrder({
         id: this.id,
-        number: this.n * factor
+        number: this.n * deposit_factor
       })
       this.n=1
     },

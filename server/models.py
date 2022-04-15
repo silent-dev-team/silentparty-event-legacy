@@ -8,11 +8,12 @@ class ShopItem:
   id: int
   name: str
   price: float
-  cup: bool = None
+  reference: int = None
+  deposit: bool = False
   img: str = None
 
 @dataclass
-class OrderItem:
+class OrderPos:
   id: int
   name: str
   price: float

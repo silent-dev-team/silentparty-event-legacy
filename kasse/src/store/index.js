@@ -39,13 +39,12 @@ export default new Vuex.Store({
     appendOrder (state, payload) {
       const indexOrder = state.order.findIndex((o => o.id == payload.id))
       const item = state.items.find(item => item.id == payload.id)
-      const factor = item.price < 0 ? -1 : 1
       const newOrder = {
         id: payload.id,
         name: item.name,
         number: payload.number,
-        price: item.price * factor,
-        sum: item.price * payload.number * factor,
+        price: item.price,
+        sum: item.price * payload.number,
       }
       console.log(indexOrder)
       if (indexOrder < 0) {
