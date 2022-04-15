@@ -34,16 +34,8 @@ class Entry:
   def get(self):
     return self._value
 
-test = {
-  '9999' : {
-    "checked" : False,
-    "time": None
-  },
-  '9998' : {
-    "checked" : False,
-    "time": None
-  }
-}
+### FUNCS ###
+
 
 ### INSTANCES ###
 
@@ -200,7 +192,8 @@ def new_order():
   Returns:
       dict('success':bool): Vorgang erfolgreich?
   """
-  data = request.get_json()
+  data:dict = request.get_json()
+  data.update({'timestamp': datetime.now()})
   try:
     items = [Item(**item) for item in data['items']]
   except TypeError:

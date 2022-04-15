@@ -3,6 +3,7 @@
     <v-card 
       class="pa-3 d-flex justify-space-between" 
       elevation="0"
+      :color="item.price < 0 ? 'yellow' : null"
     >
       <h1>{{ item.name }}</h1>
       <h1>{{ fix(item.price) }}€</h1>
@@ -75,9 +76,16 @@ export default {
       }
     },
     append(){
+      const factor = this.item.price < 0 ? -1 : 1
+      if (this.item.cup) {
+        this.appendOrder({
+          id: 100,
+          number: this.n
+        })
+      }
       this.appendOrder({
         id: this.id,
-        number: this.n
+        number: this.n * factor
       })
       this.n=1
     },

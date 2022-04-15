@@ -61,7 +61,7 @@
             width="300px" 
             height="100px" 
             color="success"
-            @click="clearOrder();display = '0';$emit('input', false)"
+            @click="checkout()"
           >
             <h1>FERTIG</h1>
           </v-btn>
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
   name: 'CheckOut',
@@ -105,12 +105,12 @@ export default {
       return this.display/100
     },
     ready() {
-      return this.sum > 0 && this.cent >= this.sum
+      return (this.sum > 0 && this.cent >= this.sum) || this.sum < 0
     }
   },
   methods: {
-    ...mapMutations([
-      'clearOrder'
+    ...mapActions([
+      'postOrder'
     ]),
     key(n,m){
       return this.mapping[n+''+m]
@@ -126,6 +126,11 @@ export default {
       } else {
         this.display += e
       }
+    },
+    checkout(){
+      this.postOrder()
+      this.display = '0'
+      this.$emit('input', false)
     }
   }
 }
