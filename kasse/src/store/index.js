@@ -66,6 +66,11 @@ export default new Vuex.Store({
     clearOrder (state) {
       state.order = []
     },
+    delPosFromOrder (state, id) {
+      state.order
+      var removeIndex = state.order.map(item => item.id).indexOf(id)
+      ~removeIndex && state.order.splice(removeIndex, 1)
+    },
     setItems (state, items) {
       state.items = items
     }

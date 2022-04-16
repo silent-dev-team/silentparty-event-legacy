@@ -29,6 +29,7 @@
           <tr
             v-for="o in order"
             :key="o.name"
+            @dblclick="dblclick(o.id)"
           >
             <td class="text-left">
               {{ o.name }}
@@ -66,11 +67,16 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'clearOrder'
+      'clearOrder',
+      'delPosFromOrder'
     ]),
     fix(str){
       return parseFloat(str).toFixed(2)
     },
+    dblclick(id){
+      console.log(id)
+      this.delPosFromOrder(id)
+    }
   },
 }
 
