@@ -23,24 +23,24 @@
     </v-card>
     <v-card-actions class="d-flex justify-space-around">
       <v-btn 
-        text 
+        icon 
         :disabled="n==1"
         x-large 
         color="primary" 
         @click="sub()"
       >
-        <v-icon>mdi-minus</v-icon>
+        <v-icon x-large>mdi-minus</v-icon>
       </v-btn>
       <v-card class="text-center" elevation="0" >
         <v-card-title>{{n}}</v-card-title>
       </v-card>
       <v-btn 
-        text
+        icon
         x-large 
         color="primary" 
         @click="add()"
       >
-        <v-icon>mdi-plus</v-icon>
+        <v-icon x-large>mdi-plus</v-icon>
       </v-btn>
     </v-card-actions>
   </v-card>

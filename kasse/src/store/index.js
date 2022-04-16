@@ -11,7 +11,7 @@ const vuexLocal = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     api: 'http://localhost:5000/', //'https://api.sp/',
-    stream: 'http://localhost/stream', //'https://sp/stream',
+    stream: 'http://localhost:5000/stream', //'https://sp/stream',
     targets: {
       items: {
         route: 'shopItems',
