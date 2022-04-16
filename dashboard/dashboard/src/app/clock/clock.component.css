@@ -1,0 +1,33 @@
+:host{
+    grid-column: 14/span 4;
+    grid-row:   2/span 2;
+    background-color: black;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    color:white;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: 400;
+    font-size: 1.5vw;
+    position: relative;
+    line-height: 1.8vw;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+img{
+    width: 15%;
+}
+.count{
+    font-size: 3.4vw;
+    font-weight: 700;
+    line-height: 3vw;
+    margin-top: 12%;
+}
+.col{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}

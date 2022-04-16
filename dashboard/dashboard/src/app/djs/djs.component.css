@@ -1,0 +1,50 @@
+:host{
+    grid-column: 8/span 8;
+    grid-row:   5/span 2;
+    background-color: black;
+    border-radius: 5px;
+    padding-left: 8%;
+    display: flex;
+    flex-direction: row;
+    color:white;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: 400;
+    font-size: 1.5vw;
+    position: relative;
+    line-height: 1.8vw;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+.insta{
+    font-weight: 100;
+    line-height: 1.4vw;
+}
+
+.icon{
+    position: absolute;
+    left: 1.5%;
+    top: 6%;
+    width: 6%;
+}
+
+.start>span{
+    margin-right: 10px;
+}
+.name{
+    font-weight: 700;
+    font-size: 3.4vw;
+    line-height: 2.5vw;
+}
+.dj{
+    display: flex;
+    flex-direction: column;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

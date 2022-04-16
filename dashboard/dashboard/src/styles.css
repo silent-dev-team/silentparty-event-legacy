@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+body{
+    margin: 0px !important;
+    padding: 0;
+    font-family: "Bebas Neue";
+    font-weight: 700;
+}
+.Grün{
+    color: #00FF38;
+}
+.Rot{  
+    color: #F30505;
+
+}
+.Blau{
+    color: #0286FF;
+}
+
+.rolltext{
+    color: white;
+    width: auto;
+    position: absolute;
+    left:0;
+    top:0;
+    transform: translateX(-400vw);
+    -webkit-transform: translateX(-400vw);
+    -moz-transform: translateX(-400vw);
+    -ms-transform: translateX(-400vw);
+    -o-transform: translateX(-400vw);
+}
+.weight-normal{
+    font-weight: 400;
+}
