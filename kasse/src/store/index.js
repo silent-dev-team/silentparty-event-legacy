@@ -33,6 +33,15 @@ export default new Vuex.Store({
     },
     item: (state) => (id) => {
       return state.items.find(item => item.id === id)
+    },
+    numberOfItemInOrder: (state) => (id) => {
+      let n = 0
+      for (const item of state.order) {
+        if (item.id === id) {
+          n = item.number
+        }
+      }
+      return n
     }
   },
   mutations: {
@@ -108,3 +117,4 @@ export default new Vuex.Store({
   },
   plugins: [vuexLocal.plugin]
 })
+

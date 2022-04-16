@@ -61,7 +61,7 @@ export default {
   computed: {
     item(){
       return this.$store.getters.item(this.id)
-    },
+    }
   },
   methods: {
     ...mapMutations([
