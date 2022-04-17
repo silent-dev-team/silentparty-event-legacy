@@ -9,4 +9,5 @@ export default new Vuetify({
       xs: 700
     }
   },
+  theme: { dark: false },
 });
