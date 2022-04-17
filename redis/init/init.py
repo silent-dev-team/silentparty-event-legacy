@@ -13,8 +13,9 @@ with open('./redis/init/init.json') as f:
 for id, content in j['tickets'].items():
   r.hset('ticket:'+id,mapping=content)
 
-items = dumps(objList(j['items'],ShopItem))
+#items = dumps(objList(j['items'],ShopItem))
+
 r.mset({
-  "shopItems": items,
+  "shopItems": json.dumps(j['items']),
   "seed": 'jdjdjdjdjdjdjdj'
 })

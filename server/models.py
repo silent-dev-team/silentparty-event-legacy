@@ -11,6 +11,7 @@ class ShopItem:
   reference: int = None
   deposit: bool = False
   img: str = None
+  tags: tuple = ()
 
 @dataclass
 class OrderPos:

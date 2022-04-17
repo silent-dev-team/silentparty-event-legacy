@@ -166,7 +166,7 @@ def get_shopItems():
   Returns:
       list<Itmes>: Liste aller Items
   """
-  items = loads(db.get('shopItems'))
+  items = json.loads(db.get('shopItems'))
   return jsonify({'data':items}), 200
 
 @app.route('/orders', subdomain=sd.api, methods = ['GET'])
