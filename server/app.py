@@ -56,7 +56,7 @@ def startpage_index():
 
 @app.route('/<path:path>')
 def startpage_pwa(path):
-  return send_from_directory('../startpage/',path)
+  return send_from_directory('../localWebServer/',path)
 
 
 ### KASSE ###
