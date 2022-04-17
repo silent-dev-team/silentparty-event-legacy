@@ -12,6 +12,7 @@ export default new Vuex.Store({
   state: {
     api: 'http://localhost:5000/', //'https://api.sp/',
     stream: 'http://localhost:5000/stream', //'https://sp/stream',
+    imgLocation: 'http://localhost:5000/storage/img/', //'https://sp/storage/img/',
     targets: {
       items: {
         route: 'shopItems',
@@ -27,6 +28,9 @@ export default new Vuex.Store({
     items: [],
   },
   getters:{
+    getImg: (state) => (img) => {
+      return state.imgLocation + img
+    },
     sum(state) {
       let sum = state.order.reduce((acc, cur) => acc + cur.sum, 0)
       return (parseFloat(sum).toFixed(2))

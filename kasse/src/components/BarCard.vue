@@ -14,7 +14,7 @@
       @click="append()"
     >
       <v-img
-        :src="item.img"
+        :src="$store.getters.getImg(item.img)"
         height="100px"
         class="white--text align-center justify-center"
       >
