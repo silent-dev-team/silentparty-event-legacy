@@ -110,7 +110,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'postOrder'
+      'postOrder',
+      'fetch'
     ]),
     key(n,m){
       return this.mapping[n+''+m]
@@ -129,6 +130,7 @@ export default {
     },
     checkout(){
       this.postOrder()
+      setTimeout(() => this.fetch('items'),1000)
       this.display = '0'
       this.$emit('input', false)
     }

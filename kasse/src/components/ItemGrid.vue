@@ -1,35 +1,45 @@
 <template>
-  <v-container>
     <v-row>
       <v-col 
-        v-for="item in items" :key="item.id"
+        v-for="item in taggedItems" :key="item.id"
         xs="12" sm="6" md="4" lg="3" xl="2"
       >
       <div class="mx-auto my-3">
         <Badge :id="item.id">
-          <BarCard :id="item.id"/>
+          <ItemCard :id="item.id" :actions="actions"/>
         </Badge>
       </div>
       </v-col>
     </v-row>
-    <div height="200px"></div>
-  </v-container>
 </template>
 
 <script>
-import BarCard from '@/components/BarCard.vue'
+import ItemCard from '@/components/ItemCard.vue'
 import Badge from '@/components/Badge.vue'
 import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
-  name: 'Bar',
+  name: 'ItemGrid',
   components: {
-    BarCard,
+    ItemCard,
     Badge
+  },
+  props: {
+    tag: {
+      type:String,
+      required: true,
+    },
+    actions: {
+      type:Boolean,
+      default: false,
+    }
   },
   computed: {
     ...mapState([
       'items'
     ]),
+    taggedItems(){
+      return this.items.filter(item => item.tags.includes(this.tag))
+    }
   },
   methods: {
   },

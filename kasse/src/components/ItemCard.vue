@@ -1,12 +1,12 @@
 <template>
-  <v-card max-width="200px" min-width="160px" elevation="5">
+  <v-card :max-width="maxWidth" :min-width="minWidth" elevation="5">
     <v-card 
       class="pa-3 d-flex justify-space-between" 
       elevation="0"
       :color="item.deposit ? 'yellow' : null"
     >
       <h1>{{ item.name }}</h1>
-      <h1>{{item.deposit ? '-' : ''}}{{ fix(item.price) }}€</h1>
+      <h1>{{ fix(item.price) }}€</h1>
       
     </v-card>
     <v-card 
@@ -21,7 +21,7 @@
         <!--<v-icon width="1000px" class="mx-auto" color="white">mdi-plus</v-icon>-->
       </v-img>
     </v-card>
-    <v-card-actions class="d-flex justify-space-around">
+    <v-card-actions v-if="actions" class="d-flex justify-space-around">
       <v-btn 
         icon 
         :disabled="n==1"
@@ -49,9 +49,21 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
-  name: 'BarCard',
+  name: 'ItemCard',
   props: {
     id: Number,
+    actions: {
+      type: Boolean,
+      default: false,
+    },
+    minWidth: {
+      default: '160px',
+      type: String,
+    },
+    maxWidth: {
+      default: '200px',
+      type: String,
+    },
   },
   data () {
     return {

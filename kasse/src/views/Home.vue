@@ -2,7 +2,8 @@
   <div class="home">
     <center>
     <v-btn width="200px" height="200px" color="primary" class="ma-15" @click="$router.replace('/bar')">Bar</v-btn>
-    </center>
+    <v-btn width="200px" height="200px" color="primary" class="ma-15" @click="$router.replace('/hp')">HP</v-btn>
+    </center>bar
   </div>
 </template>
 
