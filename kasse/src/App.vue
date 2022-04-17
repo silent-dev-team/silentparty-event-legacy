@@ -118,6 +118,9 @@ export default {
       } else {
         this.showOrder = this.order.length > 0
       }
+    },
+    darkMode() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     }
   },
   watch: {
