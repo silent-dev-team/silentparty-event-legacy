@@ -51,11 +51,11 @@ entry = Entry(True)
 ### STARTPAGE ###
 
 @app.route('/')
-def startpage_index():
+def localWebServer_index():
   return redirect('index.html')
 
 @app.route('/<path:path>')
-def startpage_pwa(path):
+def localWebServer_pwa(path):
   return send_from_directory('../localWebServer/',path)
 
 
