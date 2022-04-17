@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <ItemGrid :tag="tag" :actions="params[tag].actions"/>
+    <ItemGrid :tag="tag"/>
     <div height="200px"></div>
   </v-container>
 </template>
@@ -20,19 +20,7 @@ export default {
       type: String,
       required: true,
     }
-  },
-  data() {
-    return {
-      params: {
-        hp: {
-          actions: false,
-        },
-        bar: {
-          actions: true
-        }
-      }
-    }
-  },
+  }
 }
 </script>
 
