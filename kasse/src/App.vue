@@ -9,9 +9,7 @@
       :permanent="locked"
       mobile-breakpoint="xs"
     >
-      <OrderList 
-        v-model="order"
-      />
+      <OrderList />
     </v-navigation-drawer>
     <v-main>
       <CheckOut v-model="checkout" />

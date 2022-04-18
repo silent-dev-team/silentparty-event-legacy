@@ -5,6 +5,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
+      <OrderList />
       <v-card justify="center">
         <v-toolbar
           dark
@@ -71,15 +72,21 @@
 </template>
 
 <script>
+import OrderList from '@/components/OrderList.vue'
 import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
   name: 'CheckOut',
+  components: {
+    OrderList
+  },
+
   props: [
     'value'
   ],
   data () {
     return {
+      showOrder:true,
       display: '0',
       mapping : {
         '11': '7',
