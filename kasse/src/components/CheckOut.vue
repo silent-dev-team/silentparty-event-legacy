@@ -5,7 +5,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <OrderList />
+      <OrderDrawer v-model="showOrder"/>
       <v-card justify="center">
         <v-toolbar
           dark
@@ -72,13 +72,13 @@
 </template>
 
 <script>
-import OrderList from '@/components/OrderList.vue'
+import OrderDrawer from '@/components/OrderDrawer.vue'
 import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
   name: 'CheckOut',
   components: {
-    OrderList
+    OrderDrawer
   },
 
   props: [

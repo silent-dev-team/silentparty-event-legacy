@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-navigation-drawer
-    v-model="value"
+      v-model="value"
       app
       width="300"
       right
@@ -29,7 +29,7 @@
       </v-icon>
     </v-btn>
     <v-btn
-      v-if="value || locked"
+      v-if="(value || locked) && lockeble"
       class="lock-btn"
       @click="locked = !locked; show()"
       icon
@@ -53,9 +53,16 @@ export default {
   components: {
     OrderList
   },
-  props: [
-    'value'
-  ],
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    },
+    lockeble: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       locked: false
