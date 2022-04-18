@@ -2,7 +2,8 @@
   <v-app>
     <OrderDrawer 
       v-model="showOrder" 
-      lockeble
+      lockable
+      clearable
     />
     <v-main>
       <CheckOut v-model="checkout" />

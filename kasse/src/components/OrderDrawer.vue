@@ -10,7 +10,7 @@
       mobile-breakpoint="xs"
     >
       
-      <OrderList />
+      <OrderList :clearable="clearable"/>
   </v-navigation-drawer>
   <div>
     <v-btn
@@ -29,7 +29,7 @@
       </v-icon>
     </v-btn>
     <v-btn
-      v-if="(value || locked) && lockeble"
+      v-if="(value || locked) && lockable"
       class="lock-btn"
       @click="locked = !locked; show()"
       icon
@@ -58,7 +58,11 @@ export default {
       type: Boolean,
       default: false
     },
-    lockeble: {
+    lockable: {
+      type: Boolean,
+      default: false
+    },
+    clearable: {
       type: Boolean,
       default: false
     }

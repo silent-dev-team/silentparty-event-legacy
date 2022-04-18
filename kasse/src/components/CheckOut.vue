@@ -8,13 +8,14 @@
       <OrderDrawer v-model="showOrder"/>
       <v-card justify="center">
         <v-toolbar
+          style="z-index: 10;"
           dark
           color="teal darken-4"
         >
           <v-btn
             icon
             dark
-            @click="$emit('input', false)"
+            @click="close()"
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -86,7 +87,7 @@ export default {
   ],
   data () {
     return {
-      showOrder:true,
+      showOrder:false,
       display: '0',
       mapping : {
         '11': '7',
@@ -139,6 +140,10 @@ export default {
       this.postOrder()
       setTimeout(() => this.fetch('items'),1000)
       this.display = '0'
+      this.close()
+    },
+    close(){
+      this.showOrder = false
       this.$emit('input', false)
     }
   }

@@ -1,6 +1,7 @@
 <template>
   <div style="min-height: 100vh;">
     <v-btn 
+      v-if="clearable"
       class="mx-auto" 
       width="100%"
       height="60px"
@@ -10,6 +11,7 @@
     >
       <v-icon>mdi-delete-sweep</v-icon>
     </v-btn>
+    <div v-else style="height: 60px;" />
     <v-simple-table class="mx-1">
       <template v-slot:default>
         <thead>
@@ -53,7 +55,12 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'OrderList',
-
+  props: {
+    clearable: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {}
   },
