@@ -1,6 +1,9 @@
 <template>
   <v-app>
-    <OrderDrawer v-model="showOrder"/>
+    <OrderDrawer 
+      v-model="showOrder" 
+      lockeble
+    />
     <v-main>
       <CheckOut v-model="checkout" />
       <div>
