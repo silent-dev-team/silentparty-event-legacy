@@ -31,3 +31,9 @@ body{
 .weight-normal{
     font-weight: 400;
 }
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

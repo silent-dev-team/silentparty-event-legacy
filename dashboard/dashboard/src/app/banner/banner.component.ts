@@ -1,7 +1,4 @@
-import { animate, animation, style, } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { tick } from '@angular/core/testing';
-import { SelectMultipleControlValueAccessor } from '@angular/forms';
 declare var anime: any; 
 
 @Component({
