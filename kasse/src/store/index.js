@@ -66,6 +66,9 @@ export default new Vuex.Store({
         state.order[indexOrder].sum = state.order[indexOrder].sum + newOrder.sum
         state.order[indexOrder].number = state.order[indexOrder].number + newOrder.number
       }
+      if (this.getters.numberOfItemInOrder(payload.id) == 0) {
+        this.commit('delPosFromOrder', payload.id)
+      }
     },
     clearOrder (state) {
       state.order = []
