@@ -48,7 +48,7 @@
 <script>
 import OrderList from '@/components/OrderList.vue'
 export default {
-  name: 'OrdrDrawer',
+  name: 'OrderDrawer',
   components: {
     OrderList
   },

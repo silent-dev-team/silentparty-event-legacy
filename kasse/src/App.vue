@@ -77,6 +77,7 @@
 
 <script>
 import OrderList from '@/components/OrderList.vue'
+import OrderDrawer from '@/components/OrderDrawer.vue'
 import CheckOut from '@/components/CheckOut.vue'
 import EntryBtn from '@/components/EntryBtn.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
@@ -85,6 +86,7 @@ export default {
   name: 'App',
   components: {
     OrderList,
+    OrderDrawer,
     CheckOut,
     EntryBtn
   },
