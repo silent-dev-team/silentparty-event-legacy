@@ -6,7 +6,7 @@
       :color="item.deposit ? 'yellow' : null"
     >
       <h1>{{ item.name }}</h1>
-      <h1>{{ item.deposit ? '-' : '' }}{{ fix(item.price) }}€</h1>
+      <h1>{{ fix(item.price) }}€</h1>
       
     </v-card>
     <v-card 
@@ -24,7 +24,7 @@
     <v-card-actions v-if="actions" class="d-flex justify-space-around">
       <v-btn 
         icon 
-        :disabled="n<1"
+        :disabled="!item.deposit && n<1"
         x-large 
         color="primary" 
         @click="append(-1)"
@@ -84,7 +84,7 @@ export default {
       }
       this.appendOrder({
         id: this.id,
-        number: n * deposit_factor
+        number: n //* deposit_factor
       })
     },
     fix(str){
