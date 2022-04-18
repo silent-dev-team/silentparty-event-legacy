@@ -1,49 +1,8 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="showOrder"
-      app
-      width="300"
-      right
-      fixed
-      :permanent="locked"
-      mobile-breakpoint="xs"
-    >
-      <OrderList />
-    </v-navigation-drawer>
+    <OrderDrawer v-model="showOrder"/>
     <v-main>
       <CheckOut v-model="checkout" />
-      <div>
-        <v-btn
-          v-if="!locked"
-          class="hide-btn" 
-          :style="'right: '+border+'px;'"
-          @click="showOrder = !showOrder"
-          icon
-          large
-        >
-          <v-icon v-if="showOrder">
-            mdi-chevron-right
-          </v-icon>
-          <v-icon v-else>
-            mdi-chevron-left
-          </v-icon>
-        </v-btn>
-        <v-btn
-          v-if="showOrder || locked"
-          class="lock-btn"
-          @click="locked = !locked; showOrder = true"
-          icon
-          large
-        >
-          <v-icon v-if="!locked">
-            mdi-lock-open-outline
-          </v-icon>
-          <v-icon v-else>
-            mdi-lock-outline
-          </v-icon>
-        </v-btn>
-      </div>
       <div>
         <router-view />
       </div>
@@ -138,19 +97,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.hide-btn{
-  z-index: 10;
-  position: fixed;
-  top: 50%;
-}
-.lock-btn{
-  z-index: 10;
-  position: fixed;
-  bottom: 75px;
-  right: 256px;
-}
-
+<style>
 .pulse {
   display: block;
   cursor: pointer;

@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-navigation-drawer
-      v-model="showOrder"
+    v-model="value"
       app
       width="300"
       right
@@ -9,6 +9,7 @@
       :permanent="locked"
       mobile-breakpoint="xs"
     >
+      
       <OrderList />
   </v-navigation-drawer>
   <div>
@@ -20,7 +21,7 @@
       icon
       large
     >
-      <v-icon v-if="showOrder">
+      <v-icon v-if="value">
         mdi-chevron-right
       </v-icon>
       <v-icon v-else>
@@ -28,7 +29,7 @@
       </v-icon>
     </v-btn>
     <v-btn
-      v-if="showOrder || locked"
+      v-if="value || locked"
       class="lock-btn"
       @click="locked = !locked; show()"
       icon
@@ -53,11 +54,21 @@ export default {
     OrderList
   },
   props: [
-    'showOrder'
+    'value'
   ],
+  data() {
+    return {
+      locked: false
+    }
+  },
+  computed: {
+    border(){
+      return this.value ? 256 : 0
+    }
+  },
   methods: {
     toggle(){
-      this.$emit('input', !this.showOrder)
+      this.$emit('input', !this.value)
     },
     show(){
       this.$emit('input', true)
@@ -69,6 +80,16 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.hide-btn{
+  z-index: 10;
+  position: fixed;
+  top: 50%;
+}
+.lock-btn{
+  z-index: 10;
+  position: fixed;
+  bottom: 75px;
+  right: 256px;
+}
 </style>
