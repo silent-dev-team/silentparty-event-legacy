@@ -1,6 +1,42 @@
 {
   "items" : [
     {
+      "id": 1,
+      "name": "HP",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": true,
+      "reference": null,
+      "tags": ["hp"]
+    },
+    {
+      "id": 2,
+      "name": "Angebot",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": false,
+      "reference": null,
+      "tags": ["hp"]
+    },
+    {
+      "id": 10,
+      "name": "VVK",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": false,
+      "reference": null,
+      "tags": ["vvk"]
+    },
+    {
+      "id": 11,
+      "name": "AK",
+      "img": "cup.jpg",
+      "price": 7,
+      "deposit": false,
+      "reference": null,
+      "tags": ["ak"]
+    },
+    {
       "id": 100,
       "name": "Cup",
       "img": "cup.jpg",

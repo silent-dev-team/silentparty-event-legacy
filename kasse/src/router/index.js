@@ -27,7 +27,22 @@ const routes = [
       tag: 'hp'
     }
   },
-  
+  {
+    path: '/ak',
+    name: 'Abenkasse',
+    component: Items,
+    props: {
+      tag: 'ak'
+    }
+  },
+  {
+    path: '/vvk',
+    name: 'Vorverkauf',
+    component: Items,
+    props: {
+      tag: 'vvk'
+    }
+  }, 
 ]
 
 const router = new VueRouter({

@@ -6,7 +6,7 @@
       >
       <div class="mx-auto my-3">
         <Badge :id="item.id">
-          <ItemCard :id="item.id" :actions="param.actions"/>
+          <ItemCard :id="item.id" actions/>
         </Badge>
       </div>
       </v-col>
@@ -27,18 +27,6 @@ export default {
     tag: {
       type:String,
       required: true,
-    }
-  },
-  data() {
-    return {
-      params: {
-        hp: {
-          actions: false,
-        },
-        bar: {
-          actions: true
-        }
-      }
     }
   },
   computed: {
