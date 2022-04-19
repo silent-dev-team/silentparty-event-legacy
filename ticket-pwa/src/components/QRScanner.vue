@@ -1,0 +1,65 @@
+<template>
+  <div class="qr">
+    <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
+  </div>
+</template>
+
+<script lang="ts">
+import { QrcodeStream } from 'vue-qrcode-reader'
+export default {
+  name: 'QRScanner',
+  components: {
+    QrcodeStream,
+  },
+  data() {
+    return {
+      camera: 'auto',
+    }
+  },
+  methods: {
+    async onDecode (input:string) {
+      if (!this.apiPing) {
+        this.notify('API nicht erreichbar... \n' + input, 'dialog', 'error')
+        this.turnCameraOff()
+        this.turnCameraOn()
+        return 1
+      }
+      const inputs = input.split(';')
+      const id = inputs[0]
+      const hash = inputs[1]
+      this.refetch()
+      this.turnCameraOff()
+      const r = await this.checkin(id)
+      console.log(r)
+      if (!r.valid) {
+        const message = id + ' ist nicht im System'
+        this.writeHistory(id, 'invalide')
+        this.notify(message,'dialog','error')
+        return 1
+      }
+      var checkin: boolean = !r.data.checked
+      if (!checkin) {
+        const message = id + ' ist bereits um ' + r.data.time + ' eingecheckt...'
+        this.writeHistory(id, 'rescan')
+        this.notify(message,'dialog','error')
+        return 1
+      }
+      this.notify(id + ' eingecheckt','snackbar','success')
+      this.writeHistory(id, 'ok')
+      this.turnCameraOn()
+      return 0
+    },
+    turnCameraOn () {
+      this.camera = 'auto'
+    },
+    turnCameraOff () {
+      this.camera = 'off'
+    },
+ 
+  }
+}
+</script>
+
+<style>
+
+</style>
