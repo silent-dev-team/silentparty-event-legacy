@@ -18,3 +18,4 @@ for id, content in j['tickets'].items():
 r.mset({
   "shopItems": json.dumps(j['items'])
 })
+print('Fertig')
