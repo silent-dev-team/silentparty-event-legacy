@@ -1,13 +1,13 @@
 <template>
   <v-app>
     <v-main>
-      <PingBtn :value="apiPing" @click="refetch()" />
-      <EntrySign :value="!entry" @click="refetch()"/>
+      <!--<PingBtn :value="apiPing" @click="refetch()" />
+      <EntrySign :value="!entry" @click="refetch()"/>-->
       <HistoryBtn v-model="history" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
       </div>
-      <Noti :noti="noti" :snackbar="snackbar" :reset_noti="reset_noti" />
+      <Noti v-model="noti.show" @close="turnCameraOn()" :type="noti.type" :color="noti.color" :message="noti.message" />
       <LocalTable :items="scans" />
       <ServerHistory v-model="history" v-if="history" :apiUrl="apiUrl"/>
     </v-main>
@@ -53,14 +53,10 @@ export default Vue.extend({
     eventSource: new EventSource('http:localhost:5000/stream'),//'https://sp/stream'),
     refetchRate: 10,
     history: false,
-    snackbar: {
-      show: false,
-      text: 'Karte eingecheckt',
-      timeout: 5000
-    },
     noti: {
       show: false,
       message: "",
+      color: "",
       type: ""
     },
   }),
@@ -85,9 +81,10 @@ export default Vue.extend({
     Sleep(milliseconds:number) {
       return new Promise(resolve => setTimeout(resolve, milliseconds));
     },
-    notify (message:string, success:boolean=true) {
+    notify (message:string, type:string='snackbar', color:string='success') {
       this.noti.message = message
-      this.noti.type = success? "success" : 'error'
+      this.noti.type = type
+      this.noti.color = color
       this.noti.show = true
     },
     async reset_noti () {
@@ -98,6 +95,7 @@ export default Vue.extend({
       this.noti = {
         show: false,
         message: "",
+        color:"",
         type: ""
       }
     },
@@ -115,7 +113,7 @@ export default Vue.extend({
       if (response.status === 405) {
         const message = 'Code nicht zulässig!!'
         this.writeHistory(id, 'invalide')
-        this.notify(message,false)
+        this.notify(message,'dialog','error')
         return 
       }
       const r = await response.json()
@@ -131,7 +129,7 @@ export default Vue.extend({
     },
     async onDecode (input:string) {
       if (!this.apiPing) {
-        this.notify('API nicht erreichbar... \n' + input, false)
+        this.notify('API nicht erreichbar... \n' + input, 'dialog', 'error')
         this.turnCameraOff()
         this.turnCameraOn()
         return 1
@@ -146,18 +144,17 @@ export default Vue.extend({
       if (!r.valid) {
         const message = id + ' ist nicht im System'
         this.writeHistory(id, 'invalide')
-        this.notify(message,false)
+        this.notify(message,'dialog','error')
         return 1
       }
       var checkin: boolean = !r.data.checked
       if (!checkin) {
         const message = id + ' ist bereits um ' + r.data.time + ' eingecheckt...'
         this.writeHistory(id, 'rescan')
-        this.notify(message,false)
+        this.notify(message,'dialog','error')
         return 1
       }
-      this.snackbar.text = id + ' wurde eingecheckt'
-      this.snackbar.show = true
+      this.notify(id + ' eingecheckt','snackbar','success')
       this.writeHistory(id, 'ok')
       this.turnCameraOn()
       return 0
