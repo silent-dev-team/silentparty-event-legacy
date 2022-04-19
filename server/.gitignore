@@ -1,3 +1,1 @@
-*.csr
-*.key
 __pycache__/*

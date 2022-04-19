@@ -1,13 +1,16 @@
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
 from datetime import datetime
-import redis, json, sys
+import redis, json, sys, os
+from dotenv import load_dotenv
 from pickle import loads, dumps
 from models import *
+load_dotenv()
 
 ### CONST ###
 
 LOCAL:bool = sys.argv[1] == 'local'
+SALT:str = os.getenv('SALT')
 
 ### VAR ###
 
