@@ -108,6 +108,11 @@ def control_entry():
   sse.publish(response, type='entry')
   return jsonify(**response), 200
 
+@app.route('/salt', subdomain=sd.api, methods = ['GET'])
+def get_salt():
+  return jsonify({
+    'salt': SALT
+  }), 200
 
 @app.route('/tickets', subdomain=sd.api, methods = ['GET'])
 def get_tickets():
