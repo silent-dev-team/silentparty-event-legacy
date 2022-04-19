@@ -16,6 +16,5 @@ for id, content in j['tickets'].items():
 #items = dumps(objList(j['items'],ShopItem))
 
 r.mset({
-  "shopItems": json.dumps(j['items']),
-  "seed": 'jdjdjdjdjdjdjdj'
+  "shopItems": json.dumps(j['items'])
 })
