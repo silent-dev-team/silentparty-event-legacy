@@ -45,12 +45,12 @@ export default Vue.extend({
   },
 
   data: () => ({
-    apiUrl: 'https://api.sp/',
+    apiUrl: 'http:localhost:5000/',//'https://api.sp/',
     camera: 'auto',
     scans: [] as Scan[],
     apiPing: false,
     entry: true,
-    eventSource: new EventSource('https://sp/stream'),
+    eventSource: new EventSource('http:localhost:5000/stream'),//'https://sp/stream'),
     refetchRate: 10,
     history: false,
     snackbar: {
@@ -170,11 +170,14 @@ export default Vue.extend({
     },
     ping(){
       const URL = this.apiUrl + 'ping'
+      console.log(URL)
       fetch(URL)
         .then(response => response.json())
         .then(data => {
+          console.log(data)
           this.apiPing = data.ping
         }).catch(err => {
+          console.log(err)
           this.apiPing = false
         })
     },
