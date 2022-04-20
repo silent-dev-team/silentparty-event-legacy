@@ -9,11 +9,12 @@ import { QrcodeStream } from 'vue-qrcode-reader'
 export default {
   name: 'QRScanner',
   components: {
-    QrcodeStream,
+    QrcodeStream
   },
   data() {
     return {
       camera: 'auto',
+      apiPing: true,
     }
   },
   methods: {
@@ -27,7 +28,7 @@ export default {
       const inputs = input.split(';')
       const id = inputs[0]
       const hash = inputs[1]
-      this.refetch()
+      //this.refetch()
       this.turnCameraOff()
       const r = await this.checkin(id)
       console.log(r)

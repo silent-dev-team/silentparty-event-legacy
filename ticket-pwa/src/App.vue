@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <v-main>
-      <!--<PingBtn :value="apiPing" @click="refetch()" />
-      <EntrySign :value="!entry" @click="refetch()"/>-->
+      <PingBtn :value="apiPing" @click="refetch()" />
+      <EntrySign :value="!entry" @click="refetch()"/>
       <HistoryBtn v-model="history" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
@@ -45,7 +45,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    apiUrl: 'http:localhost:5000/',//'https://api.sp/',
+    apiUrl: 'https://api.sp/',//'http:localhost:5000/',
     camera: 'auto',
     scans: [] as Scan[],
     apiPing: false,

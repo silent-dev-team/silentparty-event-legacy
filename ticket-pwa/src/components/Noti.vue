@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-snackbar
-      :value="snackbar"
+      v-if="snackbar"
+      :value="value"
       @input="close()"
       :timeout="timeout"
       color="success"
@@ -11,7 +12,8 @@
     </v-snackbar>
     <div class="text-center">
       <v-dialog
-        v-model="dialog"
+        v-if="dialog"
+        v-model="value"
         width="500"
         transition="dialog-top-transition"
         persistent
@@ -39,7 +41,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
   import Vue from 'vue'
 
   export default Vue.extend({
@@ -76,7 +78,7 @@
     },
     methods: {
       close(){
-        if (this.type === 'dialog') {
+        if (this.dialog) {
           this.$emit('close')
         }
         this.$emit('input', false)
