@@ -8,7 +8,7 @@ body{
 .Grün{
     color: #00FF38;
 }
-.Rot{  
+.Rot{
     color: #F30505;
 
 }
@@ -18,15 +18,25 @@ body{
 
 .rolltext{
     color: white;
-    width: auto;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 2vw;
+    line-height: 1.4vw;
+}
+
+.rolltextwrapper{
     position: absolute;
-    left:0;
-    top:0;
-    transform: translateX(-400vw);
-    -webkit-transform: translateX(-400vw);
-    -moz-transform: translateX(-400vw);
-    -ms-transform: translateX(-400vw);
-    -o-transform: translateX(-400vw);
+    left: 0;
+    top: 0;
+    display:flex;
+    height: 100%;
+    flex-direction: row;
+    white-space: nowrap;
+    align-items: center;
+    justify-content: center;
+
 }
 .weight-normal{
     font-weight: 400;
