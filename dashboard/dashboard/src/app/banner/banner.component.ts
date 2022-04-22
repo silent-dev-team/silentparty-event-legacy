@@ -2,6 +2,7 @@ import { animate, animation, style, } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { tick } from '@angular/core/testing';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
+import { min } from 'rxjs';
 declare var anime: any; 
 
 @Component({
@@ -15,10 +16,11 @@ export class BannerComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit() {
     this.animateScrollIn();
+
   }
   lastText = -1;
   count = 0;
-  texts:Array<string> = ["Willkommen auf der Silentparty","Wir Freuen uns dass ihr da seit","An der Bar gibts grade Happy Hour","0004000400040004"];
+  texts:Array<string> = ["AAAA","BBBBBBBBB"];
 
   loggin(){
     console.log();
@@ -27,28 +29,33 @@ export class BannerComponent implements OnInit,AfterViewInit {
   timeout(ms:number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
+  lastOffset  = 0;
   async animateScrollIn(){
-    this.lastText = (this.lastText +1) % this.texts.length;
-    let node = document.createElement("div");
-    node.innerText = "// "+ this.texts[this.lastText];
-    node.classList.add("rolltext");
-    if(this.count++%2) node.classList.add("weight-normal");
-    var target:any = this.test.nativeElement.appendChild(node);
-    console.log(target.offsetWidth);
-    setTimeout(this.animateScrollOut.bind(this),200+target.offsetWidth/0.2);
+    let wrapper = document.createElement("div");
+    wrapper.classList.add("rolltextwrapper");
+    for(let textIndex in this.texts){
+      let node = document.createElement("div");
+      node.innerText = "// "+ this.texts[textIndex];
+      node.classList.add("rolltext");
+      if(this.count++%2) node.classList.add("weight-normal");
+      wrapper.appendChild(node);
+    }
+    var target:any = this.test.nativeElement.appendChild(wrapper);
+    wrapper.style.transform ="translateX(-"+wrapper.offsetWidth+"px)";
 
+    
+    setTimeout(this.animateScrollOut.bind(this),this.lastOffset/0.04);
+    this.lastOffset = target.clientWidth;
   }
   animateScrollOut(){
-    var target:any = this.test.nativeElement.querySelector("div:last-child");
-    anime({
-      targets: target,
-      translateX: ["-100vw","100vw"],
-      duration: (document.body.offsetWidth*2)/0.2,
-      easing:"linear",
-      complete: ()=>target.remove()
-
-    });
+    var all = this.test.nativeElement.querySelectorAll(".rolltextwrapper");
+    var target:any = all[all.length-1];
+    var duration = (target.offsetWidth*2 + document.body.offsetWidth)/0.04;
+    console.log(duration);
+    target.style.transition = "all linear "+duration+"ms";
+   
+    target.style.transform ="translateX("+(target.offsetWidth + document.body.offsetWidth)+"px)";
+    target.addEventListener("transitionend",function(e:any){e.target.remove()});
     this.animateScrollIn();
   }
 
