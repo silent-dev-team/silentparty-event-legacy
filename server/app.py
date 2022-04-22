@@ -145,7 +145,11 @@ def ticket_checkin(id):
   except:
     return jsonify({'error':'no hash'}), 400
   ticket_b = db.hgetall('ticket:'+str(id))
+  if len(ticket_b) == 0:
+    return jsonify({'error':'no ticket'}), 404
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
+  if ticket['activeted'] == '0':
+    return jsonify({'error':'ticket not activeted'}), 406
   if ticket['hash'] != hash:
     return jsonify({'error':'invalid hash'}), 400
   db.hset(
