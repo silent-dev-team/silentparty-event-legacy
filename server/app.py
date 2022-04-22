@@ -137,10 +137,25 @@ def get_ticket(id):
   return jsonify({'data':ticket}), 200
 
 #in progress
-@app.route('/tickets/<id>', subdomain=sd.api, methods = ['PUT'])
-def ticket_checkin(id): 
+@app.route('/tickets/<id>', subdomain=sd.api, methods = ['PATCH'])
+def ticket_checkin(id):
+  hash = None
+  try: 
+    hash = request.get_json()['hash']
+  except:
+    return jsonify({'error':'no hash'}), 400
   ticket_b = db.hgetall('ticket:'+str(id))
   ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
+  if ticket['hash'] != hash:
+    return jsonify({'error':'invalid hash'}), 400
+  db.hset(
+    'ticket:'+str(id), 
+    'checkin', str(datetime.now().isoformat())
+  )
+  db.hset(
+    'ticket:'+str(id),
+    'checked', '1'
+  )
   return jsonify({'data':ticket}), 200
 
 #legacy
