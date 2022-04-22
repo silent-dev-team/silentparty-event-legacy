@@ -1,6 +1,7 @@
 <template>
   <div style="min-height: 100vh;">
     <v-btn 
+      v-if="clearable"
       class="mx-auto" 
       width="100%"
       height="60px"
@@ -10,6 +11,7 @@
     >
       <v-icon>mdi-delete-sweep</v-icon>
     </v-btn>
+    <div v-else style="height: 60px;" />
     <v-simple-table class="mx-1">
       <template v-slot:default>
         <thead>
@@ -29,6 +31,7 @@
           <tr
             v-for="o in order"
             :key="o.name"
+            @dblclick="dblclick(o.id)"
           >
             <td class="text-left">
               {{ o.name }}
@@ -52,7 +55,12 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'OrderList',
-
+  props: {
+    clearable: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {}
   },
@@ -66,11 +74,16 @@ export default {
   },
   methods: {
     ...mapMutations([
-      'clearOrder'
+      'clearOrder',
+      'delPosFromOrder'
     ]),
     fix(str){
       return parseFloat(str).toFixed(2)
     },
+    dblclick(id){
+      console.log(id)
+      this.delPosFromOrder(id)
+    }
   },
 }
 

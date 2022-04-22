@@ -1,0 +1,5 @@
+#! /bin/bash
+
+redis-server ./redis/redis.conf &
+cd server
+pipenv run python app.py local

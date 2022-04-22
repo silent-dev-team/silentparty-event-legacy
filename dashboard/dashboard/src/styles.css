@@ -8,7 +8,7 @@ body{
 .Grün{
     color: #00FF38;
 }
-.Rot{  
+.Rot{
     color: #F30505;
 
 }
@@ -38,8 +38,12 @@ body{
     justify-content: center;
 
 }
-
 .weight-normal{
     font-weight: 400;
-    padding-bottom: 4px;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }

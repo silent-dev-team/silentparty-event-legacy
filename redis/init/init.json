@@ -1,0 +1,99 @@
+{
+  "items" : [
+    {
+      "id": 1,
+      "name": "HP",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": true,
+      "reference": null,
+      "tags": ["hp"]
+    },
+    {
+      "id": 2,
+      "name": "Angebot",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": false,
+      "reference": null,
+      "tags": ["hp"]
+    },
+    {
+      "id": 10,
+      "name": "VVK",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": false,
+      "reference": null,
+      "tags": ["vvk"]
+    },
+    {
+      "id": 11,
+      "name": "AK",
+      "img": "cup.jpg",
+      "price": 7,
+      "deposit": false,
+      "reference": null,
+      "tags": ["ak"]
+    },
+    {
+      "id": 100,
+      "name": "Cup",
+      "img": "cup.jpg",
+      "price": 2,
+      "deposit": true,
+      "reference": null,
+      "tags": ["bar"]
+    },
+    {
+      "id": 101,
+      "name": "Bier",
+      "img": "bier.jpg",
+      "price": 2.5,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    },
+    {
+      "id": 102,
+      "name": "Cola",
+      "img": "cola.jpg",
+      "price": 1.5,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    },
+    {
+      "id": 103,
+      "name": "Fanta",
+      "img": "fanta.jpg",
+      "price": 1.5,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    },
+    {
+      "id": 104,
+      "name": "Wasser",
+      "img": "wasser.jpg",
+      "price": 1,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    }
+  ],
+  "tickets": {
+    "1001": {
+      "hash": "jnksjagfhlkdshjflhdgfka",
+      "checked": "0",
+      "activeted": "0",
+      "time": ""
+    },
+    "1002": {
+      "hash": "ashdghsagdsjakdghsjad",
+      "checked": "0",
+      "activeted": "0",
+      "time": ""
+    }
+  }
+}

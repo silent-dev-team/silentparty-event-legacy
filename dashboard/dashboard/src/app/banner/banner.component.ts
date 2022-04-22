@@ -2,8 +2,7 @@ import { animate, animation, style, } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { tick } from '@angular/core/testing';
 import { SelectMultipleControlValueAccessor } from '@angular/forms';
-import { min } from 'rxjs';
-declare var anime: any; 
+declare var anime: any;
 
 @Component({
   selector: 'app-banner',
@@ -16,11 +15,10 @@ export class BannerComponent implements OnInit,AfterViewInit {
 
   ngAfterViewInit() {
     this.animateScrollIn();
-
   }
   lastText = -1;
   count = 0;
-  texts:Array<string> = ["AAAA","BBBBBBBBB"];
+  texts:Array<string> = ["Willkommen auf der Silentparty","Wir Freuen uns dass ihr da seit","An der Bar gibts grade Happy Hour","0004000400040004"];
 
   loggin(){
     console.log();
@@ -43,7 +41,7 @@ export class BannerComponent implements OnInit,AfterViewInit {
     var target:any = this.test.nativeElement.appendChild(wrapper);
     wrapper.style.transform ="translateX(-"+wrapper.offsetWidth+"px)";
 
-    
+
     setTimeout(this.animateScrollOut.bind(this),this.lastOffset/0.04);
     this.lastOffset = target.clientWidth;
   }
@@ -53,7 +51,7 @@ export class BannerComponent implements OnInit,AfterViewInit {
     var duration = (target.offsetWidth*2 + document.body.offsetWidth)/0.04;
     console.log(duration);
     target.style.transition = "all linear "+duration+"ms";
-   
+
     target.style.transform ="translateX("+(target.offsetWidth + document.body.offsetWidth)+"px)";
     target.addEventListener("transitionend",function(e:any){e.target.remove()});
     this.animateScrollIn();

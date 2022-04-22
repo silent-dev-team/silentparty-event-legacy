@@ -11,7 +11,8 @@ const vuexLocal = new VuexPersistence({
 export default new Vuex.Store({
   state: {
     api: 'http://localhost:5000/', //'https://api.sp/',
-    stream: 'http://localhost/stream', //'https://sp/stream',
+    stream: 'http://localhost:5000/stream', //'https://sp/stream',
+    imgLocation: 'http://localhost:5000/storage/img/', //'https://sp/storage/img/',
     targets: {
       items: {
         route: 'shopItems',
@@ -27,12 +28,24 @@ export default new Vuex.Store({
     items: [],
   },
   getters:{
+    getImg: (state) => (img) => {
+      return state.imgLocation + img
+    },
     sum(state) {
       let sum = state.order.reduce((acc, cur) => acc + cur.sum, 0)
       return (parseFloat(sum).toFixed(2))
     },
     item: (state) => (id) => {
       return state.items.find(item => item.id === id)
+    },
+    numberOfItemInOrder: (state) => (id) => {
+      let n = 0
+      for (const item of state.order) {
+        if (item.id === id) {
+          n = item.number
+        }
+      }
+      return n
     }
   },
   mutations: {
@@ -53,9 +66,17 @@ export default new Vuex.Store({
         state.order[indexOrder].sum = state.order[indexOrder].sum + newOrder.sum
         state.order[indexOrder].number = state.order[indexOrder].number + newOrder.number
       }
+      if (this.getters.numberOfItemInOrder(payload.id) == 0) {
+        this.commit('delPosFromOrder', payload.id)
+      }
     },
     clearOrder (state) {
       state.order = []
+    },
+    delPosFromOrder (state, id) {
+      state.order
+      var i = state.order.map(item => item.id).indexOf(id)
+      ~i && state.order.splice(i, 1)
     },
     setItems (state, items) {
       state.items = items
@@ -108,3 +129,4 @@ export default new Vuex.Store({
   },
   plugins: [vuexLocal.plugin]
 })
+

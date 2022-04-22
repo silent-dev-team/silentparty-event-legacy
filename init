@@ -1,10 +1,4 @@
 #!/bin/bash
 
 sudo echo "Initialisierung wird gestartet..."
-redis-server ./redis/init/redis.conf &
 python ./redis/init/init.py
-sleep 3
-redis-cli SAVE
-redis-cli SHUTDOWN
-cp ./redis/dump.rdb ./dump.rdb
-./redis-rewrite-aof

@@ -1,4 +1,4 @@
 #!/usr/bin/bash
 
 pipenv install
-pipenv run python app.py
+pipenv run python app.py prod

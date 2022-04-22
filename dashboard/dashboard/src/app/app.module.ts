@@ -7,6 +7,9 @@ import { DjsComponent } from './djs/djs.component';
 import { CustomerComponent } from './customer/customer.component';
 import { ClockComponent } from './clock/clock.component';
 import { BannerComponent } from './banner/banner.component';
+import { IntroductionComponent } from './introduction/introduction.component';
+import { OkdialogComponent } from './okdialog/okdialog.component';
+import { CostsComponent } from './costs/costs.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { BannerComponent } from './banner/banner.component';
     DjsComponent,
     CustomerComponent,
     ClockComponent,
-    BannerComponent
+    BannerComponent,
+    IntroductionComponent,
+    OkdialogComponent,
+    CostsComponent
   ],
   imports: [
     BrowserModule,

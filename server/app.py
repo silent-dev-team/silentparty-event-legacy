@@ -1,13 +1,16 @@
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
 from datetime import datetime
-import redis, json, sys
+import redis, json, sys, os
+from dotenv import load_dotenv
 from pickle import loads, dumps
 from models import *
+load_dotenv()
 
 ### CONST ###
 
 LOCAL:bool = sys.argv[1] == 'local'
+SALT:str = os.getenv('SALT')
 
 ### VAR ###
 
@@ -51,12 +54,12 @@ entry = Entry(True)
 ### STARTPAGE ###
 
 @app.route('/')
-def startpage_index():
+def localWebServer_index():
   return redirect('index.html')
 
 @app.route('/<path:path>')
-def startpage_pwa(path):
-  return send_from_directory('../startpage/',path)
+def localWebServer_pwa(path):
+  return send_from_directory('../localWebServer/',path)
 
 
 ### KASSE ###
@@ -105,6 +108,11 @@ def control_entry():
   sse.publish(response, type='entry')
   return jsonify(**response), 200
 
+@app.route('/salt', subdomain=sd.api, methods = ['GET'])
+def get_salt():
+  return jsonify({
+    'salt': SALT
+  }), 200
 
 @app.route('/tickets', subdomain=sd.api, methods = ['GET'])
 def get_tickets():
@@ -166,7 +174,7 @@ def get_shopItems():
   Returns:
       list<Itmes>: Liste aller Items
   """
-  items = loads(db.get('shopItems'))
+  items = json.loads(db.get('shopItems'))
   return jsonify({'data':items}), 200
 
 @app.route('/orders', subdomain=sd.api, methods = ['GET'])

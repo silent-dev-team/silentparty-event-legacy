@@ -1,51 +1,12 @@
 <template>
   <v-app>
-    <v-navigation-drawer
-      v-model="showOrder"
-      app
-      width="300"
-      right
-      fixed
-      :permanent="locked"
-      mobile-breakpoint="xs"
-    >
-      <OrderList 
-        v-model="order"
-      />
-    </v-navigation-drawer>
+    <OrderDrawer 
+      v-model="showOrder" 
+      lockable
+      clearable
+    />
     <v-main>
       <CheckOut v-model="checkout" />
-      <div>
-        <v-btn
-          v-if="!locked"
-          class="hide-btn" 
-          :style="'right: '+border+'px;'"
-          @click="showOrder = !showOrder"
-          icon
-          large
-        >
-          <v-icon v-if="showOrder">
-            mdi-chevron-right
-          </v-icon>
-          <v-icon v-else>
-            mdi-chevron-left
-          </v-icon>
-        </v-btn>
-        <v-btn
-          v-if="showOrder || locked"
-          class="lock-btn"
-          @click="locked = !locked; showOrder = true"
-          icon
-          large
-        >
-          <v-icon v-if="!locked">
-            mdi-lock-open-outline
-          </v-icon>
-          <v-icon v-else>
-            mdi-lock-outline
-          </v-icon>
-        </v-btn>
-      </div>
       <div>
         <router-view />
       </div>
@@ -79,6 +40,7 @@
 
 <script>
 import OrderList from '@/components/OrderList.vue'
+import OrderDrawer from '@/components/OrderDrawer.vue'
 import CheckOut from '@/components/CheckOut.vue'
 import EntryBtn from '@/components/EntryBtn.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
@@ -87,6 +49,7 @@ export default {
   name: 'App',
   components: {
     OrderList,
+    OrderDrawer,
     CheckOut,
     EntryBtn
   },
@@ -118,6 +81,9 @@ export default {
       } else {
         this.showOrder = this.order.length > 0
       }
+    },
+    darkMode() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
     }
   },
   watch: {
@@ -135,19 +101,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.hide-btn{
-  z-index: 10;
-  position: fixed;
-  top: 50%;
-}
-.lock-btn{
-  z-index: 10;
-  position: fixed;
-  bottom: 75px;
-  right: 256px;
-}
-
+<style>
 .pulse {
   display: block;
   cursor: pointer;

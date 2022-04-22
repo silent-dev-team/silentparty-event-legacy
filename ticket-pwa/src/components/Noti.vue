@@ -1,33 +1,36 @@
 <template>
   <div>
     <v-snackbar
-      v-model="snackbar.show"
-      :timeout="snackbar.timeout"
+      v-if="snackbar"
+      :value="value"
+      @input="close()"
+      :timeout="timeout"
       color="success"
       top
-      >
-      {{ snackbar.text }}
+    >
+      {{ message }}
     </v-snackbar>
     <div class="text-center">
       <v-dialog
-        v-model="noti.show"
+        v-if="dialog"
+        v-model="value"
         width="500"
         transition="dialog-top-transition"
         persistent
       >
-        <v-card :color="noti.type">
+        <v-card :color="color">
           <v-card-title >
-            {{noti.type}}
+            Achtung
           </v-card-title>
           <v-card-text>
-            {{noti.message}}
+            {{message}}
           </v-card-text>
           <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
             color="white"
             text
-            @click="reset_noti()"
+            @click="close()"
           >
             schließen
           </v-btn>
@@ -38,14 +41,49 @@
   </div>
 </template>
 
-<script lang="ts">
+<script>
   import Vue from 'vue'
 
   export default Vue.extend({
     name: 'Noti',
-
-    props: ['noti','snackbar','reset_noti']
-  
+    props: {
+      value: {
+        type: Boolean,
+        default: false
+      },
+      message: {
+        type: String,
+        default: ''
+      },
+      type: {
+        type: String,
+        default: 'snackbar' // snackbar, dialog
+      },
+      color: {
+        type: String,
+        default: 'success' // success, error
+      },
+      timeout: {
+        type: Number,
+        default: 5000
+      }
+    },
+    computed: {
+      dialog(){
+        return this.type === 'dialog'
+      },
+      snackbar(){
+        return this.type === 'snackbar'
+      }
+    },
+    methods: {
+      close(){
+        if (this.dialog) {
+          this.$emit('close')
+        }
+        this.$emit('input', false)
+      }
+    }
   })
 </script>
 

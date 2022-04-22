@@ -5,15 +5,17 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
+      <OrderDrawer v-model="showOrder"/>
       <v-card justify="center">
         <v-toolbar
+          style="z-index: 10;"
           dark
           color="teal darken-4"
         >
           <v-btn
             icon
             dark
-            @click="$emit('input', false)"
+            @click="close()"
           >
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -71,15 +73,21 @@
 </template>
 
 <script>
+import OrderDrawer from '@/components/OrderDrawer.vue'
 import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 
 export default {
   name: 'CheckOut',
+  components: {
+    OrderDrawer
+  },
+
   props: [
     'value'
   ],
   data () {
     return {
+      showOrder:false,
       display: '0',
       mapping : {
         '11': '7',
@@ -110,7 +118,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'postOrder'
+      'postOrder',
+      'fetch'
     ]),
     key(n,m){
       return this.mapping[n+''+m]
@@ -129,7 +138,12 @@ export default {
     },
     checkout(){
       this.postOrder()
+      setTimeout(() => this.fetch('items'),1000)
       this.display = '0'
+      this.close()
+    },
+    close(){
+      this.showOrder = false
       this.$emit('input', false)
     }
   }
