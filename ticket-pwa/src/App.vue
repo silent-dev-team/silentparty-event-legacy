@@ -23,6 +23,7 @@ import PingBtn from './components/PingBtn.vue'
 import HistoryBtn from './components/HistoryBtn.vue'
 import EntrySign from './components/EntrySign.vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
+import { sha256, sha224 } from 'js-sha256';
 
 export interface Scan {
    id: string;
@@ -99,18 +100,46 @@ export default Vue.extend({
         type: ""
       }
     },
-    async checkin(id:string) {
+    toHexString(string:string) {
+      let ar = [];
+        for(let c of string){
+            ar.push( c.charCodeAt(0) );
+        }
+        return ar;
+    },
+    validateQrString(qr_string:string,salt="testticket"){
+      const pair = qr_string.split(";");
+      let utf8Encode = new TextEncoder();
+      if(pair.length != 2) return false;
+      let binarys = null
+      try {
+        binarys = atob(pair[1]);
+      } catch (error) {
+          return false;
+      }
+      const hexNr = sha256(utf8Encode.encode(pair[0]+salt));
+      const ar = [];
+      for(let i = 0; i< hexNr.length;i+=2 ){
+        ar.push(Number("0x"+hexNr.slice(i,i+2)));
+      }
+      return JSON.stringify(ar) === JSON.stringify(this.toHexString(binarys));
+    },
+    async checkin(qr_string:string) {
+      const pair = qr_string.split(";")
+      const id = pair[0]
+      const hash = pair[1]
       const URL = this.apiUrl + 'tickets/' + id
-      const data = {"checkin": true}
+      const data = {hash: hash}
+      console.log(qr_string)
       const response = await fetch(URL, {
-          method: 'PUT',
+          method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(data)
         }
       )
-      if (response.status === 405) {
+      if (response.status === 400) {
         const message = 'Code nicht zulässig!!'
         this.writeHistory(id, 'invalide')
         this.notify(message,'dialog','error')
@@ -127,27 +156,21 @@ export default Vue.extend({
       scan.status = status
       this.scans.push(scan)
     },
-    async onDecode (input:string) {
+    async onDecode (qr_string:string) {
       if (!this.apiPing) {
-        this.notify('API nicht erreichbar... \n' + input, 'dialog', 'error')
+        this.notify('API nicht erreichbar... \n' + qr_string, 'dialog', 'error')
         this.turnCameraOff()
         this.turnCameraOn()
         return 1
       }
-      const inputs = input.split(';')
-      const id = inputs[0]
-      const hash = inputs[1]
+      const pair = qr_string.split(';')
+      const id = pair[0]
+      const hash = pair[1]
       this.refetch()
       this.turnCameraOff()
-      const r = await this.checkin(id)
+      const r = await this.checkin(qr_string)
       console.log(r)
-      if (!r.valid) {
-        const message = id + ' ist nicht im System'
-        this.writeHistory(id, 'invalide')
-        this.notify(message,'dialog','error')
-        return 1
-      }
-      var checkin: boolean = !r.data.checked
+      var checkin: boolean = !(r.data.checked === "1")
       if (!checkin) {
         const message = id + ' ist bereits um ' + r.data.time + ' eingecheckt...'
         this.writeHistory(id, 'rescan')
@@ -190,19 +213,19 @@ export default Vue.extend({
     }
   },
   mounted() {
+    this.refetch()
     if (localStorage.scans) {
       this.scans = JSON.parse(localStorage.scans)
     }
-    this.refetch()
-    const interval = setInterval(() => {
-        this.refetch()
-      }, this.refetchRate*1000
-    )
     var that = this
     this.eventSource.addEventListener('entry', function(event:any) {
         var data = JSON.parse(event.data)
         that.entry = data.entry
     }.bind(that), false)
+    const interval = setInterval(() => {
+        this.refetch()
+      }, this.refetchRate*1000
+    )
   },
   watch: {
     scans() {
