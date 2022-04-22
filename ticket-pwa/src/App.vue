@@ -139,9 +139,26 @@ export default Vue.extend({
           body: JSON.stringify(data)
         }
       )
+      if (response.status === 500) {
+        const message ='Serverfehler'
+        this.notify(message,'dialog','error')
+        return 
+      }
+      if (response.status === 404) {
+        const message = 'Ticket nicht in Datenbank'
+        this.writeHistory(id, 'not found')
+        this.notify(message,'dialog','error')
+        return 
+      }
       if (response.status === 400) {
         const message = 'Code nicht zulässig!!'
         this.writeHistory(id, 'invalide')
+        this.notify(message,'dialog','error')
+        return 
+      }
+      if (response.status === 406) {
+        const message = 'Ticket nicht aktiviert'
+        this.writeHistory(id, 'not active')
         this.notify(message,'dialog','error')
         return 
       }

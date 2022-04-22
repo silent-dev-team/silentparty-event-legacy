@@ -64,9 +64,9 @@
     }),
     methods: {
       getColor (status:string) {
-        if (status === 'invalide') return 'red'
+        if (status === 'ok') return 'green'
         else if (status === 'rescan') return 'orange'
-        else return 'green'
+        else return 'red'
       },
     },
   })
