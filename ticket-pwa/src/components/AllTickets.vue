@@ -17,7 +17,7 @@
     >
       <v-card >
         <v-card-title>
-          <span class="headline">History</span>
+          <span class="headline">Alle Tickets</span>
         </v-card-title>
         <v-text-field
           class="ma-3"

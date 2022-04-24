@@ -57,6 +57,28 @@ export default Vue.extend({
       color: "",
       type: ""
     },
+    errorStati: {
+      500: {
+        message:"Serverfehler",
+        log: null
+      },
+      404: {
+        message:"Ticket nicht in Datenbank",
+        log: 'not found'
+      },
+      400: {
+        message:"Code nicht zulässig",
+        log: 'not valid'
+      },
+      406: {
+        message:'Ticket nicht aktiviert',
+        log: 'not active'
+      },
+      206: {
+        message:'Aktion bereits geschehen',
+        log: null
+      },
+    }
   }),
   computed: {
   },
@@ -136,28 +158,11 @@ export default Vue.extend({
           body: JSON.stringify(data)
         }
       )
-      if (response.status === 500) {
-        const message ='Serverfehler'
-        this.notify(message,'dialog','error')
-        return 
-      }
-      if (response.status === 404) {
-        const message = 'Ticket nicht in Datenbank'
-        this.writeHistory(id, 'not found')
-        this.notify(message,'dialog','error')
-        return 
-      }
-      if (response.status === 400) {
-        const message = 'Code nicht zulässig!!'
-        this.writeHistory(id, 'invalide')
-        this.notify(message,'dialog','error')
-        return 
-      }
-      if (response.status === 406) {
-        const message = 'Ticket nicht aktiviert'
-        this.writeHistory(id, 'not active')
-        this.notify(message,'dialog','error')
-        return 
+      if (response.status in this.errorStati) {
+        const error:Object = this.errorStati[response.status]
+        error.log ? this.writeHistory(id, error.log) : null
+        this.notify(error.message, 'dialog', 'error')
+        return
       }
       const r = await response.json()
       if (r.data.checked === "1") {
@@ -179,9 +184,10 @@ export default Vue.extend({
       this.scans.push(scan)
     },
     async onDecode (qr_string:string) {
+      this.turnCameraOff()
       if (!this.apiPing) {
         this.notify('API nicht erreichbar... \n' + qr_string, 'dialog', 'error')
-        this.turnCameraOff()
+        this.Sleep(1000)
         this.turnCameraOn()
         return 1
       }
@@ -191,6 +197,7 @@ export default Vue.extend({
       this.refetch()
       this.turnCameraOff()
       await this.checkin(qr_string)
+      this.Sleep(1000)
       this.turnCameraOn()
       return 0
     },

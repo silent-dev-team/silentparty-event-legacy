@@ -23,7 +23,7 @@
             Achtung
           </v-card-title>
           <v-card-text>
-            {{message}}
+            <p style="font-size: 20px;">{{message}}</p>
           </v-card-text>
           <v-card-actions>
           <v-spacer></v-spacer>
