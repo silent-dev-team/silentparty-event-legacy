@@ -39,6 +39,12 @@ class Entry:
 
 ### FUNCS ###
 
+def decode(b_obj:list or dict):
+  if type(b_obj) == list:
+    return [bytes(e).decode() for e in b_obj]
+  if type(b_obj) == dict:
+    return {bytes(k).decode():bytes(v).decode() for k,v in b_obj.items()}
+  return b_obj
 
 ### INSTANCES ###
 
@@ -116,16 +122,18 @@ def get_salt():
 
 @app.route('/tickets', subdomain=sd.api, methods = ['GET'])
 def get_tickets():
-  tickets = [ticket.decode() for ticket in db.keys('ticket:*')]
-  filtered_tickets = [] if len(request.args) > 0 else tickets
+  idfy = lambda key: key.split(':')[1]
+  ticket_keys = [ticket.decode() for ticket in db.keys('ticket:*')]
+  filtered_tickets = [] if len(request.args) > 0 else ticket_keys
   for k, v in request.args.to_dict().items():
-    for ticket in tickets:
-      hash = db.hget(ticket,k)
+    for id in ticket_keys:
+      hash = db.hget(id,k)
       if not hash:
         continue
       if hash.decode() == v:
-        filtered_tickets+=[ticket]
-  tickets = list(dict.fromkeys(filtered_tickets))
+        filtered_tickets+=[id]
+  ticket_keys = list(dict.fromkeys(filtered_tickets))
+  tickets = {idfy(key):decode(db.hgetall(key)) for key in ticket_keys}
   return jsonify({
       'data':tickets
     }), 200

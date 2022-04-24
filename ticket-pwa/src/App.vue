@@ -3,13 +3,12 @@
     <v-main>
       <PingBtn :value="apiPing" @click="refetch()" />
       <EntrySign :value="!entry" @click="refetch()"/>
-      <HistoryBtn v-model="history" />
+      <AllTickets :apiUrl="apiUrl" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
       </div>
       <Noti v-model="noti.show" @close="turnCameraOn()" :type="noti.type" :color="noti.color" :message="noti.message" />
       <LocalTable :items="scans" />
-      <ServerHistory v-model="history" v-if="history" :apiUrl="apiUrl"/>
     </v-main>
   </v-app>
 </template>
@@ -18,9 +17,8 @@
 import Vue from 'vue';
 import LocalTable from './components/LocalTable.vue'
 import Noti from './components/Noti.vue'
-import ServerHistory from './components/ServerHistory.vue'
 import PingBtn from './components/PingBtn.vue'
-import HistoryBtn from './components/HistoryBtn.vue'
+import AllTickets from './components/AllTickets.vue'
 import EntrySign from './components/EntrySign.vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
 import { sha256, sha224 } from 'js-sha256';
@@ -39,9 +37,8 @@ export default Vue.extend({
     QrcodeStream,
     LocalTable,
     Noti,
-    ServerHistory,
     PingBtn,
-    HistoryBtn,
+    AllTickets,
     EntrySign
   },
 
@@ -53,7 +50,7 @@ export default Vue.extend({
     entry: true,
     eventSource: new EventSource('http:localhost:5000/stream'),//'https://sp/stream'),
     refetchRate: 10,
-    history: false,
+    alltickets: false,
     noti: {
       show: false,
       message: "",
