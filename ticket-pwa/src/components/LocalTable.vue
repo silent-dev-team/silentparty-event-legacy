@@ -64,7 +64,7 @@
     }),
     methods: {
       getColor (status:string) {
-        if (status === 'ok') return 'green'
+        if (status === 'checkin') return 'green'
         else if (status === 'rescan') return 'orange'
         else return 'red'
       },

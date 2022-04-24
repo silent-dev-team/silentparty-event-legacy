@@ -48,7 +48,7 @@ export default Vue.extend({
     scans: [] as Scan[],
     apiPing: false,
     entry: true,
-    eventSource: new EventSource('http:localhost:5000/stream'),//'https://sp/stream'),
+    eventSource: new EventSource('https://sp/stream'),
     refetchRate: 10,
     alltickets: false,
     noti: {
@@ -125,7 +125,7 @@ export default Vue.extend({
       const pair = qr_string.split(";")
       const id = pair[0]
       const hash = pair[1]
-      const URL = this.apiUrl + 'tickets/' + id
+      const URL = this.apiUrl + 'tickets/' + id + '/checkin'
       const data = {hash: hash}
       console.log(qr_string)
       const response = await fetch(URL, {
@@ -160,6 +160,14 @@ export default Vue.extend({
         return 
       }
       const r = await response.json()
+      if (r.data.checked === "1") {
+        const message = id + ' ist bereits um ' + r.data.checkin.slice(11, 19) + ' eingecheckt...'
+        this.writeHistory(id, 'rescan')
+        this.notify(message,'dialog','error')
+        return 1
+      }
+      this.notify(id + ' eingecheckt','snackbar','success')
+      this.writeHistory(id, 'checkin')
       return r
     },
     writeHistory(id:string, status:string){
@@ -182,17 +190,7 @@ export default Vue.extend({
       const hash = pair[1]
       this.refetch()
       this.turnCameraOff()
-      const r = await this.checkin(qr_string)
-      console.log(r)
-      var checkin: boolean = !(r.data.checked === "1")
-      if (!checkin) {
-        const message = id + ' ist bereits um ' + r.data.time + ' eingecheckt...'
-        this.writeHistory(id, 'rescan')
-        this.notify(message,'dialog','error')
-        return 1
-      }
-      this.notify(id + ' eingecheckt','snackbar','success')
-      this.writeHistory(id, 'ok')
+      await this.checkin(qr_string)
       this.turnCameraOn()
       return 0
     },

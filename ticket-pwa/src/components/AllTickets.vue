@@ -59,18 +59,8 @@ export default Vue.extend({
     items: [],
     headers: [
       {
-        text: 'Zeitpunkt',
-        value: 'time',
-        sortable: true
-      },
-      {
         text: 'ID',
         value: 'id',
-        sortable: false
-      },
-      {
-        text: 'VVK',
-        value: 'vvk',
         sortable: true
       },
       {
@@ -79,33 +69,46 @@ export default Vue.extend({
         sortable: true
       },
       {
+        text: 'Checkin Zeit',
+        value: 'checkin',
+        sortable: true
+      },
+      {
         text: 'Aktiviert',
         value: 'activeted',
         sortable: true
-      }
+      },
+      {
+        text: 'VVK',
+        value: 'vvk',
+        sortable: true
+      },
     ],
   }),
   methods: {
     async open() {
       this.value = true
-      let data = await this.load()
+      const data = await this.load()
       console.log(data)
-      this.items = this.parse(data)
+      const items = this.parse(data)
+      console.log(items)
+      this.items = items
     },
     close() {
       this.value = false
     },
     parse(data) {
       let items = []
-      for (id in data) {
+      for (let id in data) {
         items.push({
           id: id,
-          time: new Date(data[id].time).toLocaleString(),
-          vvk: data[id].vvk,
+          checkin: data[id].checkin.slice(11, 19),
+          vvk: data[id].vvk == "1" ? 'VVK' : 'AK',
           checked: data[id].checked == "1" ? 'Ja' : 'Nein',
           activeted: data[id].activeted == "1" ? 'Ja' : 'Nein'
         })
       }
+      return items
     },
     async load() {
       const url = this.apiUrl + 'tickets'
