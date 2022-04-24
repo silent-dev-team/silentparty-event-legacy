@@ -141,7 +141,7 @@ def get_tickets():
 @app.route('/tickets/<id>', subdomain=sd.api, methods = ['GET'])
 def get_ticket(id): 
   ticket_b = db.hgetall('ticket:'+str(id))
-  ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
+  ticket = decode(ticket_b)
   return jsonify({'data':ticket}), 200
 
 #in progress
@@ -155,7 +155,7 @@ def ticket_checkin(id):
   ticket_b = db.hgetall('ticket:'+str(id))
   if len(ticket_b) == 0:
     return jsonify({'error':'no ticket'}), 404
-  ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
+  ticket = decode(ticket_b)
   if ticket['activeted'] == '0':
     return jsonify({'error':'ticket not activeted'}), 406
   if ticket['hash'] != hash:
