@@ -138,21 +138,25 @@ def get_tickets():
       'data':tickets
     }), 200
 
-@app.route('/tickets/<id>', subdomain=sd.api, methods = ['GET'])
-def get_ticket(id): 
-  ticket_b = db.hgetall('ticket:'+str(id))
-  ticket = decode(ticket_b)
-  return jsonify({'data':ticket}), 200
-
-@app.route('/tickets/<id>/<mutation>', subdomain=sd.api, methods = ['PATCH'])
-def ticket_checkin(id, mutation):
+@app.route('/tickets/<id>/<mutation>', subdomain=sd.api, methods = ['GET','PATCH'])
+def ticket(id, mutation):
   CHECKIN =  mutation == 'checkin'
   ACTIVATION = mutation == 'activation'
   hash = None
-  try: 
-    hash = request.get_json()['hash']
-  except:
-    return jsonify({'error':'no hash'}), 400
+  
+  if request.method == 'GET':
+    try: 
+      hash = request.args.get('hash')
+    except:
+      return jsonify({'error':'no hash'}), 400
+  elif request.method == 'PATCH':
+    try: 
+      hash = request.get_json()['hash']
+    except:
+      return jsonify({'error':'no hash'}), 400
+  else:
+    return jsonify({'error':'method not allowed'}), 405
+  
   ticket_b = db.hgetall('ticket:'+str(id))
   if len(ticket_b) == 0:
     return jsonify({'error':'no ticket'}), 404
@@ -163,23 +167,25 @@ def ticket_checkin(id, mutation):
   if ACTIVATION:
     if ticket['activeted'] == '1':
       return jsonify({'error':'already activated','data':ticket}), 208
-    db.hset(
-      'ticket:'+str(id),
-      'activeted', '1'
-    )
+    if request.method == 'PATCH':
+      db.hset(
+        'ticket:'+str(id),
+        'activeted', '1'
+      )
   if CHECKIN:
     if ticket['activeted'] == '0':
       return jsonify({'error':'ticket not activeted'}), 406
     if ticket['checked'] != '0':
       return jsonify({'error':'ticket already checked','data':ticket}), 208
-    db.hset(
-      'ticket:'+str(id), 
-      'checkin', str(datetime.now().isoformat())
-    )
-    db.hset(
-      'ticket:'+str(id),
-      'checked', '1'
-    )
+    if request.method == 'PATCH':
+      db.hset(
+        'ticket:'+str(id), 
+        'checkin', str(datetime.now().isoformat())
+      )
+      db.hset(
+        'ticket:'+str(id),
+        'checked', '1'
+      )
   return jsonify({'data':ticket}), 200
 
 @app.route('/shopItems', subdomain=sd.api, methods = ['GET'])

@@ -37,6 +37,7 @@
           sort-by="time"
           :sort-desc="true"
           class="elevation-12"
+          mobile-breakpoint="430"
         />
       </v-card>
     </v-dialog>
@@ -48,7 +49,7 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'AllTickets',
   props: {
-    apiUrl: {
+    api: {
       type: String,
       required: true
     },
@@ -111,7 +112,7 @@ export default Vue.extend({
       return items
     },
     async load() {
-      const url = this.apiUrl + 'tickets'
+      const url = this.api + 'tickets'
       const response = await fetch(url)
       const data = await response.json()
       return data.data

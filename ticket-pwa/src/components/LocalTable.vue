@@ -20,6 +20,7 @@
         sort-by="time"
         :sort-desc="true"
         class="elevation-12"
+        mobile-breakpoint="300"
       >
         <template v-slot:item.status="{ item }">
           <v-chip

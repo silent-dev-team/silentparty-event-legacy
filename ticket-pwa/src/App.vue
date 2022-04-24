@@ -3,7 +3,7 @@
     <v-main>
       <PingBtn :value="apiPing" @click="refetch()" />
       <EntrySign :value="!entry" @click="refetch()"/>
-      <AllTickets :apiUrl="apiUrl" />
+      <AllTickets :api="api" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
       </div>
@@ -43,7 +43,8 @@ export default Vue.extend({
   },
 
   data: () => ({
-    apiUrl: 'https://api.sp/',//'http:localhost:5000/',
+    MODUS: null, // 'acivate' or 'checkin'
+    api: 'https://api.sp/',//'http:localhost:5000/',
     camera: 'auto',
     scans: [] as Scan[],
     apiPing: false,
@@ -69,10 +70,6 @@ export default Vue.extend({
       400: {
         message:"Code nicht zulässig",
         log: 'not valid'
-      },
-      406: {
-        message:'Ticket nicht aktiviert',
-        log: 'not active'
       },
       206: {
         message:'Aktion bereits geschehen',
@@ -143,39 +140,31 @@ export default Vue.extend({
       }
       return JSON.stringify(ar) === JSON.stringify(this.toHexString(binarys));
     },
-    async checkin(qr_string:string) {
+    async check(qr_string:string) {
       const pair = qr_string.split(";")
       const id = pair[0]
       const hash = pair[1]
-      const URL = this.apiUrl + 'tickets/' + id + '/checkin'
-      const data = {hash: hash}
-      console.log(qr_string)
-      const response = await fetch(URL, {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(data)
-        }
-      )
+      const data = { hash:hash }
+      const URL = this.api + 'tickets/' + id + '/checkin'
+      const response = await fetch(URL+'?'+ new URLSearchParams(data))
       if (response.status in this.errorStati) {
-        const error:Object = this.errorStati[response.status]
-        error.log ? this.writeHistory(id, error.log) : null
+        const error = this.errorStati[response.status]
+        error.log ? this.writeLog(id, error.log) : null
         this.notify(error.message, 'dialog', 'error')
         return
       }
       const r = await response.json()
       if (r.data.checked === "1") {
         const message = id + ' ist bereits um ' + r.data.checkin.slice(11, 19) + ' eingecheckt...'
-        this.writeHistory(id, 'rescan')
+        this.writeLog(id, 'rescan')
         this.notify(message,'dialog','error')
         return 1
       }
-      this.notify(id + ' eingecheckt','snackbar','success')
-      this.writeHistory(id, 'checkin')
+      this.notify(id + ' eingecheckt','dialog','success')
+      this.writeLog(id, 'checkin')
       return r
     },
-    writeHistory(id:string, status:string){
+    writeLog(id:string, status:string){
       let scan = {} as Scan
       scan.id = id
       scan.time = this.now()
@@ -196,7 +185,7 @@ export default Vue.extend({
       const hash = pair[1]
       this.refetch()
       this.turnCameraOff()
-      await this.checkin(qr_string)
+      await this.check(qr_string)
       this.Sleep(1000)
       this.turnCameraOn()
       return 0
@@ -208,7 +197,7 @@ export default Vue.extend({
       this.camera = 'off'
     },
     ping(){
-      const URL = this.apiUrl + 'ping'
+      const URL = this.api + 'ping'
       console.log(URL)
       fetch(URL)
         .then(response => response.json())
@@ -221,7 +210,7 @@ export default Vue.extend({
         })
     },
     async fetch_entry(){
-      const URL = this.apiUrl + 'entry'
+      const URL = this.api + 'entry'
       const response = await fetch(URL)
       const r = await response.json()
       this.entry = r.entry
