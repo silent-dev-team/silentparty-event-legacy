@@ -139,9 +139,9 @@ def get_tickets():
     }), 200
 
 @app.route('/tickets/<id>/<mutation>', subdomain=sd.api, methods = ['GET','PATCH'])
-def ticket(id, mutation):
+def ticket(id:str, mutation:str):
   CHECKIN =  mutation == 'checkin'
-  ACTIVATION = mutation == 'activation'
+  ACTIVATION = mutation == 'activate'
   hash = None
   
   if request.method == 'GET':

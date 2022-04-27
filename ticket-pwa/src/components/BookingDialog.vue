@@ -14,11 +14,13 @@
       <v-card-text>
         <p style="font-size: 20px;">Gutschein wird einglöst und verbucht.</p>
       </v-card-text> 
-      <v-card-actions>
+      <v-card-actions
+        class="justify-space-around"
+      >
         <v-btn
           color="white"
           text
-          @click="$emit('book', id)"
+          @click="$emit('booking')"
         >
           Buchen
         </v-btn>
@@ -41,15 +43,7 @@ export default {
     value: {
       type: Boolean,
       required: true
-    },
-    api: {
-      type: String,
-      required: true
-    },
-    id: {
-      type: String,
-      required: true
-    },
+    }
   },
 
 }

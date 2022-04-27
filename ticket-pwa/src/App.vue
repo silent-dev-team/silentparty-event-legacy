@@ -4,6 +4,7 @@
       <PingBtn :value="apiPing" @click="refetch()" />
       <EntrySign :value="!entry" @click="refetch()"/>
       <AllTickets :api="api" />
+      <BookingDialog v-model="current_ticket.value" @booking="patch()" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
       </div>
@@ -20,6 +21,7 @@ import Noti from './components/Noti.vue'
 import PingBtn from './components/PingBtn.vue'
 import AllTickets from './components/AllTickets.vue'
 import EntrySign from './components/EntrySign.vue'
+import BookingDialog from './components/BookingDialog.vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
 import { sha256, sha224 } from 'js-sha256';
 
@@ -39,11 +41,12 @@ export default Vue.extend({
     Noti,
     PingBtn,
     AllTickets,
-    EntrySign
+    EntrySign,
+    BookingDialog
   },
 
   data: () => ({
-    MODUS: null, // 'acivate' or 'checkin'
+    MODUS: 'checkin', // 'acivate' or 'checkin'
     api: 'https://api.sp/',//'http:localhost:5000/',
     camera: 'auto',
     scans: [] as Scan[],
@@ -52,6 +55,11 @@ export default Vue.extend({
     eventSource: new EventSource('https://sp/stream'),
     refetchRate: 10,
     alltickets: false,
+    current_ticket: {
+      value: false,
+      id: '',
+      hash: '', // hash of the ticket
+    }, 
     noti: {
       show: false,
       message: "",
@@ -140,12 +148,16 @@ export default Vue.extend({
       }
       return JSON.stringify(ar) === JSON.stringify(this.toHexString(binarys));
     },
-    async check(qr_string:string) {
+    async check_qr(qr_string:string) {
+      if (this.MODUS !== 'checkin' && this.MODUS !== 'activate') {
+        this.notify('Modus nicht gefunden', 'snackbar', 'error')
+        return
+      }
       const pair = qr_string.split(";")
       const id = pair[0]
       const hash = pair[1]
       const data = { hash:hash }
-      const URL = this.api + 'tickets/' + id + '/checkin'
+      const URL = this.api + 'tickets/' + id + '/' + this.MODUS
       const response = await fetch(URL+'?'+ new URLSearchParams(data))
       if (response.status in this.errorStati) {
         const error = this.errorStati[response.status]
@@ -160,8 +172,49 @@ export default Vue.extend({
         this.notify(message,'dialog','error')
         return 1
       }
-      this.notify(id + ' eingecheckt','dialog','success')
+      console.log('booking')
+      console.log(this.current_ticket.value)
+      this.current_ticket.id = id
+      this.current_ticket.hash = hash
+      this.current_ticket.value = true
+      console.log(this.current_ticket.value)
+      return r
+    },
+    async patch() {
+      if (this.MODUS !== 'checkin' && this.MODUS !== 'activate') {
+        this.notify('Modus nicht gefunden', 'snackbar', 'error')
+        return
+      }
+      const id = this.current_ticket.id
+      const hash = this.current_ticket.hash
+      const data = { hash:hash }
+      const URL = this.api + 'tickets/' + id + '/' + this.MODUS
+      const response = await fetch(URL, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        }
+      )
+      if (response.status in this.errorStati) {
+        const error = this.errorStati[response.status]
+        error.log ? this.writeLog(id, error.log) : null
+        this.notify(error.message, 'dialog', 'error')
+        return
+      }
+      const r = await response.json()
+      if (r.data.checked === "1") {
+        const message = id + ' ist bereits um ' + r.data.checkin.slice(11, 19) + ' eingecheckt...'
+        this.writeLog(id, 'rescan')
+        this.notify(message,'dialog','error')
+        return 1
+      }
+      this.current_ticket.id = ''
+      this.current_ticket.hash = ''
+      this.current_ticket.value = false
       this.writeLog(id, 'checkin')
+      this.notify('Ticket erfolgreich gebucht', 'snackbar', 'success')
       return r
     },
     writeLog(id:string, status:string){
@@ -185,7 +238,7 @@ export default Vue.extend({
       const hash = pair[1]
       this.refetch()
       this.turnCameraOff()
-      await this.check(qr_string)
+      await this.check_qr(qr_string)
       this.Sleep(1000)
       this.turnCameraOn()
       return 0
