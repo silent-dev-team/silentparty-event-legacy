@@ -65,8 +65,8 @@
     }),
     methods: {
       getColor (status:string) {
-        if (status === 'checkin') return 'green'
-        else if (status === 'rescan' || status === 'not active') return 'orange'
+        if (status === 'checkin' || status === 'aktiviert') return 'green'
+        else if (status === 'rescan' || status === 'not active' || status === "bereits aktiviert") return 'orange'
         else return 'red'
       },
     },

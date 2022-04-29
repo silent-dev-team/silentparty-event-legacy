@@ -1,6 +1,11 @@
 <template>
   <v-app>
     <v-main>
+      <center>
+        <v-card style="position: fixed; z-index: 11; left: 50%;" width="200px">
+          <h1>{{MODUS}}</h1>
+        </v-card>
+      </center>
       <PingBtn :value="apiPing" @click="refetch()" />
       <EntrySign :value="!entry" @click="refetch()"/>
       <AllTickets :api="api" />
@@ -39,7 +44,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    MODUS: 'checkin', // 'acivate' or 'checkin'
+    MODUS: 'activate', // 'activate' or 'checkin'
     api: 'http://localhost:5000/', //'https://api.sp/',
     camera: 'auto',
     scans: [],
@@ -159,18 +164,32 @@ export default Vue.extend({
         return
       }
       const r = await response.json()
+      console.log(r)
+      if (r.data.activeted === "0" && this.MODUS === 'checkin') {
+        const message = id + ' ist nicht aktiviert'
+        this.writeLog(id, 'not active')
+        this.notify(message,'dialog','error')
+        return 1
+      }
+      if (r.data.activeted === "1" && this.MODUS === 'activate') {
+        const message = id + ' bereits aktiviert'
+        this.writeLog(id, 'bereits aktiviert')
+        this.notify(message,'snackbar','error')
+        return 1
+      }
       if (r.data.checked === "1") {
         const message = id + ' ist bereits um ' + r.data.checkin.slice(11, 19) + ' eingecheckt...'
         this.writeLog(id, 'rescan')
         this.notify(message,'dialog','error')
         return 1
       }
-      console.log('booking')
-      console.log(this.current_ticket.value)
       this.current_ticket.id = id
       this.current_ticket.hash = hash
+      if (this.MODUS === 'activate' && r.data.checked === "0") {
+        this.patch()
+        return r
+      }
       this.current_ticket.value = true
-      console.log(this.current_ticket.value)
       return r
     },
     async patch() {
@@ -197,6 +216,12 @@ export default Vue.extend({
         return
       }
       const r = await response.json()
+      if (r.data.activeted === "0" && this.MODUS === 'checkin') {
+        const message = id + ' ist nicht aktiviert'
+        this.writeLog(id, 'not active')
+        this.notify(message,'dialog','error')
+        return 1
+      }
       if (r.data.checked === "1") {
         const message = id + ' ist bereits um ' + r.data.checkin.slice(11, 19) + ' eingecheckt...'
         this.writeLog(id, 'rescan')
@@ -206,8 +231,14 @@ export default Vue.extend({
       this.current_ticket.id = ''
       this.current_ticket.hash = ''
       this.current_ticket.value = false
-      this.writeLog(id, 'checkin')
-      this.notify('Ticket erfolgreich gebucht', 'snackbar', 'success')
+      if (this.Modus === 'checkin'){
+        this.writeLog(id, 'checkin')
+        this.notify('Ticket erfolgreich gebucht', 'snackbar', 'success')
+      } else if (this.Modus === 'activate'){
+        const message = id +' wurde aktiviert'
+        this.writeLog(id, 'aktiviert')
+        this.notify(message,'snackbar','success')
+      }
       return r
     },
     writeLog(id, status){

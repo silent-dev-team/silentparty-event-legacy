@@ -5,7 +5,7 @@
       :value="value"
       @input="close()"
       :timeout="timeout"
-      color="success"
+      :color="color"
       top
     >
       {{ message }}

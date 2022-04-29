@@ -166,7 +166,7 @@ def ticket(id:str, mutation:str):
   
   if ACTIVATION:
     if ticket['activeted'] == '1':
-      return jsonify({'error':'already activated','data':ticket}), 208
+      return jsonify({'error':'already activated','data':ticket}), 200
     if request.method == 'PATCH':
       db.hset(
         'ticket:'+str(id),
@@ -174,7 +174,7 @@ def ticket(id:str, mutation:str):
       )
   if CHECKIN:
     if ticket['activeted'] == '0':
-      return jsonify({'error':'ticket not activeted'}), 406
+      return jsonify({'error':'ticket not activeted','data':ticket}), 200
     if ticket['checked'] != '0':
       return jsonify({'error':'ticket already checked','data':ticket}), 208
     if request.method == 'PATCH':
