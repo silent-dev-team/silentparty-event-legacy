@@ -185,7 +185,7 @@ export default Vue.extend({
       }
       this.current_ticket.id = id
       this.current_ticket.hash = hash
-      if (this.MODUS === 'activate' && r.data.checked === "0") {
+      if (this.MODUS === 'checkin') {
         this.patch()
         return r
       }
@@ -251,6 +251,10 @@ export default Vue.extend({
     },
     async onDecode (qr_string) {
       this.turnCameraOff()
+      if (!this.validateQrString(qr_string)){
+        this.notify('Ticket nicht valide \n' + qr_string, 'dialog', 'error')
+        return 1
+      }
       if (!this.apiPing) {
         this.notify('API nicht erreichbar... \n' + qr_string, 'dialog', 'error')
         this.Sleep(1000)
