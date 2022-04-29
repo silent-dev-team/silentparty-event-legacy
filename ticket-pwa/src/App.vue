@@ -14,7 +14,7 @@
   </v-app>
 </template>
 
-<script lang="ts">
+<script>
 import Vue from 'vue';
 import LocalTable from './components/LocalTable.vue'
 import Noti from './components/Noti.vue'
@@ -24,13 +24,6 @@ import EntrySign from './components/EntrySign.vue'
 import BookingDialog from './components/BookingDialog.vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
 import { sha256, sha224 } from 'js-sha256';
-
-export interface Scan {
-   id: string;
-   time: string;
-   timestamp: number;
-   status: string;
-}
 
 export default Vue.extend({
   name: 'App',
@@ -47,12 +40,12 @@ export default Vue.extend({
 
   data: () => ({
     MODUS: 'checkin', // 'acivate' or 'checkin'
-    api: 'https://api.sp/',//'http:localhost:5000/',
+    api: 'http://localhost:5000/', //'https://api.sp/',
     camera: 'auto',
-    scans: [] as Scan[],
+    scans: [],
     apiPing: false,
     entry: true,
-    eventSource: new EventSource('https://sp/stream'),
+    eventSource: new EventSource('http://localhost:5000/stream'),//new EventSource('https://sp/stream'),
     refetchRate: 10,
     alltickets: false,
     current_ticket: {
@@ -89,8 +82,8 @@ export default Vue.extend({
   },
   methods: {
     now() {
-      function addZero(i:number) {
-        var s:string = String(i) 
+      function addZero(i) {
+        var s = String(i) 
         if (i < 10) {
           s = "0" + s
         }
@@ -103,10 +96,10 @@ export default Vue.extend({
       var time = h+':'+m+':'+s
       return time
     },
-    Sleep(milliseconds:number) {
+    Sleep(milliseconds) {
       return new Promise(resolve => setTimeout(resolve, milliseconds));
     },
-    notify (message:string, type:string='snackbar', color:string='success') {
+    notify (message, type='snackbar', color='success') {
       this.noti.message = message
       this.noti.type = type
       this.noti.color = color
@@ -124,14 +117,14 @@ export default Vue.extend({
         type: ""
       }
     },
-    toHexString(string:string) {
+    toHexString(string) {
       let ar = [];
         for(let c of string){
             ar.push( c.charCodeAt(0) );
         }
         return ar;
     },
-    validateQrString(qr_string:string,salt="testticket"){
+    validateQrString(qr_string,salt="testticket"){
       const pair = qr_string.split(";");
       let utf8Encode = new TextEncoder();
       if(pair.length != 2) return false;
@@ -148,7 +141,7 @@ export default Vue.extend({
       }
       return JSON.stringify(ar) === JSON.stringify(this.toHexString(binarys));
     },
-    async check_qr(qr_string:string) {
+    async check_qr(qr_string) {
       if (this.MODUS !== 'checkin' && this.MODUS !== 'activate') {
         this.notify('Modus nicht gefunden', 'snackbar', 'error')
         return
@@ -217,15 +210,15 @@ export default Vue.extend({
       this.notify('Ticket erfolgreich gebucht', 'snackbar', 'success')
       return r
     },
-    writeLog(id:string, status:string){
-      let scan = {} as Scan
+    writeLog(id, status){
+      let scan = {}
       scan.id = id
       scan.time = this.now()
       scan.timestamp = new Date().getTime()
       scan.status = status
       this.scans.push(scan)
     },
-    async onDecode (qr_string:string) {
+    async onDecode (qr_string) {
       this.turnCameraOff()
       if (!this.apiPing) {
         this.notify('API nicht erreichbar... \n' + qr_string, 'dialog', 'error')
@@ -279,7 +272,7 @@ export default Vue.extend({
       this.scans = JSON.parse(localStorage.scans)
     }
     var that = this
-    this.eventSource.addEventListener('entry', function(event:any) {
+    this.eventSource.addEventListener('entry', function(event) {
         var data = JSON.parse(event.data)
         that.entry = data.entry
     }.bind(that), false)
