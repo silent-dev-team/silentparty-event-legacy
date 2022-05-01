@@ -86,15 +86,17 @@
     "1001": {
       "hash": "jZ1fnMI3YKGcrjK1/j7DsnVccXY3xAJ8oeF7zq6y9l0=",
       "checked": "0",
-      "checkin": "",
+      "checkin_time": "",
       "activeted": "1",
+      "activation_time":"",
       "vvk": "0"
     },
     "1002": {
       "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
       "checked": "0",
-      "checkin": "",
+      "checkin_time": "",
       "activeted": "1",
+      "activation_time":"",
       "vvk": "0"
     }
   }
