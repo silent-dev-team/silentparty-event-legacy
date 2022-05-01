@@ -1,47 +1,49 @@
 <template>
-  <div>
-    <v-btn 
-      class="btn ma-2"
-      fab
-      :dark="value"
-      @click="open()"
-    >
-      <v-icon
-        large
-      >mdi-ticket-confirmation</v-icon>
-    </v-btn>
-    <v-dialog 
-      v-model="value"
-      @click:outside="close()"
-      max-width="90%" class="ma-5" elevation="5"
-    >
-      <v-card >
-        <v-card-title>
-          <span class="headline">Alle Tickets</span>
-        </v-card-title>
-        <v-text-field
-          class="ma-3"
-          v-model="search"
-          type="number"
-          append-icon="mdi-magnify"
-          label="Suche"
-          single-line
-          hide-details
-        />
-        <v-data-table
-          elevation="0"
-          :items-per-page="5"
-          :headers="headers"
-          :items="items"
-          :search="search"
-          sort-by="time"
-          :sort-desc="true"
-          class="elevation-12"
-          mobile-breakpoint="430"
-        />
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-dialog 
+    v-model="value"
+    @click:outside="close()"
+    max-width="90%" class="ma-5" elevation="5"
+  >
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn 
+        class="btn ma-2"
+        fab
+        :dark="value"
+        @click="open()"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <v-icon
+          large
+        >mdi-ticket-confirmation</v-icon>
+      </v-btn>
+    </template>
+    <v-card >
+      <v-card-title>
+        <span class="headline">Alle Tickets</span>
+      </v-card-title>
+      <v-text-field
+        class="ma-3"
+        v-model="search"
+        type="number"
+        append-icon="mdi-magnify"
+        label="Suche"
+        single-line
+        hide-details
+      />
+      <v-data-table
+        elevation="0"
+        :items-per-page="5"
+        :headers="headers"
+        :items="items"
+        :search="search"
+        sort-by="time"
+        :sort-desc="true"
+        class="elevation-12"
+        mobile-breakpoint="430"
+      />
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>

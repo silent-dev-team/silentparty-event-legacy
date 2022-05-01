@@ -2,12 +2,13 @@
   <v-app>
     <v-main>
       <center>
-        <v-card style="position: fixed; z-index: 11; left: 50%;" width="200px">
-          <h1>{{MODUS}}</h1>
-        </v-card>
+        <div class="mode-box" width="200px">
+          <h1>{{modus_text}}</h1>
+        </div>
       </center>
       <PingBtn :value="apiPing" @click="refetch()" />
       <EntrySign :value="!entry" @click="refetch()"/>
+      <Settings v-model="settings" />
       <AllTickets :api="api" />
       <BookingDialog v-model="current_ticket.value" :id="current_ticket.id" :api="api" @booking="patch()" />
       <div class="qr">
@@ -27,6 +28,7 @@ import PingBtn from './components/PingBtn.vue'
 import AllTickets from './components/AllTickets.vue'
 import EntrySign from './components/EntrySign.vue'
 import BookingDialog from './components/BookingDialog.vue'
+import Settings from './components/Settings.vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
 import { sha256, sha224 } from 'js-sha256';
 
@@ -40,11 +42,15 @@ export default Vue.extend({
     PingBtn,
     AllTickets,
     EntrySign,
-    BookingDialog
+    BookingDialog,
+    Settings
   },
 
   data: () => ({
-    MODUS: 'activate', // 'activate' or 'checkin'
+    // MODUS: 'activate', // 'activate' or 'checkin'
+    settings:{
+      mode: 'activate'
+    },
     api: 'http://localhost:5000/', //'https://api.sp/',
     camera: 'auto',
     scans: [],
@@ -84,6 +90,18 @@ export default Vue.extend({
     }
   }),
   computed: {
+    MODUS(){
+      return this.settings.mode
+    },
+    modus_text(){
+      if(this.settings.mode == 'activate'){
+        return 'Aktiviertung'
+      } else if(this.settings.mode == 'checkin'){
+        return 'Einchecken'
+      } else {
+        return 'Kein Modus'
+      }
+    }
   },
   methods: {
     now() {
@@ -311,6 +329,9 @@ export default Vue.extend({
     if (localStorage.scans) {
       this.scans = JSON.parse(localStorage.scans)
     }
+    if (localStorage.settings) {
+      this.settings = JSON.parse(localStorage.settings)
+    }
     var that = this
     this.eventSource.addEventListener('entry', function(event) {
         var data = JSON.parse(event.data)
@@ -324,6 +345,9 @@ export default Vue.extend({
   watch: {
     scans() {
       localStorage.scans = JSON.stringify(this.scans)
+    },
+    settings(){
+      localStorage.settings = JSON.stringify(this.settings)
     }
   }
 });
@@ -347,6 +371,23 @@ export default Vue.extend({
 }
 .pulse:hover {
   animation: none;
+}
+
+.mode-box {
+  position: fixed;
+  z-index: 11;
+  left: 50%;
+  transform: translate(-50%);
+  top: 10px;
+  width: 300px;
+  padding: 17px;
+  color: white;
+  border-radius: 7px;
+  -moz-box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.3);
+  -webkit-box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.3);
+  background: rgba(37, 37, 37, 0.3);
+  backdrop-filter: blur(2px);
 }
 
 @-webkit-keyframes pulse {
