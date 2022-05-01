@@ -44,7 +44,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    MODUS: 'checkin', // 'activate' or 'checkin'
+    MODUS: 'activate', // 'activate' or 'checkin'
     api: 'http://localhost:5000/', //'https://api.sp/',
     camera: 'auto',
     scans: [],
@@ -177,8 +177,8 @@ export default Vue.extend({
         this.notify(message,'snackbar','error')
         return 1
       }
-      if (r.data.checked === "1") {
-        const message = id + ' ist bereits um ' + r.data.checkin.slice(11, 19) + ' eingecheckt...'
+      if (r.data.checked === "1" && this.MODUS === 'checkin') {
+        const message = id + ' ist bereits um ' + r.data.checkin_time.slice(11, 19) + ' eingecheckt...'
         this.writeLog(id, 'rescan')
         this.notify(message,'dialog','error')
         return 1
@@ -223,7 +223,7 @@ export default Vue.extend({
         return 1
       }
       if (r.data.checked === "1") {
-        const message = id + ' ist bereits um ' + r.data.checkin.slice(11, 19) + ' eingecheckt...'
+        const message = id + ' ist bereits um ' + r.data.checkin_time.slice(11, 19) + ' eingecheckt...'
         this.writeLog(id, 'rescan')
         this.notify(message,'dialog','error')
         return 1
@@ -259,19 +259,16 @@ export default Vue.extend({
         this.notify('Ticket nicht valide \n' + qr_string, 'dialog', 'error')
         return 1
       }
+      const pair = qr_string.split(';')
+      const id = pair[0]
+      const hash = pair[1]
       if (!this.apiPing) {
-        if (valid) {
-          this.notify('API nicht erreichbar... \nAber Ticket ist valide!', 'dialog', 'error')
-        } else {
-          this.notify('API nicht erreichbar... \n' + qr_string, 'dialog', 'error')
-        }
+        this.writeLog(id, 'offline val')
+        this.notify('API nicht erreichbar... \nAber Ticket ist valide!', 'dialog', 'error')
         this.Sleep(1000)
         this.turnCameraOn()
         return 1
       }
-      const pair = qr_string.split(';')
-      const id = pair[0]
-      const hash = pair[1]
       this.refetch()
       this.turnCameraOff()
       await this.check_qr(qr_string)
