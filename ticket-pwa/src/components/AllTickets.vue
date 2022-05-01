@@ -71,12 +71,17 @@ export default Vue.extend({
       },
       {
         text: 'Checkin Zeit',
-        value: 'checkin',
+        value: 'checkin_time',
         sortable: true
       },
       {
         text: 'Aktiviert',
         value: 'activeted',
+        sortable: true
+      },
+      {
+        text: 'Aktiviert Zeit',
+        value: 'activation_time',
         sortable: true
       },
       {
@@ -103,7 +108,8 @@ export default Vue.extend({
       for (let id in data) {
         items.push({
           id: id,
-          checkin: data[id].checkin.slice(11, 19),
+          checkin_time: data[id].checkin_time.slice(11, 19),
+          activation_time: data[id].activation_time.slice(11, 19),
           vvk: data[id].vvk == "1" ? 'VVK' : 'AK',
           checked: data[id].checked == "1" ? 'Ja' : 'Nein',
           activeted: data[id].activeted == "1" ? 'Ja' : 'Nein'

@@ -9,7 +9,7 @@
       <PingBtn :value="apiPing" @click="refetch()" />
       <EntrySign :value="!entry" @click="refetch()"/>
       <AllTickets :api="api" />
-      <BookingDialog v-model="current_ticket.value" @booking="patch()" />
+      <BookingDialog v-model="current_ticket.value" :id="current_ticket.id" :api="api" @booking="patch()" />
       <div class="qr">
         <qrcode-stream @decode="onDecode" :camera="camera"></qrcode-stream>
       </div>
@@ -44,7 +44,7 @@ export default Vue.extend({
   },
 
   data: () => ({
-    MODUS: 'activate', // 'activate' or 'checkin'
+    MODUS: 'checkin', // 'activate' or 'checkin'
     api: 'http://localhost:5000/', //'https://api.sp/',
     camera: 'auto',
     scans: [],
@@ -228,17 +228,20 @@ export default Vue.extend({
         this.notify(message,'dialog','error')
         return 1
       }
+      if (this.MODUS === 'checkin'){
+        const message = id+' wurde eingecheckt'
+        this.writeLog(id, 'checkin')
+        this.notify(message, 'snackbar', 'success')
+      } else if (this.MODUS === 'activate'){
+        const message = id+' wurde aktiviert'
+        this.writeLog(id, 'aktiviert')
+        this.notify(message,'snackbar','success')
+      } else {
+        this.notify('Modusfehler','snackbar','error')
+      }
       this.current_ticket.id = ''
       this.current_ticket.hash = ''
       this.current_ticket.value = false
-      if (this.Modus === 'checkin'){
-        this.writeLog(id, 'checkin')
-        this.notify('Ticket erfolgreich gebucht', 'snackbar', 'success')
-      } else if (this.Modus === 'activate'){
-        const message = id +' wurde aktiviert'
-        this.writeLog(id, 'aktiviert')
-        this.notify(message,'snackbar','success')
-      }
       return r
     },
     writeLog(id, status){
@@ -251,12 +254,17 @@ export default Vue.extend({
     },
     async onDecode (qr_string) {
       this.turnCameraOff()
-      if (!this.validateQrString(qr_string)){
+      const valid = this.validateQrString(qr_string)
+      if (!valid){
         this.notify('Ticket nicht valide \n' + qr_string, 'dialog', 'error')
         return 1
       }
       if (!this.apiPing) {
-        this.notify('API nicht erreichbar... \n' + qr_string, 'dialog', 'error')
+        if (valid) {
+          this.notify('API nicht erreichbar... \nAber Ticket ist valide!', 'dialog', 'error')
+        } else {
+          this.notify('API nicht erreichbar... \n' + qr_string, 'dialog', 'error')
+        }
         this.Sleep(1000)
         this.turnCameraOn()
         return 1
