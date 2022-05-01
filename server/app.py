@@ -140,9 +140,10 @@ def get_tickets():
 
 @app.route('/tickets/<id>/<mutation>', subdomain=sd.api, methods = ['GET','PATCH'])
 def ticket(id:str, mutation:str):
-  CHECKIN =  mutation == 'checkin'
-  ACTIVATION = mutation == 'activate'
-  hash = None
+  CHECKIN:str =  mutation == 'checkin'
+  ACTIVATION:str = mutation == 'activate'
+  hash:str = None
+  now:str = str(datetime.now().isoformat())
   
   if request.method == 'GET':
     try: 
@@ -170,6 +171,10 @@ def ticket(id:str, mutation:str):
     if request.method == 'PATCH':
       db.hset(
         'ticket:'+str(id),
+        'activation_time', now
+      )
+      db.hset(
+        'ticket:'+str(id),
         'activeted', '1'
       )
   if CHECKIN:
@@ -180,7 +185,7 @@ def ticket(id:str, mutation:str):
     if request.method == 'PATCH':
       db.hset(
         'ticket:'+str(id), 
-        'checkin', str(datetime.now().isoformat())
+        'checkin_time', now
       )
       db.hset(
         'ticket:'+str(id),
@@ -233,7 +238,7 @@ def new_order():
   except TypeError:
     return jsonify({'success':False, 'message':'Schema Order nicht korrekt'}), 200
   db.lpush("orders",dumps(order))
-  return jsonify({'success': True}), 200
+  return jsonify({'success': True,'data':data}), 200
   
 
 ### OPTIONS ###
