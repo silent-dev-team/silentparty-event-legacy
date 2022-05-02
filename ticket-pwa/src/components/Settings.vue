@@ -6,14 +6,20 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ on, attrs }">
+      <center>
       <v-btn
-        class="btn ma-2"
-        fab
+        class="mb-3 mt-n2 glas"
+        text
+        dark
+        width="800px" 
+        height="45px"
+        max-width="90%"
         v-bind="attrs"
         v-on="on"
       >
-        <v-icon large>mdi-cog</v-icon>
+        <v-icon>mdi-cog</v-icon> Einstellungen
       </v-btn>
+      </center>
     </template>
     <v-card>
       <v-toolbar
@@ -81,7 +87,7 @@ export default {
 
 <style scoped>
 .btn{
-  top: 75px;
+  bottom: 75px;
   right: 5px;
 }
 </style>

@@ -2,7 +2,6 @@
   <v-btn 
     v-if="!value"
     class="btn ma-2 pulse"
-    style="top: 5px; left: 5px;"
     :color="value ? 'green' : 'red'"
     fab
     dark
@@ -30,7 +29,6 @@ export default Vue.extend({
 
 <style scoped>
 .btn{
-  top: 5px;
   left: 5px;
 }
 </style>

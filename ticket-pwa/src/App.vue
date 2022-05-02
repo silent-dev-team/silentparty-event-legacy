@@ -2,13 +2,12 @@
   <v-app>
     <v-main>
       <center>
-        <div class="mode-box" width="200px">
+        <div class="mode-box glas" width="200px">
           <h1>{{modus_text}}</h1>
         </div>
       </center>
       <PingBtn :value="apiPing" @click="refetch()" />
-      <EntrySign :value="!entry" @click="refetch()"/>
-      <Settings v-model="settings" />
+      <EntrySign :api="api" @click="refetch()"/>
       <AllTickets :api="api" />
       <BookingDialog v-model="current_ticket.value" :id="current_ticket.id" :api="api" @booking="patch()" />
       <div class="qr">
@@ -16,6 +15,7 @@
       </div>
       <Noti v-model="noti.show" @close="turnCameraOn()" :type="noti.type" :color="noti.color" :message="noti.message" />
       <LocalTable :items="scans" />
+      <Settings v-model="settings" />
     </v-main>
   </v-app>
 </template>
@@ -55,8 +55,6 @@ export default Vue.extend({
     camera: 'auto',
     scans: [],
     apiPing: false,
-    entry: true,
-    eventSource: new EventSource('http://localhost:5000/stream'),//new EventSource('https://sp/stream'),
     refetchRate: 10,
     alltickets: false,
     current_ticket: {
@@ -313,15 +311,8 @@ export default Vue.extend({
           this.apiPing = false
         })
     },
-    async fetch_entry(){
-      const URL = this.api + 'entry'
-      const response = await fetch(URL)
-      const r = await response.json()
-      this.entry = r.entry
-    },
     refetch(){
       this.ping()
-      this.fetch_entry()
     }
   },
   mounted() {
@@ -332,11 +323,6 @@ export default Vue.extend({
     if (localStorage.settings) {
       this.settings = JSON.parse(localStorage.settings)
     }
-    var that = this
-    this.eventSource.addEventListener('entry', function(event) {
-        var data = JSON.parse(event.data)
-        that.entry = data.entry
-    }.bind(that), false)
     const interval = setInterval(() => {
         this.refetch()
       }, this.refetchRate*1000
@@ -363,7 +349,15 @@ export default Vue.extend({
 .btn{
   position: fixed;
   z-index: 5;
+  top: 5px;
 }
+
+@media only screen and (max-width: 480px) {
+  .btn{
+    top: 100px;
+  }
+}
+
 .pulse {
   display: block;
   cursor: pointer;
@@ -380,8 +374,11 @@ export default Vue.extend({
   transform: translate(-50%);
   top: 10px;
   width: 300px;
-  padding: 17px;
+}
+
+.glas{
   color: white;
+  padding: 17px;
   border-radius: 7px;
   -moz-box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.3);
   -webkit-box-shadow: 5px 7px 5px rgba(0, 0, 0, 0.3);

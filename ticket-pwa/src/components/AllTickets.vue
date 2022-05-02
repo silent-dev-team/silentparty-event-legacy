@@ -135,7 +135,6 @@ export default Vue.extend({
 
 <style scoped>
 .btn{
-  top: 5px;
   right: 5px;
 }
 </style>
