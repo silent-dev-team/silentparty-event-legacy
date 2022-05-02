@@ -25,7 +25,7 @@ export default Vue.extend({
   },
   data: () => ({
     entry:true,
-    eventSource: new EventSource('http://localhost:5000/stream'),//new EventSource('https://sp/stream'),
+    eventSource: new EventSource('https://sp/stream'),//new EventSource('https://sp/stream'),
   }),
   methods: {
     async fetch_entry(){

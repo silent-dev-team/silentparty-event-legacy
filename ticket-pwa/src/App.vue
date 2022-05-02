@@ -51,7 +51,7 @@ export default Vue.extend({
     settings:{
       mode: 'activate'
     },
-    api: 'http://localhost:5000/', //'https://api.sp/',
+    api: 'https://api.sp/',//{{'http://localhost:5000/', //'https://api.sp/',
     camera: 'auto',
     scans: [],
     apiPing: false,

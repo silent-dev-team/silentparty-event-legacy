@@ -87,7 +87,7 @@
       "hash": "jZ1fnMI3YKGcrjK1/j7DsnVccXY3xAJ8oeF7zq6y9l0=",
       "checked": "0",
       "checkin_time": "",
-      "activeted": "1",
+      "activeted": "0",
       "activation_time":"",
       "vvk": "0"
     },
@@ -95,7 +95,55 @@
       "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
       "checked": "0",
       "checkin_time": "",
-      "activeted": "1",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1003": {
+      "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1004": {
+      "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1005": {
+      "hash": "awwboBNcr53HLhY4yhHJ2fsWJXfwBwuORDSVnsShoxs=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1006": {
+      "hash": "tuKe7qzy76CMrwTPq7qvziT/WfVRgSyzVL3BOjTbRxU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1007": {
+      "hash": "GIdl8TjUdkWVwjZvbhOAOOingV/SInFTgagxEkx111I=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1008": {
+      "hash": "1CNSVqlbccSKFJdfhRL7ewjcjvk2QTWHLWFC+66AYQU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
       "activation_time":"",
       "vvk": "0"
     }
