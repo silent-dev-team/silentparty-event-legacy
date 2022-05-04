@@ -7,7 +7,8 @@
         </div>
       </center>
       <PingBtn :value="apiPing" @click="refetch()" />
-      <EntrySign :api="api" @click="refetch()"/>
+      <EntrySign v-if="!entry_control" :api="api" :stream="stream" @click="refetch()"/>
+      <EntryBtn v-if="entry_control" :api="api" :stream="stream" />
       <AllTickets :api="api" />
       <BookingDialog v-model="current_ticket.value" :id="current_ticket.id" :api="api" @booking="patch()" />
       <div class="qr">
@@ -27,6 +28,7 @@ import Noti from './components/Noti.vue'
 import PingBtn from './components/PingBtn.vue'
 import AllTickets from './components/AllTickets.vue'
 import EntrySign from './components/EntrySign.vue'
+import EntryBtn from './components/EntryBtn.vue'
 import BookingDialog from './components/BookingDialog.vue'
 import Settings from './components/Settings.vue'
 import { QrcodeStream } from 'vue-qrcode-reader'
@@ -42,6 +44,7 @@ export default Vue.extend({
     PingBtn,
     AllTickets,
     EntrySign,
+    EntryBtn,
     BookingDialog,
     Settings
   },
@@ -49,9 +52,11 @@ export default Vue.extend({
   data: () => ({
     // MODUS: 'activate', // 'activate' or 'checkin'
     settings:{
-      mode: 'activate'
+      mode: 'activate',
+      entry_control: true,
     },
     api: 'https://api.sp/',//{{'http://localhost:5000/', //'https://api.sp/',
+    stream: 'https://sp/stream',
     camera: 'auto',
     scans: [],
     apiPing: false,
@@ -280,7 +285,7 @@ export default Vue.extend({
       const hash = pair[1]
       if (!this.apiPing) {
         this.writeLog(id, 'offline val')
-        this.notify('API nicht erreichbar... \nAber Ticket ist valide!', 'dialog', 'error')
+        this.notify('API nicht erreichbar... \nAber Ticket ist valide!', 'dialog', 'grey')
         this.Sleep(1000)
         this.turnCameraOn()
         return 1
