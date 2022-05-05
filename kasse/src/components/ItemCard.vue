@@ -54,7 +54,7 @@ export default {
       default: false,
     },
     minWidth: {
-      default: '160px',
+      default: '200px',
       type: String,
     },
     maxWidth: {

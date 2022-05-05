@@ -5,11 +5,12 @@
     color="red"
     icon
     dark
+    large
     @click="$emit('click')"
   >
     <v-icon
       x-large
-    >mdi-close-octagon</v-icon>
+    >mdi-locker</v-icon>
   </v-btn>
 </template>
 
@@ -21,12 +22,20 @@ export default Vue.extend({
     api: {
       type: String,
       required: true,
+    },
+    stream: {
+      type: String,
+      required: true,
     }
   },
   data: () => ({
-    entry:true,
-    eventSource: new EventSource('https://sp/stream'),//new EventSource('https://sp/stream'),
+    entry:true
   }),
+  computed: {
+    eventSource(){
+      return new EventSource(this.stream)
+    }
+  },
   methods: {
     async fetch_entry(){
       const URL = this.api + 'entry'
@@ -47,7 +56,8 @@ export default Vue.extend({
 
 <style scoped>
 .btn{
+  top: 100px;
   left: 50%; 
-  transform: translate(-75%)
+  transform: translate(-64%)
 }
 </style>
