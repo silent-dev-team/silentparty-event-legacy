@@ -83,27 +83,35 @@
     }
   ],
   "tickets": {
+    "1000": {
+      "hash": "EYzV7Vt8AqQj5ct4tycHdGNO0nFeyMo+NvGfaZwUUPE=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "1",
+      "activation_time":"",
+      "vvk": "1"
+    },
     "1001": {
       "hash": "jZ1fnMI3YKGcrjK1/j7DsnVccXY3xAJ8oeF7zq6y9l0=",
       "checked": "0",
       "checkin_time": "",
-      "activeted": "0",
+      "activeted": "1",
       "activation_time":"",
-      "vvk": "0"
+      "vvk": "1"
     },
     "1002": {
       "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
       "checked": "0",
       "checkin_time": "",
-      "activeted": "0",
+      "activeted": "1",
       "activation_time":"",
-      "vvk": "0"
+      "vvk": "1"
     },
     "1003": {
       "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
       "checked": "0",
       "checkin_time": "",
-      "activeted": "0",
+      "activeted": "1",
       "activation_time":"",
       "vvk": "0"
     },
@@ -111,7 +119,7 @@
       "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
       "checked": "0",
       "checkin_time": "",
-      "activeted": "0",
+      "activeted": "1",
       "activation_time":"",
       "vvk": "0"
     },
@@ -119,7 +127,7 @@
       "hash": "awwboBNcr53HLhY4yhHJ2fsWJXfwBwuORDSVnsShoxs=",
       "checked": "0",
       "checkin_time": "",
-      "activeted": "0",
+      "activeted": "1",
       "activation_time":"",
       "vvk": "0"
     },
@@ -141,6 +149,22 @@
     },
     "1008": {
       "hash": "1CNSVqlbccSKFJdfhRL7ewjcjvk2QTWHLWFC+66AYQU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1009": {
+      "hash": "0h4mZ4dJm6hPjWXo73WjMICTYPFIOVNLD73eWq0esMk=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1010": {
+      "hash": "rseMYIz7Nu36JO0XvwQo6I28SKcaYuVkNogTUdoscdw=",
       "checked": "0",
       "checkin_time": "",
       "activeted": "0",
