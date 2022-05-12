@@ -55,6 +55,7 @@ export default Vue.extend({
       mode: 'activate',
       entry_control: true,
     },
+    salt:"dieVorVorLetzteSilentParty",
     api: 'https://api.sp/',//{{'http://localhost:5000/', //'https://api.sp/',
     stream: 'https://sp/stream',
     camera: 'auto',
@@ -150,7 +151,7 @@ export default Vue.extend({
         }
         return ar;
     },
-    validateQrString(qr_string,salt="testticket"){
+    validateQrString(qr_string){
       const pair = qr_string.split(";");
       let utf8Encode = new TextEncoder();
       if(pair.length != 2) return false;
@@ -160,7 +161,7 @@ export default Vue.extend({
       } catch (error) {
           return false;
       }
-      const hexNr = sha256(utf8Encode.encode(pair[0]+salt));
+      const hexNr = sha256(utf8Encode.encode(pair[0]+this.salt));
       const ar = [];
       for(let i = 0; i< hexNr.length;i+=2 ){
         ar.push(Number("0x"+hexNr.slice(i,i+2)));
