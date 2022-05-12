@@ -51,10 +51,7 @@ export default Vue.extend({
 
   data: () => ({
     // MODUS: 'activate', // 'activate' or 'checkin'
-    settings:{
-      mode: 'activate',
-      entry_control: true,
-    },
+    settings:{},
     salt:"dieVorVorLetzteSilentParty",
     api: 'https://api.sp/',//{{'http://localhost:5000/', //'https://api.sp/',
     stream: 'https://sp/stream',
@@ -322,11 +319,14 @@ export default Vue.extend({
     }
   },
   mounted() {
+    console.log('mounted')
     this.refetch()
     if (localStorage.scans) {
+      console.log('load scans')
       this.scans = JSON.parse(localStorage.scans)
     }
     if (localStorage.settings) {
+      console.log('load settings')
       this.settings = JSON.parse(localStorage.settings)
     }
     const interval = setInterval(() => {
@@ -337,9 +337,15 @@ export default Vue.extend({
   watch: {
     scans() {
       localStorage.scans = JSON.stringify(this.scans)
+      console.log('save scans')
     },
-    settings(){
+    "settings.mode":function(){
       localStorage.settings = JSON.stringify(this.settings)
+      console.log('save settings')
+    },
+    "settings.entry_control":function(){
+      localStorage.settings = JSON.stringify(this.settings)
+      console.log('save settings')
     }
   }
 });
