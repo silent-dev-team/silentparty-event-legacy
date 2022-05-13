@@ -17,7 +17,7 @@ export default {
     ]),
   },
   methods: {
-    fetchOrders() {
+    async fetchOrders() {
       const response = await fetch(this.api+params.route)
     },
   }
