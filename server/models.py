@@ -22,6 +22,7 @@ class OrderPos:
 
 @dataclass
 class Order:
+  id: int
   sum: float
   items: list[OrderPos]
   timestamp: datetime

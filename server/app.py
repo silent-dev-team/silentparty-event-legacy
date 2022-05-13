@@ -1,7 +1,7 @@
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
 from datetime import datetime
-import redis, json, sys, os
+import redis, json, sys, os, uuid
 from dotenv import load_dotenv
 from pickle import loads, dumps
 from models import *
@@ -215,9 +215,30 @@ def get_order() -> list:
       list: Liste der Bestellungen
   """
   start = request.args.get('start') or 0
-  stop = request.args.get('stop') or db.llen('orders')
+  stop = request.args.get('stop') or -1
   orders = [loads(order) for order in db.lrange('orders',start,stop)]
   return jsonify({'data':orders}), 200
+
+@app.route('/orders', subdomain=sd.api, methods = ['DELETE'])
+def get_order(id) -> list:
+  """Löscht eine Bestellung aus der Datenbank.
+  
+  Params:
+      id: ID der Bestellung
+  Returns:
+      list: Liste der Bestellungen
+  """
+  length = db.llen('orders')
+  for i in range(0,length,100):
+    chunk:dict[str,Order] = {loads(order).id:order for order in db.lrange('orders',i,i+99)}
+    if id in chunk:
+      order:Order = loads(chunk[id])
+      db.lrem('orders',1,chunk[id])
+      return jsonify({
+        'message':'order deleted',
+        'data':order
+      }), 200
+  return jsonify({'error':f'order {id} not found'}), 200
 
 @app.route('/orders', subdomain=sd.api, methods = ['POST'])
 def new_order():
@@ -227,6 +248,7 @@ def new_order():
       dict('success':bool): Vorgang erfolgreich?
   """
   data:dict = request.get_json()
+  data.update({'id':str(uuid.uuid4())})
   data.update({'timestamp': datetime.now()})
   try:
     items = [OrderPos(**item) for item in data['items']]
