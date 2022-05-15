@@ -140,6 +140,7 @@ def syncStats():
   print(tickets)
   db.hset("stat:user","sells",len(list(filter(lambda t: True if t["activeted"] != "0" else False, tickets) )))
   db.hset("stat:user","checked",len(list(filter(lambda t:True if t["checked"] != "0" else False, tickets))))
+  db.hset("stat:user","returned","0")
 
 @app.route('/djs', subdomain=sd.api, methods = ['POST'])
 def handleDJ():
@@ -147,11 +148,18 @@ def handleDJ():
   publishDJs()
   return "{}"
 
+@app.route('/rolltext', subdomain=sd.api, methods = ['POST'])
+def handleRollText():
+  updateRollTexts(request.json)
+  publishRollTexts()
+  return "{}"
+
 @app.route('/refresh', subdomain=sd.api)
 def test():
   syncStats()
   publishUserstats()
   publishDJs()
+  publishRollTexts()
   return "{}"
 
 
@@ -269,8 +277,9 @@ def get_shopItems():
   items = json.loads(db.get('shopItems'))
   return jsonify({'data':items}), 200
 
+#TODO create filter and funciton for returned headphones
 @app.route('/orders', subdomain=sd.api, methods = ['GET'])
-def get_order() -> list:
+def get_order() -> list: 
   """Gibt die Liste (oder einen Ausschnitt) der Bestellungen aus.
   Pos 0 ist die neuste Bestellung.
   
@@ -282,11 +291,11 @@ def get_order() -> list:
   """
   start = request.args.get('start') or 0
   stop = request.args.get('stop') or -1
-  orders = [loads(order) for order in db.lrange('orders',start,stop)]
+  orders:list[Order] = [loads(order) for order in db.lrange('orders',start,stop)]
   return jsonify({'data':orders}), 200
 
 @app.route('/orders', subdomain=sd.api, methods = ['DELETE'])
-def get_order(id) -> list:
+def delete_order(id) -> list:
   """Löscht eine Bestellung aus der Datenbank.
   
   Params:
