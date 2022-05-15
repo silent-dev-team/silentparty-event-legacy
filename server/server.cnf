@@ -11,6 +11,9 @@ distinguished_name = req_distinguished_name
 
 x509_extensions    = x509_ext
 
+default_days    = 365
+days            = 365
+
 [ req_distinguished_name ]
 
 # Note that the following are in 'reverse order' to what you'd expect to see.

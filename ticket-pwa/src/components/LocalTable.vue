@@ -20,6 +20,7 @@
         sort-by="time"
         :sort-desc="true"
         class="elevation-12"
+        mobile-breakpoint="300"
       >
         <template v-slot:item.status="{ item }">
           <v-chip
@@ -64,9 +65,9 @@
     }),
     methods: {
       getColor (status:string) {
-        if (status === 'invalide') return 'red'
-        else if (status === 'rescan') return 'orange'
-        else return 'green'
+        if (status === 'checkin' || status === 'aktiviert') return 'green'
+        else if (status === 'rescan' || status === 'not active' || status === "bereits aktiviert") return 'orange'
+        else return 'red'
       },
     },
   })

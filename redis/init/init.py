@@ -7,15 +7,18 @@ from models import *
 
 r = redis.Redis()
 
-with open('./redis/init/init.json') as f:
-  j = json.loads(f.read())
+with open('./redis/init/items.json') as f:
+  items = json.loads(f.read())
 
-for id, content in j['tickets'].items():
+with open('./redis/init/tickets.json') as f:
+  tickets = json.loads(f.read())
+
+for id, content in tickets.items():
   r.hset('ticket:'+id,mapping=content)
 
 #items = dumps(objList(j['items'],ShopItem))
 
 r.mset({
-  "shopItems": json.dumps(j['items'])
+  "shopItems": json.dumps(items)
 })
 print('Fertig')

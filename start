@@ -1,17 +1,5 @@
 #! /bin/bash
 
-dir=( kasse ticket-pwa )
-
-if $1 == 'build'; then
-    for d in "${dir[@]}"
-    do 
-        cd $d
-        npm install
-        npm run build
-        cd ..
-    done
-fi
-
 redis-server ./redis/redis.conf &
 #sh backup_loop.sh &
 cd server

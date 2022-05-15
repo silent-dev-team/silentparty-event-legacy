@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import List, Dict
 from datetime import datetime
 
 
@@ -23,9 +22,10 @@ class OrderPos:
 
 @dataclass
 class Order:
+  id: int
   sum: float
-  items: list
+  items: list[OrderPos]
   timestamp: datetime
   
-def objList(objs:List[dict],T:type) -> list:
+def objList(objs:list[dict],T:type) -> list:
   return [T(**obj) for obj in objs]

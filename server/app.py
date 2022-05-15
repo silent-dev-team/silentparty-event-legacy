@@ -3,7 +3,7 @@ import re
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
 from datetime import datetime
-import redis, json, sys, os
+import redis, json, sys, os, uuid
 from dotenv import load_dotenv
 from pickle import loads, dumps
 from models import *
@@ -41,6 +41,12 @@ class Entry:
 
 ### FUNCS ###
 
+def decode(b_obj:list or dict):
+  if type(b_obj) == list:
+    return [bytes(e).decode() for e in b_obj]
+  if type(b_obj) == dict:
+    return {bytes(k).decode():bytes(v).decode() for k,v in b_obj.items()}
+  return b_obj
 
 ### INSTANCES ###
 
@@ -182,71 +188,76 @@ def get_salt():
 
 @app.route('/tickets', subdomain=sd.api, methods = ['GET'])
 def get_tickets():
-  tickets = [ticket.decode() for ticket in db.keys('ticket:*')]
-  filtered_tickets = [] if len(request.args) > 0 else tickets
+  idfy = lambda key: key.split(':')[1]
+  ticket_keys = [ticket.decode() for ticket in db.keys('ticket:*')]
+  filtered_tickets = [] if len(request.args) > 0 else ticket_keys
   for k, v in request.args.to_dict().items():
-    for ticket in tickets:
-      hash = db.hget(ticket,k)
+    for id in ticket_keys:
+      hash = db.hget(id,k)
       if not hash:
         continue
       if hash.decode() == v:
-        filtered_tickets+=[ticket]
-  tickets = list(dict.fromkeys(filtered_tickets))
+        filtered_tickets+=[id]
+  ticket_keys = list(dict.fromkeys(filtered_tickets))
+  tickets = {idfy(key):decode(db.hgetall(key)) for key in ticket_keys}
   return jsonify({
       'data':tickets
     }), 200
 
-@app.route('/tickets/<id>', subdomain=sd.api, methods = ['GET'])
-def get_ticket(id): 
+@app.route('/tickets/<id>/<mutation>', subdomain=sd.api, methods = ['GET','PATCH'])
+def ticket(id:str, mutation:str):
+  CHECKIN:str =  mutation == 'checkin'
+  ACTIVATION:str = mutation == 'activate'
+  hash:str = None
+  now:str = str(datetime.now().isoformat())
+  
+  if request.method == 'GET':
+    try: 
+      hash = request.args.get('hash')
+    except:
+      return jsonify({'error':'no hash'}), 400
+  elif request.method == 'PATCH':
+    try: 
+      hash = request.get_json()['hash']
+    except:
+      return jsonify({'error':'no hash'}), 400
+  else:
+    return jsonify({'error':'method not allowed'}), 405
+  
   ticket_b = db.hgetall('ticket:'+str(id))
-  ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
-  return jsonify({'data':ticket}), 200
-
-#in progress
-@app.route('/tickets/<id>', subdomain=sd.api, methods = ['PATCH'])
-def ticket_checkin(id):
-  hash = None
-  try: 
-    hash = request.get_json()['hash']
-  except:
-    return jsonify({'error':'no hash'}), 400
-  ticket_b = db.hgetall('ticket:'+str(id))
-  ticket = {k.decode(): v.decode() for k,v in ticket_b.items()}
+  if len(ticket_b) == 0:
+    return jsonify({'error':'no ticket'}), 404
+  ticket = decode(ticket_b)
   if ticket['hash'] != hash:
     return jsonify({'error':'invalid hash'}), 400
-  db.hset(
-    'ticket:'+str(id), 
-    'checkin', str(datetime.now().isoformat())
-  )
-  db.hset(
-    'ticket:'+str(id),
-    'checked', '1'
-  )
+  
+  if ACTIVATION:
+    if ticket['activeted'] == '1':
+      return jsonify({'error':'already activated','data':ticket}), 200
+    if request.method == 'PATCH':
+      db.hset(
+        'ticket:'+str(id),
+        'activation_time', now
+      )
+      db.hset(
+        'ticket:'+str(id),
+        'activeted', '1'
+      )
+  if CHECKIN:
+    if ticket['activeted'] == '0':
+      return jsonify({'error':'ticket not activeted','data':ticket}), 200
+    if ticket['checked'] != '0':
+      return jsonify({'error':'ticket already checked','data':ticket}), 208
+    if request.method == 'PATCH':
+      db.hset(
+        'ticket:'+str(id), 
+        'checkin_time', now
+      )
+      db.hset(
+        'ticket:'+str(id),
+        'checked', '1'
+      )
   return jsonify({'data':ticket}), 200
-
-#legacy
-@app.route('/legacy/tickets/<id>', subdomain=sd.api, methods = ['PUT', 'GET']) 
-def tickets_checkin_legacy(id):
-  if id not in test:
-    return jsonify({
-      'id':id,
-      'valid':False,
-      'data': None
-    }), 400
-  data = request.get_json() or {}
-  checkin:bool = False
-  if request.method == 'PUT' and 'checkin' in data:
-    checkin = data['checkin'] == True
-  card = dict(test[id])
-  if not card['checked'] and checkin:
-    card['time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    test[id] = dict(card)
-    test[id]['checked'] = True
-  return jsonify({
-      'id':id,
-      'valid':True,
-      'data':card
-    }), 200
 
 @app.route('/shopItems', subdomain=sd.api, methods = ['GET'])
 def get_shopItems():
@@ -270,9 +281,30 @@ def get_order() -> list:
       list: Liste der Bestellungen
   """
   start = request.args.get('start') or 0
-  stop = request.args.get('stop') or db.llen('orders')
+  stop = request.args.get('stop') or -1
   orders = [loads(order) for order in db.lrange('orders',start,stop)]
   return jsonify({'data':orders}), 200
+
+@app.route('/orders', subdomain=sd.api, methods = ['DELETE'])
+def get_order(id) -> list:
+  """Löscht eine Bestellung aus der Datenbank.
+  
+  Params:
+      id: ID der Bestellung
+  Returns:
+      list: Liste der Bestellungen
+  """
+  length = db.llen('orders')
+  for i in range(0,length,100):
+    chunk:dict[str,Order] = {loads(order).id:order for order in db.lrange('orders',i,i+99)}
+    if id in chunk:
+      order:Order = loads(chunk[id])
+      db.lrem('orders',1,chunk[id])
+      return jsonify({
+        'message':'order deleted',
+        'data':order
+      }), 200
+  return jsonify({'error':f'order {id} not found'}), 200
 
 @app.route('/orders', subdomain=sd.api, methods = ['POST'])
 def new_order():
@@ -282,6 +314,7 @@ def new_order():
       dict('success':bool): Vorgang erfolgreich?
   """
   data:dict = request.get_json()
+  data.update({'id':str(uuid.uuid4())})
   data.update({'timestamp': datetime.now()})
   try:
     items = [OrderPos(**item) for item in data['items']]
@@ -293,7 +326,7 @@ def new_order():
   except TypeError:
     return jsonify({'success':False, 'message':'Schema Order nicht korrekt'}), 200
   db.lpush("orders",dumps(order))
-  return jsonify({'success': True}), 200
+  return jsonify({'success': True,'data':data}), 200
   
 
 ### OPTIONS ###

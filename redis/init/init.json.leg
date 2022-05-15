@@ -1,0 +1,175 @@
+{
+  "items" : [
+    {
+      "id": 1,
+      "name": "HP",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": true,
+      "reference": null,
+      "tags": ["hp"]
+    },
+    {
+      "id": 2,
+      "name": "Angebot",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": false,
+      "reference": null,
+      "tags": ["hp"]
+    },
+    {
+      "id": 10,
+      "name": "VVK",
+      "img": "cup.jpg",
+      "price": 5,
+      "deposit": false,
+      "reference": null,
+      "tags": ["vvk"]
+    },
+    {
+      "id": 11,
+      "name": "AK",
+      "img": "cup.jpg",
+      "price": 7,
+      "deposit": false,
+      "reference": null,
+      "tags": ["ak"]
+    },
+    {
+      "id": 100,
+      "name": "Cup",
+      "img": "cup.jpg",
+      "price": 2,
+      "deposit": true,
+      "reference": null,
+      "tags": ["bar"]
+    },
+    {
+      "id": 101,
+      "name": "Bier",
+      "img": "bier.jpg",
+      "price": 2.5,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    },
+    {
+      "id": 102,
+      "name": "Cola",
+      "img": "cola.jpg",
+      "price": 1.5,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    },
+    {
+      "id": 103,
+      "name": "Fanta",
+      "img": "fanta.jpg",
+      "price": 1.5,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    },
+    {
+      "id": 104,
+      "name": "Wasser",
+      "img": "wasser.jpg",
+      "price": 1,
+      "deposit": false,
+      "reference": 100,
+      "tags": ["bar"]
+    }
+  ],
+  "tickets": {
+    "1000": {
+      "hash": "EYzV7Vt8AqQj5ct4tycHdGNO0nFeyMo+NvGfaZwUUPE=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "1",
+      "activation_time":"",
+      "vvk": "1"
+    },
+    "1001": {
+      "hash": "jZ1fnMI3YKGcrjK1/j7DsnVccXY3xAJ8oeF7zq6y9l0=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "1",
+      "activation_time":"",
+      "vvk": "1"
+    },
+    "1002": {
+      "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "1",
+      "activation_time":"",
+      "vvk": "1"
+    },
+    "1003": {
+      "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "1",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1004": {
+      "hash": "HZa7hC4tXoDIXujvAPjkrQdaTcI3zezfGx+i/4envWU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "1",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1005": {
+      "hash": "awwboBNcr53HLhY4yhHJ2fsWJXfwBwuORDSVnsShoxs=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "1",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1006": {
+      "hash": "tuKe7qzy76CMrwTPq7qvziT/WfVRgSyzVL3BOjTbRxU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1007": {
+      "hash": "GIdl8TjUdkWVwjZvbhOAOOingV/SInFTgagxEkx111I=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1008": {
+      "hash": "1CNSVqlbccSKFJdfhRL7ewjcjvk2QTWHLWFC+66AYQU=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1009": {
+      "hash": "0h4mZ4dJm6hPjWXo73WjMICTYPFIOVNLD73eWq0esMk=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    },
+    "1010": {
+      "hash": "rseMYIz7Nu36JO0XvwQo6I28SKcaYuVkNogTUdoscdw=",
+      "checked": "0",
+      "checkin_time": "",
+      "activeted": "0",
+      "activation_time":"",
+      "vvk": "0"
+    }
+  }
+}
