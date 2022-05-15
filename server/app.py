@@ -1,3 +1,5 @@
+from cProfile import label
+import re
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
 from datetime import datetime
@@ -83,8 +85,72 @@ def ticket_index():
 def ticket_pwa(path):
   return send_from_directory('../ticket-pwa/dist',path)
 
+### STATS ###
+def increaseVal(name,key):
+  value = db.hget(name,key)
+  if not value:
+    value = 0
+  else:
+    value = int(value.decode())
+  db.hset(name,key,str(value+1))
+
+def updateDJs(DJs):
+  db.hset("stat:djs","json",json.dumps(DJs))
+
+def publishDJs():
+  sse.publish(json.loads(db.hget("stat:djs","json").decode()),"djs")
+  
+def updateRollTexts(rolltext):
+  db.hset("stat:rolltext","json",json.dumps(rolltext))
+
+def publishRollTexts():
+  sse.publish(json.loads(db.hget("stat:rolltext","json").decode()),"rolltext")
+
+def countTicketSell():
+  increaseVal("stat:user","sells")
+
+def countTicketActivate():
+  increaseVal("stat:user","checked")
+  
+def countHeadphoneReturn():
+  increaseVal("stat:user","returned")
+
+def publishUserstats():
+  stats = {}
+  data = db.hgetall("stat:user")
+  for k in data:
+    stats[k.decode()] = data[k].decode()
+  sse.publish(stats,"userstats")
+
+def syncStats():
+  tickets = []
+  ticketNames = [ticket.decode() for ticket in db.keys('ticket:*')]
+  for ticketn in ticketNames:
+    data = db.hgetall(ticketn)
+    tick = {}
+    for k in data.keys():
+      tick[k.decode()] = data[k].decode()
+    tickets.append(tick)
+  print(tickets)
+  db.hset("stat:user","sells",len(list(filter(lambda t: True if t["activeted"] != "0" else False, tickets) )))
+  db.hset("stat:user","checked",len(list(filter(lambda t:True if t["checked"] != "0" else False, tickets))))
+
+@app.route('/djs', subdomain=sd.api, methods = ['POST'])
+def handleDJ():
+  updateDJs(request.json)
+  publishDJs()
+  return "{}"
+
+@app.route('/refresh', subdomain=sd.api)
+def test():
+  syncStats()
+  publishUserstats()
+  publishDJs()
+  return "{}"
+
 
 ### API ###
+
 
 @app.route('/ping', subdomain=sd.api)
 def ping():
