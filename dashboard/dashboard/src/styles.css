@@ -2,8 +2,9 @@
 body{
     margin: 0px !important;
     padding: 0;
-    font-family: "Bebas Neue";
+    font-family: "Bebas Neue" !important;
     font-weight: 700;
+    background-color: black;
 }
 .Grün{
     color: #00FF38;
@@ -47,3 +48,6 @@ body{
     flex-direction: row;
     justify-content: space-between;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

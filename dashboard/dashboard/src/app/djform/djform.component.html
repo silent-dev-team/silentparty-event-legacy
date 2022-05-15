@@ -1,0 +1,53 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="section" formGroupName="rot">
+        <h2 class="Rot">Roter DJ</h2>
+        <div class="column">
+            <label> Name </label>
+            <input type="text" placeholder="name" formControlName="name">
+        </div>
+        <div class="column">
+            <label> Instagram </label>
+            <input type="text" placeholder="Instagram" formControlName="instagram">
+        </div>
+        <div class="column">
+            <label> Musik </label>
+            <input type="text" placeholder="music" formControlName="music">
+        </div>
+    </div>
+
+    <div class="section" formGroupName="grun">
+        <h2 class="Grün">Grüner DJ</h2>
+        <div class="column">
+            <label> Name </label>
+            <input type="text" placeholder="name" formControlName="name">
+        </div>
+        <div class="column">
+            <label> Instagram </label>
+            <input type="text" placeholder="Instagram" formControlName="instagram">
+        </div>
+        <div class="column">
+            <label> Musik </label>
+            <input type="text" placeholder="music" formControlName="music">
+        </div>
+    </div>
+
+    <div class="section" formGroupName="blau">
+        <h2 style="color: rgb(72, 0, 255);">Blauer DJ</h2>
+        <div class="column">
+            <label> Name </label>
+            <input type="text" placeholder="name" formControlName="name">
+        </div>
+        <div class="column">
+            <label> Instagram </label>
+            <input type="text" placeholder="Instagram" formControlName="instagram">
+        </div>
+        <div class="column">
+            <label> Musik </label>
+            <input type="text" placeholder="music" formControlName="music">
+        </div>
+    </div>
+    <div class="section column Rot">
+        <span *ngIf="error" style="font-size:20px; align-self: center;">All fields are requierd!!!</span>
+        <input style="width: 100%;" type="submit">
+    </div>
+</form>

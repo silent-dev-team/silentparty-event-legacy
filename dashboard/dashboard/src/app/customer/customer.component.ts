@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SseHandlerService } from '../sse-handler.service';
 
 @Component({
   selector: 'app-customer',
@@ -7,10 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerComponent implements OnInit {
 
-  constructor() { }
-  current=300;
-  sum = 430;
+  constructor(private data: SseHandlerService) { }
+  current=0;
+  sum = 0;
   ngOnInit(): void {
+    this.data.UserStatsObserv.subscribe((data)=>{
+      console.log(data);
+      this.current = data.sells - data.checked;
+      this.sum = data.sells;
+    })
   }
 
 }

@@ -1,0 +1,35 @@
+:host{
+    background-color: black;
+    width: 100vw;
+}
+input{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    margin: 5px;
+    padding: 6px;
+    font-size: 23px;
+    font-family: "bebas neue";
+    border: none !important;
+    outline: none !important;
+    caret-color: black;
+    
+}
+input:focus-visible{
+    box-shadow: 2px 2px 30px  rgba(255, 0, 0, 0.456);
+    
+}
+label{
+    color: white;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+}
+.section{
+    padding: 50px;
+}
+h2{
+    font-size: 50px;
+    margin-top: 0px;
+}

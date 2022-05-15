@@ -39,20 +39,20 @@ export class BannerComponent implements OnInit,AfterViewInit {
       wrapper.appendChild(node);
     }
     var target:any = this.test.nativeElement.appendChild(wrapper);
-    wrapper.style.transform ="translateX(-"+wrapper.offsetWidth+"px)";
+    wrapper.style.transform ="translateX("+wrapper.offsetWidth+"px)";
 
 
-    setTimeout(this.animateScrollOut.bind(this),this.lastOffset/0.04);
+    setTimeout(this.animateScrollOut.bind(this),this.lastOffset/0.1);
     this.lastOffset = target.clientWidth;
   }
   animateScrollOut(){
     var all = this.test.nativeElement.querySelectorAll(".rolltextwrapper");
     var target:any = all[all.length-1];
-    var duration = (target.offsetWidth*2 + document.body.offsetWidth)/0.04;
+    var duration = (target.offsetWidth*2 + document.body.offsetWidth)/0.1;
     console.log(duration);
     target.style.transition = "all linear "+duration+"ms";
 
-    target.style.transform ="translateX("+(target.offsetWidth + document.body.offsetWidth)+"px)";
+    target.style.transform ="translateX(-"+(target.offsetWidth + document.body.offsetWidth)+"px)";
     target.addEventListener("transitionend",function(e:any){e.target.remove()});
     this.animateScrollIn();
   }

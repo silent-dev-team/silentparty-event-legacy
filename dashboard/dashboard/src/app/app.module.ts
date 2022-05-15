@@ -10,21 +10,33 @@ import { BannerComponent } from './banner/banner.component';
 import { IntroductionComponent } from './introduction/introduction.component';
 import { OkdialogComponent } from './okdialog/okdialog.component';
 import { CostsComponent } from './costs/costs.component';
+import { HttpClientModule } from '@angular/common/http';
+import { DjformComponent } from './djform/djform.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+
+import { MainviewComponent } from './mainview/mainview.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DjsComponent,
     CustomerComponent,
+    MainviewComponent,
     ClockComponent,
     BannerComponent,
     IntroductionComponent,
     OkdialogComponent,
-    CostsComponent
+    CostsComponent,
+    DjformComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [{
     provide: LOCALE_ID,
