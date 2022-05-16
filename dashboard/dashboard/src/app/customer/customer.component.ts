@@ -14,8 +14,8 @@ export class CustomerComponent implements OnInit {
   ngOnInit(): void {
     this.data.UserStatsObserv.subscribe((data)=>{
       console.log(data);
-      this.current = data.sells - data.checked;
-      this.sum = data.sells;
+      this.current = data.checked - data.returned;
+      this.sum = data.checked;
     })
   }
 
