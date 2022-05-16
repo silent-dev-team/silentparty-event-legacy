@@ -21,13 +21,11 @@ SALT:str = os.getenv('SALT')
 
 class Subdomain:
   def __init__(self, local:bool=False):
-    self.api='api'
-    self.ticket='ticket'
-    self.kasse='kasse'
-    if local:
-      self.api=None
-      self.ticket=None
-      self.kasse=None
+    self.api        = 'api'    if not local else None
+    self.ticket     = 'ticket' if not local else None
+    self.kasse      = 'kasse'  if not local else None
+    self.dashboard  = 'dashboard'  if not local else None
+
 
 class Entry:
   def __init__(self, value:bool = False):
@@ -59,37 +57,26 @@ sd = Subdomain(LOCAL)
 
 entry = Entry(True)
 
-### STARTPAGE ###
+### DB-FUNCS ###
 
-@app.route('/')
-def localWebServer_index():
-  return redirect('index.html')
+def loadOrders(start:int=0,stop:int=-1,*args) -> list[Order] or list[int or str]:
+  if args:
+    return list(filter(lambda o: any(arg in o.__dict__.keys() for arg in args), loadOrders(start,stop)))
+  return [loads(order) for order in db.lrange('orders',start,stop)]
+    
+def getItemsFromOrder(orders:list[Order], id:int=None) -> list[OrderPos]:
+  if id:
+    return [item for item in getItemsFromOrder(orders) if item.id == id]
+  items = []
+  for order in orders:
+    items += order.items
+  return items
 
-@app.route('/<path:path>')
-def localWebServer_pwa(path):
-  return send_from_directory('../localWebServer/',path)
-
-
-### KASSE ###
-
-@app.route('/', subdomain=sd.kasse)
-def kasse_index():
-  return redirect('index.html')
-
-@app.route('/<path:path>',subdomain=sd.kasse)
-def kasse_pwa(path):
-  return send_from_directory('../kasse/dist',path)
-
-
-### TICKET ###
-
-@app.route('/', subdomain=sd.ticket)
-def ticket_index():
-  return redirect('index.html')
-
-@app.route('/<path:path>', subdomain=sd.ticket)
-def ticket_pwa(path):
-  return send_from_directory('../ticket-pwa/dist',path)
+def countItems(id) -> int:
+  count:int = 0
+  for item in getItemsFromOrder(loadOrders(), id):
+    count += int(item.number)
+  return count
 
 ### STATS ###
 def increaseVal(name,key):
@@ -117,6 +104,9 @@ def countTicketSell():
 
 def countTicketActivate():
   increaseVal("stat:user","checked")
+
+def countCurrentHeadphone():
+  increaseVal("stat:user","current")
   
 def countHeadphoneReturn():
   increaseVal("stat:user","returned")
@@ -143,31 +133,55 @@ def syncStats():
   print(tickets)
   db.hset("stat:user","sells",len(list(filter(lambda t: True if t["activeted"] != "0" else False, tickets) )))
   db.hset("stat:user","checked",len(list(filter(lambda t:True if t["checked"] != "0" else False, tickets))))
+  db.hset("stat:user","current",str(countItems(1)))
   db.hset("stat:user","returned","0")
 
-@app.route('/djs', subdomain=sd.api, methods = ['POST'])
-def handleDJ():
-  updateDJs(request.json)
-  publishDJs()
-  return "{}"
 
-@app.route('/rolltext', subdomain=sd.api, methods = ['POST'])
-def handleRollText():
-  updateRollTexts(request.json)
-  publishRollTexts()
-  return "{}"
+### ROUTES ###
 
-@app.route('/refresh', subdomain=sd.api)
-def test():
-  syncStats()
-  publishUserstats()
-  publishDJs()
-  publishRollTexts()
-  return "{}"
+### STARTPAGE ###
+
+@app.route('/')
+def localWebServer_index():
+  return redirect('index.html')
+
+@app.route('/<path:path>')
+def localWebServer_pwa(path):
+  return send_from_directory('../localWebServer/',path)
+
+### DASHBOARD ###
+
+@app.route('/', subdomain=sd.dashboard)
+def dashboard_index():
+  return redirect('index.html')
+
+@app.route('/<path:path>', subdomain=sd.dashboard)
+def dashboard_pwa(path):
+  return send_from_directory('../dashboard/dashboard/dist/dashboard',path)
+
+### KASSE ###
+
+@app.route('/', subdomain=sd.kasse)
+def kasse_index():
+  return redirect('index.html')
+
+@app.route('/<path:path>',subdomain=sd.kasse)
+def kasse_pwa(path):
+  return send_from_directory('../kasse/dist',path)
+
+
+### TICKET ###
+
+@app.route('/', subdomain=sd.ticket)
+def ticket_index():
+  return redirect('index.html')
+
+@app.route('/<path:path>', subdomain=sd.ticket)
+def ticket_pwa(path):
+  return send_from_directory('../ticket-pwa/dist',path)
 
 
 ### API ###
-
 
 @app.route('/ping', subdomain=sd.api)
 def ping():
@@ -196,6 +210,26 @@ def get_salt():
   return jsonify({
     'salt': SALT
   }), 200
+
+@app.route('/djs', subdomain=sd.api, methods = ['POST'])
+def handleDJ():
+  updateDJs(request.json)
+  publishDJs()
+  return "{}"
+
+@app.route('/rolltext', subdomain=sd.api, methods = ['POST'])
+def handleRollText():
+  updateRollTexts(request.json)
+  publishRollTexts()
+  return "{}"
+
+@app.route('/refresh', subdomain=sd.api)
+def test():
+  syncStats()
+  publishUserstats()
+  publishDJs()
+  publishRollTexts()
+  return "{}"
 
 @app.route('/tickets', subdomain=sd.api, methods = ['GET'])
 def get_tickets():
@@ -281,14 +315,21 @@ def get_shopItems():
   return jsonify({'data':items}), 200
 
 
-def loadOrders(start:int=0,stop:int=-1,**kwargs) ->list[Order]:
-  def keyFilter(order:Order):
-    pos:OrderPos
-    for pos in order.items:
-      for k, v in kwargs.items():
-        pass
-  orders:list[Order] = [loads(order) for order in db.lrange('orders',start,stop)]
-    
+@app.route('/orders/items', subdomain=sd.api, methods = ['GET'])
+def get_order_items() -> list: 
+  items = getItemsFromOrder(loadOrders())
+  return jsonify({'data':items}), 200
+
+@app.route('/orders/items/<id>', subdomain=sd.api, methods = ['GET'])
+def get_order_items_id(id:int) -> list:
+  id = int(id)
+  items = getItemsFromOrder(loadOrders(),id)
+  return jsonify({'data':items}), 200
+
+@app.route('/orders/items/<id>/count', subdomain=sd.api, methods = ['GET'])
+def count_order_items(id:int) -> list: 
+  id = int(id)
+  return jsonify({'data':{'count':countItems(id)}}), 200
 
 #TODO create filter and funciton for returned headphones
 @app.route('/orders', subdomain=sd.api, methods = ['GET'])
@@ -304,7 +345,7 @@ def get_order() -> list:
   """
   start = request.args.get('start') or 0
   stop = request.args.get('stop') or -1
-  orders:list[Order] = [loads(order) for order in db.lrange('orders',start,stop)]
+  orders:list[Order] = loadOrders(start,stop)
   return jsonify({'data':orders}), 200
 
 @app.route('/orders', subdomain=sd.api, methods = ['DELETE'])
