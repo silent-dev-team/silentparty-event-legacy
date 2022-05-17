@@ -121,6 +121,9 @@ def countTicketActivate():
 def countHeadphoneReturn():
   increaseVal("stat:user","returned")
 
+def getReturnedFromOrders():
+  pass
+
 def publishUserstats():
   stats = {}
   data = db.hgetall("stat:user")
@@ -276,6 +279,16 @@ def get_shopItems():
   """
   items = json.loads(db.get('shopItems'))
   return jsonify({'data':items}), 200
+
+
+def loadOrders(start:int=0,stop:int=-1,**kwargs) ->list[Order]:
+  def keyFilter(order:Order):
+    pos:OrderPos
+    for pos in order.items:
+      for k, v in kwargs.items():
+        pass
+  orders:list[Order] = [loads(order) for order in db.lrange('orders',start,stop)]
+    
 
 #TODO create filter and funciton for returned headphones
 @app.route('/orders', subdomain=sd.api, methods = ['GET'])
