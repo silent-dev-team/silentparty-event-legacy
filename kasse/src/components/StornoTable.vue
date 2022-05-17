@@ -109,13 +109,18 @@ export default {
         })
         .then(res => res.json())
         .then(res => console.log(res))
-      setTimeout(() => {  window.location.reload() }, 500);
-    }
+      setTimeout(() => { this.load() }, 500);
+    },
+    load(){
+      this.fetchOrders().then(orders => {
+        this.orders = this.transform(orders)
+      })}
   },
   mounted() {
-    this.fetchOrders().then(orders => {
-      this.orders = this.transform(orders)
-    })
+    this.load()
+  },
+  created: function() {
+    this.$parent.$on('update', this.load());
   }
 }
 </script>

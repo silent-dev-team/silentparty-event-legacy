@@ -11,6 +11,11 @@ export default {
   components: {
     StornoTable
   },
+  methods: {
+    reload(){
+      this.$refs.StornoTable.load()
+    }
+  }
 }
 </script>
 

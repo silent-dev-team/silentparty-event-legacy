@@ -5,10 +5,10 @@
         xs="12" sm="6" md="4" lg="3" xl="2"
       >
         <div class="mx-auto my-3">
-        <Badge :id="item.id">
-          <ItemCard :id="item.id" actions />
-        </Badge>
-      </div>
+          <Badge :id="item.id">
+            <ItemCard :id="item.id" actions />
+          </Badge>
+        </div>
     </v-col>
   </v-row>
 </template>
