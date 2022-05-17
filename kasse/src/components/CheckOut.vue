@@ -71,16 +71,25 @@
             </v-item-group>
             
           </v-col>
-          <v-btn 
-            class="mt-5" 
-            :disabled="!ready"
-            width="300px" 
-            height="100px" 
-            color="success"
-            @click="checkout()"
-          >
-            <h1>FERTIG</h1>
-          </v-btn>
+          <v-dialog width="300px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs"
+                v-on="on" 
+                class="mt-5" 
+                :disabled="!ready"
+                width="300px" 
+                height="100px" 
+                color="success"
+              >
+                
+                <v-icon x-large>mdi-check</v-icon>
+              </v-btn>
+            </template>
+              <v-btn height="100px" x-large color="success" dark @click="checkout()">
+                <h1>Buchen</h1>
+              </v-btn>
+          </v-dialog>
         </center>
       </v-card>
     </v-dialog>
