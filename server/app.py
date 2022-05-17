@@ -294,7 +294,7 @@ def get_order() -> list:
   orders:list[Order] = [loads(order) for order in db.lrange('orders',start,stop)]
   return jsonify({'data':orders}), 200
 
-@app.route('/orders', subdomain=sd.api, methods = ['DELETE'])
+@app.route('/orders/<id>', subdomain=sd.api, methods = ['DELETE'])
 def delete_order(id) -> list:
   """Löscht eine Bestellung aus der Datenbank.
   

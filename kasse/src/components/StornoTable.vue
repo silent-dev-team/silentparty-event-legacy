@@ -1,19 +1,39 @@
 <template>
-  <div>
+  <v-card class="my-5 mx-auto" max-width="800px">
     <v-data-table
       :headers="headers"
       :items="orders"
       show-expand
+      single-expand
+      @click:row="expand"
     >
     <template v-slot:expanded-item="{ headers, item }">
       <td :colspan="headers.length">
-      <v-card class="mt-1 mb-3">
+      <v-card class="mt-1 mb-3 mx-auto" max-width="600px">
         <v-card-title>
           <span class="headline">{{item.id}}</span>
           <v-spacer></v-spacer>
-          <v-btn color="red" dark>
-            <v-icon>mdi-delete</v-icon>
-          </v-btn>
+          <v-dialog width="300px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs"
+                v-on="on" 
+                color="red" 
+                dark>
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="d-flex justify-space-around">
+                <span class="headline">Wirklich löschen?</span>
+              </v-card-title>
+              <v-card-actions class="pb-5 d-flex justify-space-around">
+                <v-btn color="red" dark @click="deleteOrder(item.id)">
+                  <v-icon>Löschen</v-icon>
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-card-title>
         <v-simple-table>
           <template v-slot:default>
@@ -42,7 +62,7 @@
       </td>
     </template>
     </v-data-table>
-  </div>
+  </v-card>
 </template>
 
 <script>
@@ -82,6 +102,14 @@ export default {
           timestamp: order.timestamp
         }
       })
+    },
+    deleteOrder(id) {
+      fetch(this.api+this.route + '/' + id, {
+          method: 'DELETE',
+        })
+        .then(res => res.json())
+        .then(res => console.log(res))
+      setTimeout(() => {  window.location.reload() }, 500);
     }
   },
   mounted() {
