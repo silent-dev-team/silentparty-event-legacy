@@ -11,7 +11,7 @@
     </v-card>
     <v-card 
       elevation="0"
-      @click="append(item.deposit ? -1 : 1)"
+      @click="append(item.id == 100 ? -1 : 1)"
     >
       <v-img
         :src="$store.getters.getImg(item.img)"
