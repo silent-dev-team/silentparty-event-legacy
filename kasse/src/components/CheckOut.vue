@@ -101,6 +101,7 @@
 <script>
 import OrderDrawer from '@/components/OrderDrawer.vue'
 import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+import router from '@/router'
 
 export default {
   name: 'CheckOut',
@@ -115,6 +116,8 @@ export default {
     return {
       showOrder:false,
       display: '0',
+      count: 0,
+      countLimit: 4,
       mapping : {
         '11': '7',
         '21': '8',
@@ -156,6 +159,12 @@ export default {
     onKey(e){
       if(e === 'C'){
         this.display = '0'
+        this.count++
+        if (this.count === this.countLimit) {
+          this.count = 0
+          this.close()
+          router.push('/history')
+        }
       } else if(this.display === '0'){
         this.display = e
       } else {
