@@ -26,8 +26,22 @@
           <h1>{{sum}}€</h1>
         </v-toolbar>
         <center>
-          <h1 class="ma-2">{{fix(sum-cent)}}€</h1>
-          <h1 class="ma-2">{{fix(cent)}}€</h1>
+          <v-card width="300px" elevation="0">
+              <v-row>
+                <v-col class="text-right my-auto">Rück:</v-col>
+                <v-col class="text-right my-auto">
+                  <h1>{{fix(sum-cent)}}€</h1>
+                </v-col>
+                <v-col/>
+              </v-row>
+              <v-row>
+                <v-col class="text-right my-auto">Kunde:</v-col>
+                <v-col class="text-right my-auto">
+                  <h1>{{fix(cent)}}€</h1>
+                </v-col>
+                <v-col/>
+              </v-row>
+          </v-card>
           <v-col
             v-for="m in 4"
             :key="m"
@@ -71,6 +85,9 @@
       </v-card>
     </v-dialog>
 </template>
+
+<style scoped>
+</style>
 
 <script>
 import OrderDrawer from '@/components/OrderDrawer.vue'
