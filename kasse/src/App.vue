@@ -7,6 +7,7 @@
     />
     <v-main>
       <CheckOut v-model="checkout" />
+      <Chip />
       <div>
         <router-view />
       </div>
@@ -43,6 +44,7 @@ import OrderList from '@/components/OrderList.vue'
 import OrderDrawer from '@/components/OrderDrawer.vue'
 import CheckOut from '@/components/CheckOut.vue'
 import EntryBtn from '@/components/EntryBtn.vue'
+import Chip from './components/Chip.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
 export default {
@@ -51,7 +53,8 @@ export default {
     OrderList,
     OrderDrawer,
     CheckOut,
-    EntryBtn
+    EntryBtn,
+    Chip
   },
 
   data: () => ({
@@ -66,10 +69,7 @@ export default {
     ]),
     ...mapGetters([
       'sum'
-    ]),
-    border(){
-      return this.showOrder ? 256 : 0
-    }
+    ])
   },
   methods: {
     ...mapActions([
@@ -109,6 +109,19 @@ export default {
 }
 .pulse:hover {
   animation: none;
+}
+
+.btn-chip{
+  position: absolute;
+  bottom: 85px;
+  right: 20px;
+}
+
+.btn-chip-checkout{
+  position: absolute;
+  z-index: 200;
+  left: 60%;
+  top: 80px;
 }
 
 @-webkit-keyframes pulse {

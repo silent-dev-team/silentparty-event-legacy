@@ -83,7 +83,7 @@ export default {
       }
       this.appendOrder({
         id: this.id,
-        number: n 
+        number: n
       })
     },
     fix(str){

@@ -72,7 +72,7 @@ export default {
     }.bind(that), false)
 
     setInterval(() => {
-        this.refetch()
+        this.fetch()
       }, 60*1000
     )
   },

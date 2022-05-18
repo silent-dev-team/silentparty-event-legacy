@@ -5,6 +5,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
+      <Chip checkout/>
       <OrderDrawer v-model="showOrder"/>
       <v-card justify="center">
         <v-toolbar
@@ -28,7 +29,7 @@
         <center>
           <v-card width="300px" elevation="0">
               <v-row>
-                <v-col class="text-right my-auto">Rück:</v-col>
+                <v-col class="text-right my-auto">Diff:</v-col>
                 <v-col class="text-right my-auto">
                   <h1>{{fix(sum-cent)}}€</h1>
                 </v-col>
@@ -100,13 +101,15 @@
 
 <script>
 import OrderDrawer from '@/components/OrderDrawer.vue'
+import Chip from '@/components/Chip.vue'
 import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
 import router from '@/router'
 
 export default {
   name: 'CheckOut',
   components: {
-    OrderDrawer
+    OrderDrawer,
+    Chip
   },
 
   props: [
@@ -135,6 +138,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'order'
+    ]),
     ...mapGetters([
       'sum'
     ]),
@@ -142,7 +148,7 @@ export default {
       return this.display/100
     },
     ready() {
-      return (this.sum > 0 && this.cent >= this.sum) || this.sum < 0
+      return ((this.sum > 0 || this.order.length !== 0) && this.cent >= this.sum) || this.sum < 0
     }
   },
   methods: {

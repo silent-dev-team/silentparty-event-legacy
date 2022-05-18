@@ -118,9 +118,6 @@ export default {
   },
   mounted() {
     this.load()
-  },
-  created: function() {
-    this.$parent.$on('update', this.load());
   }
 }
 </script>
