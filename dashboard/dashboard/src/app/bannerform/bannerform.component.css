@@ -1,0 +1,51 @@
+:host{
+    color:white
+}
+:host{
+    background-color: black;
+    width: 100vw;
+}
+input{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    margin:0 5px;
+    padding: 6px;
+    font-size: 23px;
+    font-family: "bebas neue";
+    outline: none !important;
+    border: none;
+    caret-color: black;
+}
+form{
+    display: flex;
+    align-items: stretch;
+}
+button{
+    color: white;
+    background-color: black;
+    border: white 1px solid;
+    border-radius: 2px;
+    cursor: pointer;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+}
+input:focus-visible{
+    box-shadow: 2px 2px 30px  rgba(255, 0, 0, 0.456);
+}
+label{
+    color: white;
+}
+.column{
+    display: flex;
+    flex-direction: column;
+}
+.section{
+    padding: 50px;
+}
+h2{
+    font-size: 50px;
+    margin-top: 0px;
+}

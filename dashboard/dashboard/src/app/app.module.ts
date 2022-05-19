@@ -14,8 +14,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { DjformComponent } from './djform/djform.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
-
+import {MatIconModule} from '@angular/material/icon';
 import { MainviewComponent } from './mainview/mainview.component';
+import { BannerformComponent } from './bannerform/bannerform.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MainviewComponent } from './mainview/mainview.component';
     IntroductionComponent,
     OkdialogComponent,
     CostsComponent,
-    DjformComponent
+    DjformComponent,
+    BannerformComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,8 @@ import { MainviewComponent } from './mainview/mainview.component';
     HttpClientModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   providers: [{
     provide: LOCALE_ID,

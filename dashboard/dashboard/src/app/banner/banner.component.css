@@ -6,6 +6,12 @@
     left:0;
     right: 0;
     overflow: hidden;
-    font-size: 2.8vw;
     background-color: black;
+    margin: 0;
+    padding: 0;
+}
+
+#banner{
+    height: 3.4vw;
+
 }

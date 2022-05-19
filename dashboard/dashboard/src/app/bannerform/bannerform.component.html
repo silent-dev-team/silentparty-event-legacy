@@ -1,0 +1,13 @@
+<p>bannerform works!</p>
+
+
+<div *ngFor="let text of texts; let i = index;">
+    {{text}}  <mat-icon (click)="remove(i)">delete_forever</mat-icon>
+</div>
+<div>
+    <form (ngSubmit)="submit()">
+        <input [(ngModel)]="add" name="add">
+        <button type="submit" class="btn btn-primary" > <mat-icon>add</mat-icon> </button>
+    </form>
+
+</div>

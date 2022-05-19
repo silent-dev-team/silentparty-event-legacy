@@ -1,10 +1,21 @@
 [
   {
+    "id": 0,
+    "name": "Chip",
+    "img": "cup.jpg",
+    "price": 0,
+    "chip":false,
+		"deposit": false,
+    "reference": null,
+    "tags": []
+  },
+  {
     "id": 1,
     "name": "HP",
     "img": "cup.jpg",
     "price": 5,
-    "deposit": true,
+    "chip":false,
+		"deposit": true,
     "reference": null,
     "tags": ["hp"]
   },
@@ -13,7 +24,8 @@
     "name": "Angebot",
     "img": "cup.jpg",
     "price": 5,
-    "deposit": false,
+    "chip":false,
+		"deposit": false,
     "reference": null,
     "tags": ["hp"]
   },
@@ -22,7 +34,8 @@
     "name": "VVK",
     "img": "cup.jpg",
     "price": 5,
-    "deposit": false,
+    "chip":false,
+		"deposit": false,
     "reference": null,
     "tags": ["vvk"]
   },
@@ -31,7 +44,8 @@
     "name": "AK",
     "img": "cup.jpg",
     "price": 7,
-    "deposit": false,
+    "chip":false,
+		"deposit": false,
     "reference": null,
     "tags": ["ak"]
   },
@@ -40,7 +54,8 @@
     "name": "Cup",
     "img": "cup.jpg",
     "price": 2,
-    "deposit": true,
+    "chip":false,
+		"deposit": true,
     "reference": null,
     "tags": ["bar"]
   },
@@ -49,7 +64,8 @@
     "name": "Bier",
     "img": "bier.jpg",
     "price": 2.5,
-    "deposit": false,
+    "chip":true,
+		"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   },
@@ -58,7 +74,8 @@
     "name": "Cola",
     "img": "cola.jpg",
     "price": 1.5,
-    "deposit": false,
+    "chip":true,
+		"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   },
@@ -67,7 +84,8 @@
     "name": "Fanta",
     "img": "fanta.jpg",
     "price": 1.5,
-    "deposit": false,
+    "chip":true,
+		"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   },
@@ -76,7 +94,8 @@
     "name": "Wasser",
     "img": "wasser.jpg",
     "price": 1,
-    "deposit": false,
+    "chip":true,
+		"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   }

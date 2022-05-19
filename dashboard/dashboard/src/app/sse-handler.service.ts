@@ -10,18 +10,21 @@ export class SseHandlerService {
   UserStatsObserv:Observable<Userstats>
   UserStatsDJS:Observable<DJs>
   UserStatsInfos:Observable<Infos>
-  
+  rolltextObserv:Observable<string[]>
   constructor(private http: HttpClient) { 
     console.log("constructed");
     let eventSource = new EventSource("https://sp/stream");
     this.UserStatsObserv = new Observable((observer) => {
-      eventSource.addEventListener("userstats",(e)=>observer.next(JSON.parse(e.data)));
+      eventSource.addEventListener("userstats",(e:any)=>observer.next(JSON.parse(e.data)));
     });
     this.UserStatsDJS = new Observable((observer) => {
-      eventSource.addEventListener("djs",(e)=>observer.next(JSON.parse(e.data)));
+      eventSource.addEventListener("djs",(e:any)=>observer.next(JSON.parse(e.data)));
     });
     this.UserStatsInfos = new Observable((observer) => {
-      eventSource.addEventListener("infos",(e)=>observer.next(JSON.parse(e.data)));
+      eventSource.addEventListener("infos",(e:any)=>observer.next(JSON.parse(e.data)));
+    });
+    this.rolltextObserv = new Observable((observer) => {
+      eventSource.addEventListener("rolltext",(e:any)=>observer.next(JSON.parse(e.data)));
     });
     setTimeout(()=>this.refreshAll(),400);
   }
@@ -30,6 +33,9 @@ export class SseHandlerService {
   updateDJS(djs:DJs){
     	this.http.post("https://api.sp/djs",djs).subscribe();
   }
+  updateBanner(banner:string[]){
+    this.http.post("http://localhost:5000/rolltext",banner).subscribe();
+}
 
   refreshAll(){
     this.http.get("https://api.sp/refresh").subscribe();
