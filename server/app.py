@@ -101,15 +101,19 @@ def publishRollTexts():
 
 def countTicketActivate():
   increaseVal("stat:user","sells")
+  publishUserstats()
 
 def countTicketChecked():
   increaseVal("stat:user","checked")
+  publishUserstats()
 
 def countCurrentHeadphone():
   increaseVal("stat:user","current")
+  publishUserstats()
   
 def countHeadphoneReturn():
   increaseVal("stat:user","returned")
+  publishUserstats()
 
 def getReturnedFromOrders():
   pass
