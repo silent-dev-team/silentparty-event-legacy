@@ -48,6 +48,7 @@ export interface Userstats{
   sells:number,
   checked:number,
   returned:number,
+  current:number
 }
 export interface Infos{
   rollbanner:string[],
