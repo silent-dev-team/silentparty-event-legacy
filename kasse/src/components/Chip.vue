@@ -72,7 +72,7 @@ export default {
         price: -expItem.price,
         number: 1
       })
-      if (this.order.at(-1).id !== this.chipId && this.lastOrder !== this.order) {
+      if (this.order.at(-1).id !== this.chipId) {
         this.delPosFromOrder(this.chipId)
         this.chipLoop(chipNumber+1)
       }
