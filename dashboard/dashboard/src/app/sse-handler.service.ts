@@ -13,7 +13,7 @@ export class SseHandlerService {
   
   constructor(private http: HttpClient) { 
     console.log("constructed");
-    let eventSource = new EventSource("http://localhost:5000/stream");
+    let eventSource = new EventSource("https://sp/stream");
     this.UserStatsObserv = new Observable((observer) => {
       eventSource.addEventListener("userstats",(e)=>observer.next(JSON.parse(e.data)));
     });
@@ -28,11 +28,11 @@ export class SseHandlerService {
 
 
   updateDJS(djs:DJs){
-    	this.http.post("http://localhost:5000/djs",djs).subscribe();
+    	this.http.post("https://api.sp/djs",djs).subscribe();
   }
 
   refreshAll(){
-    this.http.get("http://localhost:5000/refresh").subscribe();
+    this.http.get("https://api.sp/refresh").subscribe();
   }
 
 
