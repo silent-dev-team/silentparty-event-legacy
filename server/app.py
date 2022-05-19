@@ -156,7 +156,7 @@ def localWebServer_pwa(path):
 ### DASHBOARD ###
 
 @app.route('/', subdomain=sd.dashboard)
-def localWebServer_index():
+def dashboard_index():
   return redirect('index.html')
 
 @app.route('/<path:path>', subdomain=sd.dashboard)
