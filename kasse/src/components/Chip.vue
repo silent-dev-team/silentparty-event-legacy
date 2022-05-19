@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       chipId: 0,
-      lastOrder: null,
+      lastOrderLength: null,
     }
   },
   computed: {
@@ -43,7 +43,11 @@ export default {
     ]),
     addChip(excludeIds=[]) {
       const chipNumber = this.numberOfItemInOrder(this.chipId)
-
+      //if (this.lastOrderLength != this.order.length) {
+      //  this.lastOrderLength = this.order.length
+      //  this.delPosFromOrder(this.chipId)
+      //  this.chipLoop(chipNumber)
+      //}
       const sum = this.order.reduce((psum, item) => {
         if (excludeIds.includes(item.id)) {
           return psum + item.number
