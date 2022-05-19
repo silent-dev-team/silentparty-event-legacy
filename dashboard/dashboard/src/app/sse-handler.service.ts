@@ -34,7 +34,7 @@ export class SseHandlerService {
     	this.http.post("https://api.sp/djs",djs).subscribe();
   }
   updateBanner(banner:string[]){
-    this.http.post("http://localhost:5000/rolltext",banner).subscribe();
+    this.http.post("http://api.sp/rolltext",banner).subscribe();
 }
 
   refreshAll(){
