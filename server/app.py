@@ -99,10 +99,10 @@ def updateRollTexts(rolltext):
 def publishRollTexts():
   sse.publish(json.loads(db.hget("stat:rolltext","json").decode()),"rolltext")
 
-def countTicketSell():
+def countTicketActivate():
   increaseVal("stat:user","sells")
 
-def countTicketActivate():
+def countTicketChecked():
   increaseVal("stat:user","checked")
 
 def countCurrentHeadphone():
@@ -288,6 +288,7 @@ def ticket(id:str, mutation:str):
         'ticket:'+str(id),
         'activeted', '1'
       )
+      countTicketActivate()
   if CHECKIN:
     if ticket['activeted'] == '0':
       return jsonify({'error':'ticket not activeted','data':ticket}), 200
@@ -302,6 +303,7 @@ def ticket(id:str, mutation:str):
         'ticket:'+str(id),
         'checked', '1'
       )
+      countTicketChecked()
   return jsonify({'data':ticket}), 200
 
 @app.route('/shopItems', subdomain=sd.api, methods = ['GET'])
