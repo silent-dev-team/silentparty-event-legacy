@@ -79,13 +79,13 @@ def countItems(id) -> int:
   return count
 
 ### STATS ###
-def increaseVal(name,key):
+def increaseVal(name,key,count:int = 1):
   value = db.hget(name,key)
   if not value:
     value = 0
   else:
     value = int(value.decode())
-  db.hset(name,key,str(value+1))
+  db.hset(name,key,str(value+count))
 
 def updateDJs(DJs):
   db.hset("stat:djs","json",json.dumps(DJs))
@@ -107,8 +107,8 @@ def countTicketChecked():
   increaseVal("stat:user","checked")
   publishUserstats()
 
-def countCurrentHeadphone():
-  increaseVal("stat:user","current")
+def countCurrentHeadphone(count:int):
+  increaseVal("stat:user","current",count)
   publishUserstats()
   
 def countHeadphoneReturn():
@@ -395,6 +395,10 @@ def new_order():
   except TypeError:
     return jsonify({'success':False, 'message':'Schema Order nicht korrekt'}), 200
   db.lpush("orders",dumps(order))
+  for item in order.items:
+    if item.id == 1:
+      countCurrentHeadphone(item.number)
+    
   return jsonify({'success': True,'data':data}), 200
   
 
