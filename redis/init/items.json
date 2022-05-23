@@ -2,7 +2,7 @@
   {
     "id": 0,
     "name": "Chip",
-    "img": "cup.jpg",
+    "img": "chips.jpg",
     "price": 0,
     "chip":false,
 	"deposit": false,
@@ -12,7 +12,7 @@
   {
     "id": 1,
     "name": "HP",
-    "img": "cup.jpg",
+    "img": "hp.jpg",
     "price": 5,
     "chip":false,
 	"deposit": true,
@@ -22,7 +22,7 @@
   {
     "id": 2,
     "name": "Angebot",
-    "img": "cup.jpg",
+    "img": "chips.jpg",
     "price": 5,
     "chip":false,
 	"deposit": false,
@@ -32,7 +32,7 @@
   {
     "id": 10,
     "name": "VVK",
-    "img": "cup.jpg",
+    "img": "hp.jpg",
     "price": 5,
     "chip":false,
 	"deposit": false,
@@ -42,7 +42,7 @@
   {
     "id": 11,
     "name": "AK",
-    "img": "cup.jpg",
+    "img": "hp.jpg",
     "price": 7,
     "chip":false,
 	"deposit": false,
