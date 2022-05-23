@@ -5,7 +5,7 @@
     "img": "cup.jpg",
     "price": 0,
     "chip":false,
-		"deposit": false,
+	"deposit": false,
     "reference": null,
     "tags": []
   },
@@ -15,7 +15,7 @@
     "img": "cup.jpg",
     "price": 5,
     "chip":false,
-		"deposit": true,
+	"deposit": true,
     "reference": null,
     "tags": ["hp"]
   },
@@ -25,7 +25,7 @@
     "img": "cup.jpg",
     "price": 5,
     "chip":false,
-		"deposit": false,
+	"deposit": false,
     "reference": null,
     "tags": ["hp"]
   },
@@ -35,7 +35,7 @@
     "img": "cup.jpg",
     "price": 5,
     "chip":false,
-		"deposit": false,
+	"deposit": false,
     "reference": null,
     "tags": ["vvk"]
   },
@@ -45,7 +45,7 @@
     "img": "cup.jpg",
     "price": 7,
     "chip":false,
-		"deposit": false,
+	"deposit": false,
     "reference": null,
     "tags": ["ak"]
   },
@@ -55,7 +55,7 @@
     "img": "cup.jpg",
     "price": 2,
     "chip":false,
-		"deposit": true,
+	"deposit": true,
     "reference": null,
     "tags": ["bar"]
   },
@@ -65,48 +65,58 @@
     "img": "gilde.jpg",
     "price": 2.5,
     "chip":true,
-		"deposit": false,
+	"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   },
   {
     "id": 102,
-    "name": "Cola",
+    "name": "Pepsi",
     "img": "pepsi.jpg",
-    "price": 1.5,
+    "price": 2,
     "chip":true,
-		"deposit": false,
+	"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   },
   {
     "id": 103,
     "name": "7up",
-    "img": "7up.jpg",
-    "price": 1.5,
+    "img": "7up.png",
+    "price": 2,
     "chip":true,
-		"deposit": false,
+	"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   },
   {
     "id": 104,
-    "name": "Sprite",
-    "img": "fanta.jpg",
-    "price": 1.5,
+    "name": "Wasser",
+    "img": "vilsa.jpg",
+    "price": 1,
     "chip":true,
-		"deposit": false,
+	"deposit": false,
     "reference": 100,
     "tags": ["bar"]
   },
   {
     "id": 105,
-    "name": "Wasser",
-    "img": "vilsa.jpg",
-    "price": 1,
-    "chip":true,
-		"deposit": false,
-    "reference": 100,
+    "name": "Wein",
+    "img": "wein.jpg",
+    "price": 3,
+    "chip": false,
+	"deposit": false,
+    "reference": null,
+    "tags": ["bar"]
+  },
+  {
+    "id": 106,
+    "name": "Bowle",
+    "img": "bowle.jpg",
+    "price": 3.5,
+    "chip": false,
+	"deposit": false,
+    "reference": null,
     "tags": ["bar"]
   }
 ]
