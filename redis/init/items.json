@@ -116,7 +116,7 @@
     "price": 3.5,
     "chip": false,
 	"deposit": false,
-    "reference": null,
+    "reference": 100,
     "tags": ["bar"]
   }
 ]
