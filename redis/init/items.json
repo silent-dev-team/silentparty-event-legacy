@@ -91,6 +91,16 @@
   },
   {
     "id": 104,
+    "name": "Sprite",
+    "img": "fanta.jpg",
+    "price": 1.5,
+    "chip":true,
+		"deposit": false,
+    "reference": 100,
+    "tags": ["bar"]
+  },
+  {
+    "id": 105,
     "name": "Wasser",
     "img": "vilsa.jpg",
     "price": 1,
