@@ -62,7 +62,7 @@
   {
     "id": 101,
     "name": "Bier",
-    "img": "bier.jpg",
+    "img": "gilde.jpg",
     "price": 2.5,
     "chip":true,
 		"deposit": false,
@@ -72,7 +72,7 @@
   {
     "id": 102,
     "name": "Cola",
-    "img": "cola.jpg",
+    "img": "pepsi.jpg",
     "price": 1.5,
     "chip":true,
 		"deposit": false,
@@ -81,8 +81,8 @@
   },
   {
     "id": 103,
-    "name": "Fanta",
-    "img": "fanta.jpg",
+    "name": "7up",
+    "img": "7up.jpg",
     "price": 1.5,
     "chip":true,
 		"deposit": false,
@@ -92,7 +92,7 @@
   {
     "id": 104,
     "name": "Wasser",
-    "img": "wasser.jpg",
+    "img": "vilsa.jpg",
     "price": 1,
     "chip":true,
 		"deposit": false,
