@@ -189,9 +189,13 @@ def ticket_pwa(path):
 
 @app.route('/ping', subdomain=sd.api)
 def ping():
-  return jsonify({
-      'ping':True
-    }), 200
+  return jsonify({'ping':True}), 200
+
+@app.route('/alert', subdomain=sd.api, methods = ['PUT', 'GET'])
+def alert():
+  data = request.get_json()
+  sse.publish(data, type='alert')
+  return jsonify(data), 200
 
 @app.route('/entry', subdomain=sd.api, methods = ['PUT', 'GET'])
 def control_entry():
@@ -211,9 +215,7 @@ def control_entry():
 
 @app.route('/salt', subdomain=sd.api, methods = ['GET'])
 def get_salt():
-  return jsonify({
-    'salt': SALT
-  }), 200
+  return jsonify({'salt': SALT}), 200
 
 @app.route('/djs', subdomain=sd.api, methods = ['POST'])
 def handleDJ():

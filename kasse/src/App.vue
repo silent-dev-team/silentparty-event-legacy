@@ -7,12 +7,13 @@
     />
     <v-main>
       <CheckOut v-model="checkout" />
-      <Chip />
+      <Chip v-if="$route.name == 'Bar'"/>
       <div>
         <router-view />
       </div>
     </v-main>
-    <EntryBtn />
+    <EntryBtn v-if="$route.name == 'HP'" />
+    <AlertBtn />
     <div height="200px"></div>
     <v-footer 
       padless
@@ -44,6 +45,7 @@ import OrderList from '@/components/OrderList.vue'
 import OrderDrawer from '@/components/OrderDrawer.vue'
 import CheckOut from '@/components/CheckOut.vue'
 import EntryBtn from '@/components/EntryBtn.vue'
+import AlertBtn from '@/components/AlertBtn.vue'
 import Chip from './components/Chip.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
@@ -54,6 +56,7 @@ export default {
     OrderDrawer,
     CheckOut,
     EntryBtn,
+    AlertBtn,
     Chip
   },
 
