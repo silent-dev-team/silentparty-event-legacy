@@ -198,7 +198,7 @@ def ping():
 def alert():
   data:dict = request.get_json()
   sse.publish(data, type='alert')
-  text:str= f"Alarm von { data['from'] }"
+  text:str= f"🚨 Alarm von { data['from'] } 🚨"
   bot.send_message(text=text, chat_id=TG_GROUP)
   return jsonify(data), 200
 
@@ -219,7 +219,7 @@ def control_entry():
   response = {"entry": entry.get()}
   sse.publish(response, type='entry')
   try:
-    bot.send_message(text=text, chat_id=TG_GROUP)
+    bot.send_message(text=f'❕{text}❕', chat_id=TG_GROUP)
   except:
     print('Fehler beim Senden des Telegram-Nachrichten')
   return jsonify(**response), 200
