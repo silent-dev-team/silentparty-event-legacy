@@ -13,7 +13,7 @@
       </div>
     </v-main>
     <EntryBtn v-if="$route.name == 'HP'" />
-    <AlertBtn />
+    <AlertBtn :payload="$route.name" />
     <div height="200px"></div>
     <v-footer 
       padless

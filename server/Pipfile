@@ -9,6 +9,7 @@ python-dotenv = "*"
 flask-sse = "*"
 redis = "*"
 redisworks = "*"
+python-telegram-bot = "*"
 
 [dev-packages]
 

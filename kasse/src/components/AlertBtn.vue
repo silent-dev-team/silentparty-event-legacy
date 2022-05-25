@@ -22,7 +22,7 @@ export default {
     }
   },
   props: {
-    payload: { type: String, default: 'alert' }
+    payload: { type: String, default: '_' }
   },
   computed: {
     ...mapState([
