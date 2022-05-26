@@ -1,6 +1,6 @@
 #! /bin/bash
 
 redis-server ./redis/redis.conf &
-#sh backup_loop.sh &
+sh backup_loop.sh &
 cd server
 sudo ./run
