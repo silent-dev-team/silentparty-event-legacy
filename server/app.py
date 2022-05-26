@@ -1,9 +1,8 @@
 from cProfile import label
-import re
 from flask import Flask, Response, request, render_template, make_response, send_from_directory, redirect, jsonify
 from flask_sse import sse
 from datetime import datetime
-import redis, json, sys, os, uuid
+import redis, json, sys, os, uuid, telegram
 from dotenv import load_dotenv
 from pickle import loads, dumps
 from models import *
@@ -13,6 +12,8 @@ load_dotenv()
 
 LOCAL:bool = sys.argv[1] == 'local'
 SALT:str = os.getenv('SALT')
+TG_TOKEN = os.getenv('TG_TOKEN')
+TG_GROUP = int(os.getenv('TG_GROUP')) or None
 
 ### VAR ###
 
@@ -56,6 +57,8 @@ db = redis.Redis()
 sd = Subdomain(LOCAL)
 
 entry = Entry(True)
+
+bot = telegram.Bot(TG_TOKEN)
 
 ### DB-FUNCS ###
 
@@ -189,9 +192,15 @@ def ticket_pwa(path):
 
 @app.route('/ping', subdomain=sd.api)
 def ping():
-  return jsonify({
-      'ping':True
-    }), 200
+  return jsonify({'ping':True}), 200
+
+@app.route('/alert', subdomain=sd.api, methods = ['PUT', 'GET'])
+def alert():
+  data:dict = request.get_json()
+  sse.publish(data, type='alert')
+  text:str= f"🚨 Alarm von { data['from'] } 🚨"
+  bot.send_message(text=text, chat_id=TG_GROUP)
+  return jsonify(data), 200
 
 @app.route('/entry', subdomain=sd.api, methods = ['PUT', 'GET'])
 def control_entry():
@@ -202,18 +211,22 @@ def control_entry():
       return jsonify({'error':'missing entry'}), 400
     if data['entry']:
       entry.start()
+      text = 'Einlassstart'
     else:
       entry.stop()
+      text = 'Einlassstop'
   # GET & PUT
   response = {"entry": entry.get()}
   sse.publish(response, type='entry')
+  try:
+    bot.send_message(text=f'❕{text}❕', chat_id=TG_GROUP)
+  except:
+    print('Fehler beim Senden des Telegram-Nachrichten')
   return jsonify(**response), 200
 
 @app.route('/salt', subdomain=sd.api, methods = ['GET'])
 def get_salt():
-  return jsonify({
-    'salt': SALT
-  }), 200
+  return jsonify({'salt': SALT}), 200
 
 @app.route('/djs', subdomain=sd.api, methods = ['POST'])
 def handleDJ():

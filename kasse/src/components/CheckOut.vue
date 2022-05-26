@@ -5,7 +5,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
-      <Chip checkout/>
+      <Chip checkout v-if="$route.name == 'Bar'"/>
       <OrderDrawer v-model="showOrder"/>
       <v-card justify="center">
         <v-toolbar

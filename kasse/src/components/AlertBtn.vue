@@ -1,25 +1,28 @@
 <template>
   <v-btn 
-    :class="'btn ' + (!entry ? 'pulse' : '')"
+    :class="'btn ' + (alert ? 'pulse' : '')"
     fab
-    :icon="entry"
-    :color="!entry ? 'red' : null"
+    :icon="!alert"
+    :color="alert ? 'red' : null"
     @click="onClick()"
   >
-    <v-icon v-if="entry" large color="black">mdi-locker</v-icon>
-    <v-icon v-else x-large color="white">mdi-locker</v-icon>
+    <v-icon v-if="!alert" large color="black">mdi-bell</v-icon>
+    <v-icon v-else x-large color="white">mdi-bell</v-icon>
   </v-btn>
 </template>
 
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 export default {
-  name: 'EntryBtn',
+  name: 'alertBtn',
   data() {
     return {
-      entry: true,
+      alert: false,
       loading: false
     }
+  },
+  props: {
+    payload: { type: String, default: '_' }
   },
   computed: {
     ...mapState([
@@ -31,17 +34,20 @@ export default {
     }
     },
   methods: {
-    setEntry(value){
-      this.entry = value
-    },
     async onClick() {
       this.loading = true
-      await this.update(!this.entry)
+      const r = await this.update(this.payload)
+      if (r){
+        this.alert = true
+        setTimeout(() => {
+          this.alert = false
+        }, 10000)
+      }
       this.loading = false
     },
-    async update(status) {
-      const URL = this.api + 'entry'
-      const data = {"entry": status}
+    async update(payload) {
+      const URL = this.api + 'alert'
+      const data = {"from": payload}
       const response = await fetch(URL, {
           method: 'PUT',
           headers: {
@@ -51,15 +57,15 @@ export default {
         }
       )
       const r = await response.json()
-      return r['entry']
+      return r
     },
   },
   mounted(){
-    var that = this
-    this.eventSource.addEventListener('entry', function(event) {
-        var data = JSON.parse(event.data)
-        that.entry = data.entry
-    }.bind(that), false)
+    //var that = this
+    //this.eventSource.addEventListener('alert', function(event) {
+    //    var data = JSON.parse(event.data)
+    //    that.alert = data.alert
+    //}.bind(that), false)
   },
 }
 </script>
@@ -68,7 +74,7 @@ export default {
 .btn{
   position: fixed;
   z-index: 10;
-  bottom: 160px; 
+  bottom: 90px; 
   left: 15px;
 }
 </style>>
