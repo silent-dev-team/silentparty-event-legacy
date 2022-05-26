@@ -1,3 +1,4 @@
+cp "/run/media/server/BACKUP1/dump.rbp" ./dump.rdb
 redis-server &
 sleep 3
 redis-cli BGREWRITEAOF;
