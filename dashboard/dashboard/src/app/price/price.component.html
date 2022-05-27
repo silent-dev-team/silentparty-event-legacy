@@ -1,0 +1,6 @@
+<div class="row title">
+  <div> Getränke </div>
+</div>
+<div class="steps">
+  <div *ngFor="let step of steps" class="step">  <div class="weight-normal ">{{step.name}}</div> <div class="price">{{step.price.toFixed(2)}} €</div></div>
+</div>

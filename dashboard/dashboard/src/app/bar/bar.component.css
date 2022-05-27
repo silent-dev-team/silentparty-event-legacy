@@ -1,0 +1,20 @@
+#main{
+    background: linear-gradient(270deg, #111114 50%, rgba(0, 0, 0, 0) 90%), url("/assets/IMG_0103 2.png");
+    background-position: 0, -20vh;
+    background-size: auto 100%;
+    background-repeat: no-repeat;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw;
+    grid-template-rows: 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw 5vw;
+}
+
+.item{
+    grid-column: 8/span 8;
+    grid-row:   5/span 2;
+
+    background-color: white;
+}
