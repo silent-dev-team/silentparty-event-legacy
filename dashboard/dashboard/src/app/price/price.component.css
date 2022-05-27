@@ -1,6 +1,6 @@
 :host{
     grid-column: 8/span 6;
-    grid-row:   4/span 5;
+    grid-row:   4/span 6;
     background-color: black;
     border-radius: 5px;
     padding: 8%;
@@ -10,9 +10,9 @@
     justify-content: space-around;
     align-items: center;
     font-weight: 500;
-    font-size: 1.8vw;
+    font-size: 2.6vw;
     position: relative;
-    line-height: 1.8vw;
+    line-height: 2.6vw;
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -ms-border-radius: 5px;
@@ -38,6 +38,14 @@
     margin: 0 1vw;
 
 
+}
+
+.chip{
+    border-radius: 40px;
+    width: 1.3vw;
+    height: 1.3vw;
+    background-color: yellow;
+    margin-right: 1vw;
 }
 
 .steps{
