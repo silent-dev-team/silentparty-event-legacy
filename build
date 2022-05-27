@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd dashboard/dashboard
+npm install
+npm run build
+cd ..
+cd ..
+
+cd kasse
+npm install
+npm run build
+cd ..
+
+cd ticket-pwa
+npm install
+npm run build
+cd ..
