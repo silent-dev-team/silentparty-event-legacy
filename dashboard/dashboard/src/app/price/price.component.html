@@ -2,5 +2,5 @@
   <div> Getränke </div>
 </div>
 <div class="steps">
-  <div *ngFor="let step of steps" class="step">  <div class="weight-normal ">{{step.name}}</div> <div class="price">{{step.price.toFixed(2)}} €</div></div>
+  <div *ngFor="let step of steps" class="step">  <div class="weight-normal " >{{step.name}} </div> <div class="price" style="display: flex; align-items: center;"><div *ngIf="step.chip" class="chip"></div> {{step.price.toFixed(2)}} €</div></div>
 </div>
