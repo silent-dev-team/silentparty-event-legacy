@@ -25,7 +25,7 @@ export class SseHandlerService {
       eventSource.addEventListener("infos",(e:any)=>observer.next(JSON.parse(e.data)));
     });
     this.Entry = new Observable((observer) => {
-      eventSource.addEventListener("entry",(e:any)=>observer.next(JSON.parse(e.data)));
+      eventSource.addEventListener("entry",(e:any)=>observer.next(JSON.parse(e.data).entry));
     });
     this.rolltextObserv = new Observable((observer) => {
       eventSource.addEventListener("rolltext",(e:any)=>observer.next(JSON.parse(e.data)));

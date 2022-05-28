@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SseHandlerService } from '../sse-handler.service';
 
 @Component({
   selector: 'app-door',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./door.component.css']
 })
 export class DoorComponent implements OnInit {
+  open = true;
 
-  constructor() { }
-
+  constructor(private data: SseHandlerService) { }
   ngOnInit(): void {
+    this.data.Entry.subscribe((data:boolean)=>{
+      console.log(data);
+      this.open = data;
+    })
   }
 
 }
