@@ -10,6 +10,7 @@ export class SseHandlerService {
   UserStatsObserv:Observable<Userstats>
   UserStatsDJS:Observable<DJs>
   UserStatsInfos:Observable<Infos>
+  Entry:Observable<boolean>
   rolltextObserv:Observable<string[]>
   constructor(private http: HttpClient) { 
     console.log("constructed");
@@ -22,6 +23,9 @@ export class SseHandlerService {
     });
     this.UserStatsInfos = new Observable((observer) => {
       eventSource.addEventListener("infos",(e:any)=>observer.next(JSON.parse(e.data)));
+    });
+    this.Entry = new Observable((observer) => {
+      eventSource.addEventListener("entry",(e:any)=>observer.next(JSON.parse(e.data)));
     });
     this.rolltextObserv = new Observable((observer) => {
       eventSource.addEventListener("rolltext",(e:any)=>observer.next(JSON.parse(e.data)));

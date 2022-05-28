@@ -17,6 +17,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import {MatIconModule} from '@angular/material/icon';
 import { MainviewComponent } from './mainview/mainview.component';
 import { BannerformComponent } from './bannerform/bannerform.component';
+import { DoorComponent } from './door/door.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { BannerformComponent } from './bannerform/bannerform.component';
     OkdialogComponent,
     CostsComponent,
     DjformComponent,
-    BannerformComponent
+    BannerformComponent,
+    DoorComponent
   ],
   imports: [
     BrowserModule,
