@@ -1,0 +1,71 @@
+:host{
+    grid-column: 8/span 6;
+    grid-row:   4/span 6;
+    background-color: black;
+    border-radius: 5px;
+    padding: 8%;
+    display: flex;
+    flex-direction: column;
+    color:white;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: 500;
+    font-size: 2.6vw;
+    position: relative;
+    line-height: 2.6vw;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+.title{
+    width: 100%;justify-content: space-around; align-items: center;
+    font-size: 3vw;
+}
+.number{
+    min-width: 1vw;
+    height: 1vw;
+    border-radius: 30px;
+    font-size: 1vw;
+    padding-top: 2px;
+    font-weight: 800;
+    background-color: white;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 1vw;
+
+
+}
+
+.chip{
+    border-radius: 40px;
+    width: 1.3vw;
+    height: 1.3vw;
+    background-color: yellow;
+    margin-right: 1vw;
+}
+
+.steps{
+    padding: 10%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+    width: 30vw;
+}
+
+.step{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex: 1 1 1;
+}
+
+img{
+    margin-right: 1vw;
+    width: 20%;
+}

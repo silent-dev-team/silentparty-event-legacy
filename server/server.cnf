@@ -34,3 +34,4 @@ DNS.1 = sp
 DNS.2 = api.sp
 DNS.3 = ticket.sp
 DNS.4 = kasse.sp
+DNS.5 = dashboard.sp

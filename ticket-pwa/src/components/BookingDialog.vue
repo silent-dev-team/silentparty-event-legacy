@@ -93,6 +93,7 @@ export default {
         id: shopItem.id,
         name: shopItem.name,
         price: shopItem.price,
+        chip: false,
         number: 1,
         sum: shopItem.price
       }

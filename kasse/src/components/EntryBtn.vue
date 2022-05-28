@@ -37,15 +37,7 @@ export default {
     async onClick() {
       this.loading = true
       await this.update(!this.entry)
-      await this.fetch()
       this.loading = false
-    },
-    async fetch() {
-      const URL = this.api + 'entry'
-      const response = await fetch(URL)
-      const r = await response.json()
-      this.entry = r.entry
-      return this.entry
     },
     async update(status) {
       const URL = this.api + 'entry'
@@ -63,22 +55,12 @@ export default {
     },
   },
   mounted(){
-    this.fetch()
-    
     var that = this
     this.eventSource.addEventListener('entry', function(event) {
         var data = JSON.parse(event.data)
         that.entry = data.entry
     }.bind(that), false)
-
-    setInterval(() => {
-        this.refetch()
-      }, 60*1000
-    )
   },
-  update(){
-    this.fetch()
-  }
 }
 </script>
 
@@ -86,7 +68,7 @@ export default {
 .btn{
   position: fixed;
   z-index: 10;
-  bottom: 90px; 
+  bottom: 160px; 
   left: 15px;
 }
 </style>>

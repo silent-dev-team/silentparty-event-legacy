@@ -18,6 +18,9 @@ import {MatIconModule} from '@angular/material/icon';
 import { MainviewComponent } from './mainview/mainview.component';
 import { BannerformComponent } from './bannerform/bannerform.component';
 import { DoorComponent } from './door/door.component';
+import { PriceComponent } from './price/price.component';
+import { BarComponent } from './bar/bar.component';
+import { IntroComponent } from './intro/intro.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,10 @@ import { DoorComponent } from './door/door.component';
     CostsComponent,
     DjformComponent,
     BannerformComponent,
-    DoorComponent
+    DoorComponent,
+    PriceComponent,
+    BarComponent,
+    IntroComponent
   ],
   imports: [
     BrowserModule,

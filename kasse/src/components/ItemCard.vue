@@ -11,7 +11,7 @@
     </v-card>
     <v-card 
       elevation="0"
-      @click="append(1)"
+      @click="append(item.id == 100 ? -1 : 1)"
     >
       <v-img
         :src="$store.getters.getImg(item.img)"
@@ -75,7 +75,6 @@ export default {
       'appendOrder'
     ]),
     append(n){
-      const deposit_factor = this.item.deposit ? -1 : 1
       if (this.item.reference !== null) {
         this.appendOrder({
           id: this.item.reference,
@@ -84,7 +83,7 @@ export default {
       }
       this.appendOrder({
         id: this.id,
-        number: n //* deposit_factor
+        number: n
       })
     },
     fix(str){

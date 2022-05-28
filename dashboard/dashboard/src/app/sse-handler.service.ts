@@ -14,7 +14,7 @@ export class SseHandlerService {
   rolltextObserv:Observable<string[]>
   constructor(private http: HttpClient) { 
     console.log("constructed");
-    let eventSource = new EventSource("http://localhost:5000/stream");
+    let eventSource = new EventSource("https://sp/stream");
     this.UserStatsObserv = new Observable((observer) => {
       eventSource.addEventListener("userstats",(e:any)=>observer.next(JSON.parse(e.data)));
     });
@@ -35,14 +35,14 @@ export class SseHandlerService {
 
 
   updateDJS(djs:DJs){
-    	this.http.post("http://localhost:5000/djs",djs).subscribe();
+    	this.http.post("https://api.sp/djs",djs).subscribe();
   }
   updateBanner(banner:string[]){
-    this.http.post("http://localhost:5000/rolltext",banner).subscribe();
+    this.http.post("https://api.sp/rolltext",banner).subscribe();
 }
 
   refreshAll(){
-    this.http.get("http://localhost:5000/refresh").subscribe();
+    this.http.get("https://api.sp/refresh").subscribe();
   }
 
 
@@ -52,6 +52,7 @@ export interface Userstats{
   sells:number,
   checked:number,
   returned:number,
+  current:number
 }
 export interface Infos{
   rollbanner:string[],

@@ -94,6 +94,9 @@ export default Vue.extend({
     MODUS(){
       return this.settings.mode
     },
+    entry_control(){
+      return this.MODUS == 'activate'
+    },
     modus_text(){
       if(this.settings.mode == 'activate'){
         return 'Aktiviertung'
@@ -340,10 +343,6 @@ export default Vue.extend({
       console.log('save scans')
     },
     "settings.mode":function(){
-      localStorage.settings = JSON.stringify(this.settings)
-      console.log('save settings')
-    },
-    "settings.entry_control":function(){
       localStorage.settings = JSON.stringify(this.settings)
       console.log('save settings')
     }

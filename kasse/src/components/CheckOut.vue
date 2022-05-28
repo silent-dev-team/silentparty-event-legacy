@@ -5,6 +5,7 @@
       hide-overlay
       transition="dialog-bottom-transition"
     >
+      <Chip checkout v-if="$route.name == 'Bar'"/>
       <OrderDrawer v-model="showOrder"/>
       <v-card justify="center">
         <v-toolbar
@@ -26,8 +27,22 @@
           <h1>{{sum}}€</h1>
         </v-toolbar>
         <center>
-          <h1 class="ma-2">{{fix(sum-cent)}}€</h1>
-          <h1 class="ma-2">{{fix(cent)}}€</h1>
+          <v-card width="300px" elevation="0">
+              <v-row>
+                <v-col class="text-right my-auto">Diff:</v-col>
+                <v-col class="text-right my-auto">
+                  <h1>{{fix(sum-cent)}}€</h1>
+                </v-col>
+                <v-col/>
+              </v-row>
+              <v-row>
+                <v-col class="text-right my-auto">Kunde:</v-col>
+                <v-col class="text-right my-auto">
+                  <h1>{{fix(cent)}}€</h1>
+                </v-col>
+                <v-col/>
+              </v-row>
+          </v-card>
           <v-col
             v-for="m in 4"
             :key="m"
@@ -57,29 +72,44 @@
             </v-item-group>
             
           </v-col>
-          <v-btn 
-            class="mt-5" 
-            :disabled="!ready"
-            width="300px" 
-            height="100px" 
-            color="success"
-            @click="checkout()"
-          >
-            <h1>FERTIG</h1>
-          </v-btn>
+          <v-dialog width="300px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn 
+                v-bind="attrs"
+                v-on="on" 
+                class="mt-5" 
+                :disabled="!ready"
+                width="300px" 
+                height="100px" 
+                color="success"
+              >
+                
+                <v-icon x-large>mdi-check</v-icon>
+              </v-btn>
+            </template>
+              <v-btn height="100px" x-large color="success" dark @click="checkout()">
+                <h1>Buchen</h1>
+              </v-btn>
+          </v-dialog>
         </center>
       </v-card>
     </v-dialog>
 </template>
 
+<style scoped>
+</style>
+
 <script>
 import OrderDrawer from '@/components/OrderDrawer.vue'
+import Chip from '@/components/Chip.vue'
 import { mapState, mapGetters, mapMutations, mapActions} from 'vuex'
+import router from '@/router'
 
 export default {
   name: 'CheckOut',
   components: {
-    OrderDrawer
+    OrderDrawer,
+    Chip
   },
 
   props: [
@@ -89,6 +119,8 @@ export default {
     return {
       showOrder:false,
       display: '0',
+      count: 0,
+      countLimit: 4,
       mapping : {
         '11': '7',
         '21': '8',
@@ -106,6 +138,9 @@ export default {
     }
   },
   computed: {
+    ...mapState([
+      'order'
+    ]),
     ...mapGetters([
       'sum'
     ]),
@@ -113,7 +148,7 @@ export default {
       return this.display/100
     },
     ready() {
-      return (this.sum > 0 && this.cent >= this.sum) || this.sum < 0
+      return ((this.sum > 0 || this.order.length !== 0) && this.cent >= this.sum) || this.sum < 0
     }
   },
   methods: {
@@ -130,6 +165,12 @@ export default {
     onKey(e){
       if(e === 'C'){
         this.display = '0'
+        this.count++
+        if (this.count === this.countLimit) {
+          this.count = 0
+          this.close()
+          router.push('/history')
+        }
       } else if(this.display === '0'){
         this.display = e
       } else {
