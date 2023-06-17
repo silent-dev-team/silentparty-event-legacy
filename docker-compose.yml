@@ -1,0 +1,19 @@
+services:
+  server:
+    build: ./server
+    ports:
+      - "8000:5000"
+  kasse:
+    build: ./kasse
+    ports:
+      - "8081:8080"
+  
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+  redis-init:
+    build: ./redis
+    command: ["./init/init.sh"]
+    depends_on:
+      - redis

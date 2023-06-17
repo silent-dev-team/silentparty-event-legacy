@@ -11,9 +11,9 @@ load_dotenv()
 ### CONST ###
 
 LOCAL:bool = sys.argv[1] == 'local'
-SALT:str = os.getenv('SALT')
-TG_TOKEN = os.getenv('TG_TOKEN')
-TG_GROUP = int(os.getenv('TG_GROUP')) or None
+SALT:str = os.getenv('SALT') or ''
+TG_TOKEN:str = os.getenv('TG_TOKEN') or '' 
+TG_GROUP = int(os.getenv('TG_GROUP') or 0) or None
 
 ### VAR ###
 
@@ -31,16 +31,16 @@ class Subdomain:
 class Entry:
   def __init__(self, value:bool = False):
     self._value = value
-  def start(self):
+  def start(self) -> bool:
     self._value = True
-  def stop(self):
+  def stop(self) -> bool:
     self._value = False
-  def get(self):
+  def get(self) -> bool:
     return self._value
 
 ### FUNCS ###
 
-def decode(b_obj:list or dict):
+def decode(b_obj:list|dict) -> list|dict:
   if type(b_obj) == list:
     return [bytes(e).decode() for e in b_obj]
   if type(b_obj) == dict:
@@ -62,12 +62,12 @@ bot = telegram.Bot(TG_TOKEN)
 
 ### DB-FUNCS ###
 
-def loadOrders(start:int=0,stop:int=-1,*args) -> list[Order] or list[int or str]:
+def loadOrders(start:int=0,stop:int=-1,*args) -> list[int|str|Order]:
   if args:
     return list(filter(lambda o: any(arg in o.__dict__.keys() for arg in args), loadOrders(start,stop)))
   return [loads(order) for order in db.lrange('orders',start,stop)]
     
-def getItemsFromOrder(orders:list[Order], id:int=None) -> list[OrderPos]:
+def getItemsFromOrder(orders:list[int|str|Order], id:int|None=None) -> list[OrderPos]:
   if id:
     return [item for item in getItemsFromOrder(orders) if item.id == id]
   items = []
@@ -154,10 +154,10 @@ def localWebServer_index():
 
 @app.route('/<path:path>')
 def localWebServer_pwa(path):
-  return send_from_directory('../localWebServer/',path)
+  return send_from_directory('./localWebServer/',path)
 
 ### DASHBOARD ###
-
+'''
 @app.route('/', subdomain=sd.dashboard)
 def dashboard_index():
   return redirect('index.html')
@@ -165,20 +165,22 @@ def dashboard_index():
 @app.route('/<path:path>', subdomain=sd.dashboard)
 def dashboard_pwa(path):
   return send_from_directory('../dashboard/dashboard/dist/dashboard',path)
+'''
 
 ### KASSE ###
 
-@app.route('/', subdomain=sd.kasse)
+'''
+@app.route('/kasse')#, subdomain=sd.kasse)
 def kasse_index():
   return redirect('index.html')
 
-@app.route('/<path:path>',subdomain=sd.kasse)
+@app.route('/kasse/<path:path>')#,subdomain=sd.kasse)
 def kasse_pwa(path):
   return send_from_directory('../kasse/dist',path)
-
+'''
 
 ### TICKET ###
-
+'''
 @app.route('/', subdomain=sd.ticket)
 def ticket_index():
   return redirect('index.html')
@@ -186,7 +188,7 @@ def ticket_index():
 @app.route('/<path:path>', subdomain=sd.ticket)
 def ticket_pwa(path):
   return send_from_directory('../ticket-pwa/dist',path)
-
+'''
 
 ### API ###
 

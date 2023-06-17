@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import Vue from 'vue';
 import OrderList from '@/components/OrderList.vue'
 import OrderDrawer from '@/components/OrderDrawer.vue'
 import CheckOut from '@/components/CheckOut.vue'
@@ -49,7 +50,7 @@ import AlertBtn from '@/components/AlertBtn.vue'
 import Chip from './components/Chip.vue'
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 
-export default {
+export default Vue.extend({
   name: 'App',
   components: {
     OrderList,
@@ -101,7 +102,7 @@ export default {
     this.checkOrder()
     this.fetch('items')
   },
-};
+});
 </script>
 
 <style>

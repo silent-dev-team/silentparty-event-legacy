@@ -10,9 +10,9 @@ const vuexLocal = new VuexPersistence({
 
 export default new Vuex.Store({
   state: {
-    api:  'https://api.sp/', //'https://api.sp/','http://localhost:5000/',
-    stream: 'https://sp/stream', //'http://localhost:5000/stream',
-    imgLocation: 'https://sp/storage/img/', //'https://localhost/storage/img/',
+    api:  'http://localhost:5000/',//'https://api.sp/', //'https://api.sp/','http://localhost:5000/',
+    stream: 'http://localhost:5000/stream',//'https://sp/stream', //'http://localhost:5000/stream',
+    imgLocation: 'http://localhost:5000/storage/img/',//'https://sp/storage/img/', //'https://localhost:5000/storage/img/',
     targets: {
       items: {
         route: 'shopItems',

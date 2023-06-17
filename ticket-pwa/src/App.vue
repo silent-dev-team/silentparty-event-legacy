@@ -53,7 +53,7 @@ export default Vue.extend({
     // MODUS: 'activate', // 'activate' or 'checkin'
     settings:{},
     salt:"dieVorVorLetzteSilentParty",
-    api: 'https://api.sp/',//{{'http://localhost:5000/', //'https://api.sp/',
+    api: 'http://localhost:5000/',//{{'http://localhost:5000/', //'https://api.sp/',
     stream: 'https://sp/stream',
     camera: 'auto',
     scans: [],
