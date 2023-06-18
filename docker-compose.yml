@@ -3,6 +3,11 @@ services:
     build: ./kasse
     ports:
       - "8080:8080"
+  ticket:
+    build: ./ticket-pwa
+    ports:
+      - "8081:8080"
+
   redis:
     image: "redis:alpine"
     ports:

@@ -8,11 +8,13 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage
 })
 
+const API = 'https://event-api.silentparty-hannover.de' //'http://127.0.0.1:8000'
+
 export default new Vuex.Store({
   state: {
-    api:  'http://127.0.0.1:8000/',//'https://api.sp/', //'https://api.sp/','http://127.0.0.1:5000/',
-    stream: 'http://127.0.0.1:8000/stream',//'https://sp/stream', //'http://127.0.0.1:5000/stream',
-    imgLocation: 'http://127.0.0.1:8000/storage/img/',//'https://sp/storage/img/', //'https://127.0.0.1:5000/storage/img/',
+    api:  `${API}/`,//'https://api.sp/', //'https://api.sp/','http://127.0.0.1:5000/',
+    stream: `${API}/stream`,//'https://sp/stream', //'http://127.0.0.1:5000/stream',
+    imgLocation: `${API}/storage/img/`,//'https://sp/storage/img/', //'https://127.0.0.1:5000/storage/img/',
     targets: {
       items: {
         route: 'shopItems',
