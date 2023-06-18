@@ -423,8 +423,7 @@ def new_order():
 def optionRequestCors():
     if request.method == "OPTIONS":
         response = make_response()
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add("Access-Control-Allow-Origin", "127.0.0.1")
+        response.headers.add("Access-Control-Allow-Origin", "kasse.silentparty-hannover.de")
         response.headers.add('Access-Control-Allow-Headers', "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization")
         response.headers.add('Access-Control-Allow-Methods', "DELETE, PATCH, POST, PUT, GET, OPTIONS")
         return response
@@ -432,8 +431,7 @@ def optionRequestCors():
 @app.after_request
 def normalRequestCors(response):
     if not request.method == "OPTIONS":
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add("Access-Control-Allow-Origin", "127.0.0.1")
+        response.headers.add("Access-Control-Allow-Origin", "kasse.silentparty-hannover.de")
     return response
 
 ### MAIN ###
