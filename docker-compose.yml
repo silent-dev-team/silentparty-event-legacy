@@ -10,7 +10,7 @@ services:
 
   redis:
     image: "redis:alpine"
-    ports:
+  
   redis-init:
     build: ./redis
     depends_on:
