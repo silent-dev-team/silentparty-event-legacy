@@ -2,16 +2,16 @@ services:
   kasse:
     build: ./kasse
     ports:
-      - "8080:8080"
+      - "${PORTBASE}80:8080"
   ticket:
     build: ./ticket-pwa
     ports:
-      - "8081:8080"
+      - "${PORTBASE}81:8080"
 
   redis:
     image: "redis:alpine"
     ports:
-      - "6379:6379"
+      - "${PORTBASE}79:6379"
   redis-init:
     build: ./redis
     depends_on:
@@ -19,7 +19,7 @@ services:
   server:
     build: ./server
     ports:
-      - "8000:8000"
+      - "${PORTBASE}50:8000"
     depends_on:
       - redis
       - redis-init
