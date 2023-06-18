@@ -5,9 +5,9 @@ from typing import List, Dict
 sys.path.append('./server')
 #from models import *
 
-r = redis.Redis()
+r = redis.Redis(host='redis', port=6379, db=0)
 
-with open('./redis/init/items.json') as f:
+with open('./init/items.json') as f:
   items = json.loads(f.read())
 
 #with open('./redis/init/tickets.json') as f:

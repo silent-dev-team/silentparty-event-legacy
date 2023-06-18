@@ -50,9 +50,9 @@ def decode(b_obj:list|dict) -> list|dict:
 ### INSTANCES ###
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = 'redis://localhost' if LOCAL else "redis://sp"
+app.config["REDIS_URL"] = 'redis://redis' if LOCAL else "redis://sp"
 app.register_blueprint(sse, url_prefix='/stream')
-db = redis.Redis()
+db = redis.Redis(host='redis', port=6379, db=0)
 
 sd = Subdomain(LOCAL)
 
@@ -424,6 +424,7 @@ def optionRequestCors():
     if request.method == "OPTIONS":
         response = make_response()
         response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "127.0.0.1")
         response.headers.add('Access-Control-Allow-Headers', "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization")
         response.headers.add('Access-Control-Allow-Methods', "DELETE, PATCH, POST, PUT, GET, OPTIONS")
         return response
@@ -432,14 +433,15 @@ def optionRequestCors():
 def normalRequestCors(response):
     if not request.method == "OPTIONS":
         response.headers.add("Access-Control-Allow-Origin", "*")
+        response.headers.add("Access-Control-Allow-Origin", "127.0.0.1")
     return response
 
 ### MAIN ###
 
 if __name__ == "__main__":
   if LOCAL:
-    app.config['SERVER_NAME']='localhost:5000'
-    app.run(debug=True)
+    app.config['SERVER_NAME']='localhost:8000'
+    app.run(debug=True,host='0.0.0.0')
   else:
     app.config['SERVER_NAME']='sp:443'
     app.run(debug=True, ssl_context=('server.cer', 'server.key'))

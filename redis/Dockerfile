@@ -5,3 +5,4 @@ WORKDIR /app
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install
 COPY . .
+CMD ["pipenv", "run", "python", "./init/init.py"]
