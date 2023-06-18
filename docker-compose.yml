@@ -11,7 +11,6 @@ services:
   redis:
     image: "redis:alpine"
     ports:
-      - "${PORTBASE}79:6379"
   redis-init:
     build: ./redis
     depends_on:
