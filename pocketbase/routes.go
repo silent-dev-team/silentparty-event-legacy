@@ -10,6 +10,7 @@ import (
 )
 
 type CollectionName string
+type boolMap map[string]bool
 
 func CustomRoutes(app *pocketbase.PocketBase) []echo.Route {
 	emptyMiddlewares := []echo.MiddlewareFunc{}
@@ -19,7 +20,7 @@ func CustomRoutes(app *pocketbase.PocketBase) []echo.Route {
 			Method: http.MethodGet,
 			Path:   "/api/ping",
 			Handler: func(c echo.Context) error {
-				respone := map[string]bool{"ping": true}
+				respone := boolMap{"ping": true}
 				return c.JSON(http.StatusOK, respone)
 			},
 			Middlewares: emptyMiddlewares,
@@ -28,7 +29,7 @@ func CustomRoutes(app *pocketbase.PocketBase) []echo.Route {
 			Method: http.MethodPut,
 			Path:   "/api/alert",
 			Handler: func(c echo.Context) error {
-				respone := map[string]bool{"alert": true}
+				respone := boolMap{"alert": true}
 				//TODO: send alert to see channel
 				return c.JSON(http.StatusOK, respone)
 			},
