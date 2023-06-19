@@ -1,3 +1,5 @@
 *.rdb
 *.aof
 #*.env
+*/pb_data
+*/pb_data/*
