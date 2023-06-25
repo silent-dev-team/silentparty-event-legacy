@@ -50,9 +50,9 @@ def decode(b_obj:list|dict) -> list|dict:
 ### INSTANCES ###
 
 app = Flask(__name__)
-app.config["REDIS_URL"] = 'redis://redis' if LOCAL else "redis://sp"
+app.config["REDIS_URL"] = 'redis://localhost'#'redis://redis' if LOCAL else "redis://sp"
 app.register_blueprint(sse, url_prefix='/stream')
-db = redis.Redis(host='redis', port=6379, db=0)
+db = redis.Redis(host='localhost', port=6379, db=0)
 
 sd = Subdomain(LOCAL)
 
@@ -151,11 +151,11 @@ def syncStats():
 @app.route('/')
 def localWebServer_index():
   return redirect('index.html')
-
+"""
 @app.route('/<path:path>')
 def localWebServer_pwa(path):
   return send_from_directory('./localWebServer/',path)
-
+"""
 ### DASHBOARD ###
 '''
 @app.route('/', subdomain=sd.dashboard)
@@ -192,11 +192,11 @@ def ticket_pwa(path):
 
 ### API ###
 
-@app.route('/ping', subdomain=sd.api)
+@app.route('/ping')
 def ping():
   return jsonify({'ping':True}), 200
 
-@app.route('/alert', subdomain=sd.api, methods = ['PUT', 'GET'])
+@app.route('/alert',  methods = ['PUT', 'GET'])
 def alert():
   data:dict = request.get_json()
   sse.publish(data, type='alert')
@@ -204,7 +204,7 @@ def alert():
   bot.send_message(text=text, chat_id=TG_GROUP)
   return jsonify(data), 200
 
-@app.route('/entry', subdomain=sd.api, methods = ['PUT', 'GET'])
+@app.route('/entry', methods = ['PUT', 'GET'])
 def control_entry():
   # PUT 
   if request.method == 'PUT':
@@ -226,17 +226,17 @@ def control_entry():
     print('Fehler beim Senden des Telegram-Nachrichten')
   return jsonify(**response), 200
 
-@app.route('/salt', subdomain=sd.api, methods = ['GET'])
+@app.route('/salt',  methods = ['GET'])
 def get_salt():
   return jsonify({'salt': SALT}), 200
 
-@app.route('/djs', subdomain=sd.api, methods = ['POST'])
+@app.route('/djs',  methods = ['POST'])
 def handleDJ():
   updateDJs(request.json)
   publishDJs()
   return "{}"
 
-@app.route('/rolltext', subdomain=sd.api, methods = ['POST'])
+@app.route('/rolltext',  methods = ['POST'])
 def handleRollText():
   updateRollTexts(request.json)
   publishRollTexts()
@@ -250,7 +250,7 @@ def test():
   publishRollTexts()
   return "{}"
 
-@app.route('/tickets', subdomain=sd.api, methods = ['GET'])
+@app.route('/tickets',  methods = ['GET'])
 def get_tickets():
   idfy = lambda key: key.split(':')[1]
   ticket_keys = [ticket.decode() for ticket in db.keys('ticket:*')]
@@ -268,7 +268,7 @@ def get_tickets():
       'data':tickets
     }), 200
 
-@app.route('/tickets/<id>/<mutation>', subdomain=sd.api, methods = ['GET','PATCH'])
+@app.route('/tickets/<id>/<mutation>',  methods = ['GET','PATCH'])
 def ticket(id:str, mutation:str):
   CHECKIN:str =  mutation == 'checkin'
   ACTIVATION:str = mutation == 'activate'
@@ -325,7 +325,7 @@ def ticket(id:str, mutation:str):
       countTicketChecked()
   return jsonify({'data':ticket}), 200
 
-@app.route('/shopItems', subdomain=sd.api, methods = ['GET'])
+@app.route('/shopItems',  methods = ['GET'])
 def get_shopItems():
   """Lädt die Items (Getränke, Angebote, HP) aus der Datenbank
 
@@ -336,24 +336,24 @@ def get_shopItems():
   return jsonify({'data':items}), 200
 
 
-@app.route('/orders/items', subdomain=sd.api, methods = ['GET'])
+@app.route('/orders/items',  methods = ['GET'])
 def get_order_items() -> list: 
   items = getItemsFromOrder(loadOrders())
   return jsonify({'data':items}), 200
 
-@app.route('/orders/items/<id>', subdomain=sd.api, methods = ['GET'])
+@app.route('/orders/items/<id>',  methods = ['GET'])
 def get_order_items_id(id:int) -> list:
   id = int(id)
   items = getItemsFromOrder(loadOrders(),id)
   return jsonify({'data':items}), 200
 
-@app.route('/orders/items/<id>/count', subdomain=sd.api, methods = ['GET'])
+@app.route('/orders/items/<id>/count',  methods = ['GET'])
 def count_order_items(id:int) -> list: 
   id = int(id)
   return jsonify({'data':{'count':countItems(id)}}), 200
 
 #TODO create filter and funciton for returned headphones
-@app.route('/orders', subdomain=sd.api, methods = ['GET'])
+@app.route('/orders', methods = ['GET'])
 def get_order() -> list: 
   """Gibt die Liste (oder einen Ausschnitt) der Bestellungen aus.
   Pos 0 ist die neuste Bestellung.
@@ -369,7 +369,7 @@ def get_order() -> list:
   orders:list[Order] = loadOrders(start,stop)
   return jsonify({'data':orders}), 200
 
-@app.route('/orders/<id>', subdomain=sd.api, methods = ['DELETE'])
+@app.route('/orders/<id>', methods = ['DELETE'])
 def delete_order(id) -> list:
   """Löscht eine Bestellung aus der Datenbank.
   
@@ -390,7 +390,7 @@ def delete_order(id) -> list:
       }), 200
   return jsonify({'error':f'order {id} not found'}), 200
 
-@app.route('/orders', subdomain=sd.api, methods = ['POST'])
+@app.route('/orders',  methods = ['POST'])
 def new_order():
   """Anhängen einer neuen Bestellung.
   Schema entspricht der dataclass 'Order'
@@ -439,7 +439,7 @@ def normalRequestCors(response):
 if __name__ == "__main__":
   if LOCAL:
     app.config['SERVER_NAME']='localhost:8000'
-    app.run(debug=True,host='0.0.0.0')
+    app.run(debug=True,host='localhost',port='8000')
   else:
     app.config['SERVER_NAME']='sp:443'
     app.run(debug=True, ssl_context=('server.cer', 'server.key'))
