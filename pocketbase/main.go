@@ -14,7 +14,6 @@ func main() {
 		for _, route := range CustomRoutes(app) {
 			e.Router.AddRoute(route)
 		}
-
 		return nil
 	})
 

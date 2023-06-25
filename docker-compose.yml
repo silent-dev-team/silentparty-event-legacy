@@ -22,3 +22,13 @@ services:
     depends_on:
       - redis
       - redis-init
+  
+  pocketbase:
+    build: ./pocketbase
+    volumes:
+      - db:/app/pb_data/
+    ports:
+      - "${PORTBASE}51:8090"
+
+volumes:
+  db:
