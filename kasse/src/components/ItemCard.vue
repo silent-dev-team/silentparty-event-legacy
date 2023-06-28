@@ -48,7 +48,10 @@ import { mapState, mapGetters, mapMutations } from 'vuex'
 export default {
   name: 'ItemCard',
   props: {
-    id: Number,
+    id: {
+      type: String,
+      required: true,
+    },
     actions: {
       type: Boolean,
       default: false,
@@ -75,7 +78,7 @@ export default {
       'appendOrder'
     ]),
     append(n){
-      if (this.item.reference !== null) {
+      if (this.item.reference) {
         this.appendOrder({
           id: this.item.reference,
           number: n

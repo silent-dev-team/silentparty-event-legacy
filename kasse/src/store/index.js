@@ -21,7 +21,7 @@ export default new Vuex.Store({
         mutation: 'setItems'
       },
       orders: {
-        route: 'orders',
+        route: '/orders/records',
         mutation: null
       }
     },
@@ -52,6 +52,7 @@ export default new Vuex.Store({
   },
   mutations: {
     appendOrder (state, payload) {
+      console.log('appendOrder', payload)
       const indexOrder = state.order.findIndex((o => o.id == payload.id))
       const item = state.items.find(item => item.id == payload.id)
       const price = payload.price || item.price
@@ -91,33 +92,40 @@ export default new Vuex.Store({
     async fetch ({ commit, state }, target) {
       console.log('fetching '+target)
       const params = state.targets[target]
-      const response = await fetch(state.api+params.route)
+      const url = state.api+params.route
+      console.log(url)
+      const response = await fetch(url)
       const response_json = await response.json()
-      commit(params.mutation, response_json.data)
+      commit(params.mutation, response_json.items)
     },
     async post ({ commit, state }, payload) {
       const target = payload.target
       const data = payload.data
-      console.log('posting '+target)
+      console.log('posting',target)
+      console.log('payload', payload)
+      console.log('targets', state.targets)
       const params = state.targets[target]
-      const response = await fetch(state.api+params.route,
-          {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            redirect: 'follow', 
-            referrerPolicy: 'no-referrer', 
-            body: JSON.stringify(data)
-          }
-        )
+      const url = state.api+params.route
+      console.log('post url',url)
+      const response = await fetch(url,
+        {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          redirect: 'follow', 
+          referrerPolicy: 'no-referrer', 
+          body: JSON.stringify(data)
+        }
+      )
       const response_json = await response.json()
       commit(params.mutation, response_json.data)
     },
     postOrder ({dispatch, commit, getters, state}) {
+
       const payload = {
         target: 'orders',
         data: {
@@ -127,7 +135,7 @@ export default new Vuex.Store({
       }
       console.log(payload)
       dispatch('post', payload)
-      commit('clearOrder')
+      //commit('clearOrder')
     }
   },
   modules: {
