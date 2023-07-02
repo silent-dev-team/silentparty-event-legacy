@@ -135,7 +135,7 @@ export default new Vuex.Store({
       }
       console.log(payload)
       dispatch('post', payload)
-      //commit('clearOrder')
+      commit('clearOrder')
     }
   },
   modules: {
