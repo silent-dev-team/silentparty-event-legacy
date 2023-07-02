@@ -8,20 +8,20 @@ const vuexLocal = new VuexPersistence({
   storage: window.localStorage
 })
 
-const API = 'https://event-api.silentparty-hannover.de' //'http://127.0.0.1:8000'
+const API = 'http://127.0.0.1:8090' //'https://event-api.silentparty-hannover.de' //'http://127.0.0.1:8000'
 
 export default new Vuex.Store({
   state: {
-    api:  `${API}/`,//'https://api.sp/', //'https://api.sp/','http://127.0.0.1:5000/',
+    api:  `${API}/api/collections`,//'https://api.sp/', //'https://api.sp/','http://127.0.0.1:5000/',
     stream: `${API}/stream`,//'https://sp/stream', //'http://127.0.0.1:5000/stream',
     imgLocation: `${API}/storage/img/`,//'https://sp/storage/img/', //'https://127.0.0.1:5000/storage/img/',
     targets: {
       items: {
-        route: 'shopItems',
+        route: '/shop_items/records',
         mutation: 'setItems'
       },
       orders: {
-        route: 'orders',
+        route: '/orders/records',
         mutation: null
       }
     },
@@ -52,6 +52,7 @@ export default new Vuex.Store({
   },
   mutations: {
     appendOrder (state, payload) {
+      console.log('appendOrder', payload)
       const indexOrder = state.order.findIndex((o => o.id == payload.id))
       const item = state.items.find(item => item.id == payload.id)
       const price = payload.price || item.price
@@ -91,33 +92,40 @@ export default new Vuex.Store({
     async fetch ({ commit, state }, target) {
       console.log('fetching '+target)
       const params = state.targets[target]
-      const response = await fetch(state.api+params.route)
+      const url = state.api+params.route
+      console.log(url)
+      const response = await fetch(url)
       const response_json = await response.json()
-      commit(params.mutation, response_json.data)
+      commit(params.mutation, response_json.items)
     },
     async post ({ commit, state }, payload) {
       const target = payload.target
       const data = payload.data
-      console.log('posting '+target)
+      console.log('posting',target)
+      console.log('payload', payload)
+      console.log('targets', state.targets)
       const params = state.targets[target]
-      const response = await fetch(state.api+params.route,
-          {
-            method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            redirect: 'follow', 
-            referrerPolicy: 'no-referrer', 
-            body: JSON.stringify(data)
-          }
-        )
+      const url = state.api+params.route
+      console.log('post url',url)
+      const response = await fetch(url,
+        {
+          method: 'POST',
+          mode: 'cors',
+          cache: 'no-cache',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          redirect: 'follow', 
+          referrerPolicy: 'no-referrer', 
+          body: JSON.stringify(data)
+        }
+      )
       const response_json = await response.json()
       commit(params.mutation, response_json.data)
     },
     postOrder ({dispatch, commit, getters, state}) {
+
       const payload = {
         target: 'orders',
         data: {

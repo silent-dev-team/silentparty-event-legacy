@@ -71,12 +71,12 @@ export default {
   name: "StornoTable",
   data() {
     return {
-      route: '/orders',
+      route: '/orders/records',
       orders: [],
       headers: [
         { text: 'Positionen', value: 'items_str' },
         { text: 'Summe', value: 'sum' },
-        { text: 'Zeitpunkt', value: 'timestamp' },
+        { text: 'Zeitpunkt', value: 'updated' },
       ]
     }
   },
