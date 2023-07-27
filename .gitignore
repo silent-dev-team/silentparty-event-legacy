@@ -4,3 +4,5 @@
 */pb_data
 */pb_data/*
 *.env
+*.db
+pocketbase/tmp/runner-build
