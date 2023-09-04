@@ -96,6 +96,7 @@ export default new Vuex.Store({
       console.log(url)
       const response = await fetch(url)
       const response_json = await response.json()
+      console.log(response_json.items)
       commit(params.mutation, response_json.items)
     },
     async post ({ commit, state }, payload) {

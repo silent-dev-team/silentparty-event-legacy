@@ -6,3 +6,6 @@
 *.env
 *.db
 pocketbase/tmp/runner-build
+tmp
+tmp/*
+*/tmp/*
