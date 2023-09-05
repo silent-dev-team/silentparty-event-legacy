@@ -92,7 +92,7 @@ export default new Vuex.Store({
     async fetch ({ commit, state }, target) {
       console.log('fetching '+target)
       const params = state.targets[target]
-      const url = state.api+params.route
+      const url = "http://localhost:8090/api/collections/shop_items/records" // state.api + params.route
       console.log(url)
       const response = await fetch(url)
       const response_json = await response.json()

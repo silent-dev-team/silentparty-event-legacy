@@ -1,4 +1,6 @@
 <template>
+  <div>
+    {{ items }}
     <v-row>
       <v-col 
         v-for="item in taggedItems" :key="item.id"
@@ -9,8 +11,9 @@
             <ItemCard :id="item.id" actions />
           </Badge>
         </div>
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
