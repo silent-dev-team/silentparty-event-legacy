@@ -2,12 +2,10 @@ package main
 
 import (
 	"log"
-	"os"
-	"strings"
+	"time"
 
 	"github.com/silent-dev-team/silentparty-event/router"
 
-	"github.com/pocketbase/pocketbase/plugins/migratecmd"
 	_ "github.com/silent-dev-team/silentparty-event/migrations"
 
 	"github.com/pocketbase/pocketbase"
@@ -24,16 +22,22 @@ func main() {
 		return nil
 	})
 
-	// loosely check if it was executed using "go run"
-	isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
-
-	migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
-		// enable auto creation of migration files when making collection changes in the Admin UI
-		// (the isGoRun check is to enable it only during development)
-		Automigrate: isGoRun,
-	})
+	app.OnRecordBeforeCreateRequest("alerts").Add(ResetAlerts(app))
 
 	if err := app.Start(); err != nil {
 		log.Fatal(err)
+	}
+}
+
+// ResetAlerts resets the active flag on alerts after 10 seconds
+func ResetAlerts(app *pocketbase.PocketBase) func(e *core.RecordCreateEvent) error {
+	return func(e *core.RecordCreateEvent) error {
+		go func() {
+			time.Sleep(10 * time.Second)
+			record := e.Record
+			record.Set("active", false)
+			app.Dao().SaveRecord(record)
+		}()
+		return nil
 	}
 }

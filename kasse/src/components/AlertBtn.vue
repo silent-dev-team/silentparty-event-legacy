@@ -30,14 +30,14 @@ export default {
       'stream'
     ]),
     eventSource(){
-      return new EventSource(this.stream)
+      return new EventSource("http://127.0.0.1:8090/api/realtime")//this.stream)
     }
     },
   methods: {
     async onClick() {
       this.loading = true
-      const r = await this.update(this.payload)
-      if (r){
+      const id = await this.createAltert()
+      if (id){
         this.alert = true
         setTimeout(() => {
           this.alert = false
@@ -45,27 +45,30 @@ export default {
       }
       this.loading = false
     },
-    async update(payload) {
-      const URL = this.api + 'alert'
-      const data = {"from": payload}
+    async createAltert() {
+      const URL = this.api + '/alerts/records'
       const response = await fetch(URL, {
-          method: 'PUT',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify({
+            active:true,
+            from: this.payload
+          })
         }
       )
-      const r = await response.json()
-      return r
-    },
+      const alterId = (await response.json()).id
+      return alterId
+    }
   },
   mounted(){
-    //var that = this
-    //this.eventSource.addEventListener('alert', function(event) {
-    //    var data = JSON.parse(event.data)
-    //    that.alert = data.alert
-    //}.bind(that), false)
+    var that = this
+    this.eventSource.addEventListener('alerts', function(event) {
+       var data = JSON.parse(event.data)
+        console.log("SSE",data)
+      //  that.alert = data.alert
+    }.bind(that), false)
   },
 }
 </script>

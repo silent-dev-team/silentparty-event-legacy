@@ -10,10 +10,25 @@ const vuexLocal = new VuexPersistence({
 
 const API = 'http://127.0.0.1:8090' //'https://event-api.silentparty-hannover.de' //'http://127.0.0.1:8000'
 
+function setHeader(body) {
+  return {
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    redirect: 'follow', 
+    referrerPolicy: 'no-referrer', 
+    body: JSON.stringify(body)
+  }
+}
+
 export default new Vuex.Store({
   state: {
     api:  `${API}/api/collections`,//'https://api.sp/', //'https://api.sp/','http://127.0.0.1:5000/',
-    stream: `${API}/stream`,//'https://sp/stream', //'http://127.0.0.1:5000/stream',
+    stream: `${API}/api/realtime`,//'https://sp/stream', //'http://127.0.0.1:5000/stream',
     imgLocation: `${API}/storage/img/`,//'https://sp/storage/img/', //'https://127.0.0.1:5000/storage/img/',
     targets: {
       items: {
@@ -22,6 +37,14 @@ export default new Vuex.Store({
       },
       orders: {
         route: '/orders/records',
+        mutation: 'setOrders'
+      },
+      order_pos: {
+        route: '/order_pos/records',
+        mutation: null
+      },
+      tags: {
+        route: '/tags/records',
         mutation: null
       }
     },
@@ -86,19 +109,23 @@ export default new Vuex.Store({
     },
     setItems (state, items) {
       state.items = items
+    },
+    setOrders (state, orders) {
+      state.orders = orders
     }
   },
   actions: {
     async fetch ({ commit, state }, target) {
       console.log('fetching '+target)
       const params = state.targets[target]
-      const url = "http://localhost:8090/api/collections/shop_items/records" // state.api + params.route
+      const url = state.api + params.route
       console.log(url)
       const response = await fetch(url)
       const response_json = await response.json()
       console.log(response_json.items)
       commit(params.mutation, response_json.items)
     },
+
     async post ({ commit, state }, payload) {
       const target = payload.target
       const data = payload.data
@@ -124,20 +151,34 @@ export default new Vuex.Store({
       )
       const response_json = await response.json()
       commit(params.mutation, response_json.data)
+      return response_json
     },
-    postOrder ({dispatch, commit, getters, state}) {
-      
+
+    async postOrder ({dispatch, commit, getters, state}) {
+      const order = state.order;
+      let ids = []
+      for (const item of order) {
+        const res = await fetch(state.api+state.targets.order_pos.route, setHeader({
+          name: item.name,
+          chip: item.chip,
+          number: item.number,
+          price: parseFloat(item.price),
+          sum: parseFloat(item.sum)
+        }))
+        const id = (await res.json()).id
+        ids.push(id)
+      }
       const payload = {
         target: 'orders',
         data: {
-          items: state.order,
+          items: ids,
           sum: parseFloat(getters.sum)
         }
       }
       console.log(payload)
       dispatch('post', payload)
       commit('clearOrder')
-    }
+    },
   },
   modules: {
   },

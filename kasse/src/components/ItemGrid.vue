@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{ items }}
     <v-row>
       <v-col 
         v-for="item in items" :key="item.id"
@@ -36,7 +35,7 @@ export default {
     ...mapState([
       'items'
     ]),
-    taggedItems(){
+    async taggedItems(){
       return this.items.filter(item => item.tags.includes(this.tag))
     },
     param() {

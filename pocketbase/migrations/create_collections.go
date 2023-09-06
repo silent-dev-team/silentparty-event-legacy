@@ -11,307 +11,328 @@ import (
 
 func init() {
 	m.Register(func(db dbx.Builder) error {
-		jsonData := `[
+		jsonData := `[[
 			{
-				"id": "_pb_users_auth_",
-				"created": "2023-09-04 15:47:58.664Z",
-				"updated": "2023-09-04 16:01:23.040Z",
-				"name": "users",
-				"type": "auth",
-				"system": false,
-				"schema": [
-					{
-						"system": false,
-						"id": "users_name",
-						"name": "name",
-						"type": "text",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"pattern": ""
-						}
-					},
-					{
-						"system": false,
-						"id": "users_avatar",
-						"name": "avatar",
-						"type": "file",
-						"required": false,
-						"unique": false,
-						"options": {
-							"maxSelect": 1,
-							"maxSize": 5242880,
-							"mimeTypes": [
-								"image/jpeg",
-								"image/png",
-								"image/svg+xml",
-								"image/gif",
-								"image/webp"
-							],
-							"thumbs": null,
-							"protected": false
-						}
-					}
-				],
-				"indexes": [],
-				"listRule": "id = @request.auth.id",
-				"viewRule": "id = @request.auth.id",
-				"createRule": "",
-				"updateRule": "id = @request.auth.id",
-				"deleteRule": "id = @request.auth.id",
-				"options": {
-					"allowEmailAuth": true,
-					"allowOAuth2Auth": true,
-					"allowUsernameAuth": true,
-					"exceptEmailDomains": null,
-					"manageRule": null,
-					"minPasswordLength": 8,
-					"onlyEmailDomains": null,
-					"requireEmail": false
-				}
+					"id": "67o96hehef2o9rs",
+					"name": "orders",
+					"type": "base",
+					"system": false,
+					"schema": [
+							{
+									"id": "wlkwruys",
+									"name": "sum",
+									"type": "number",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null
+									}
+							},
+							{
+									"id": "ecc4zyy4",
+									"name": "items",
+									"type": "relation",
+									"system": false,
+									"required": false,
+									"options": {
+											"collectionId": "c8t8dxvcwlmk20e",
+											"cascadeDelete": false,
+											"minSelect": null,
+											"maxSelect": null,
+											"displayFields": []
+									}
+							}
+					],
+					"indexes": [],
+					"listRule": null,
+					"viewRule": null,
+					"createRule": "",
+					"updateRule": null,
+					"deleteRule": null,
+					"options": {}
 			},
 			{
-				"id": "cstboupfjgyje6t",
-				"created": "2023-09-04 16:01:23.040Z",
-				"updated": "2023-09-04 16:01:23.040Z",
-				"name": "shop_items",
-				"type": "base",
-				"system": false,
-				"schema": [
-					{
-						"system": false,
-						"id": "psqublnv",
-						"name": "name",
-						"type": "text",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"pattern": ""
-						}
-					},
-					{
-						"system": false,
-						"id": "vsudhgyk",
-						"name": "price",
-						"type": "number",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null
-						}
-					},
-					{
-						"system": false,
-						"id": "mh9vgrjt",
-						"name": "reference",
-						"type": "number",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null
-						}
-					},
-					{
-						"system": false,
-						"id": "fhbwvyzv",
-						"name": "deposit",
-						"type": "bool",
-						"required": false,
-						"unique": false,
-						"options": {}
-					},
-					{
-						"system": false,
-						"id": "qb9s8qoi",
-						"name": "img",
-						"type": "url",
-						"required": false,
-						"unique": false,
-						"options": {
-							"exceptDomains": null,
-							"onlyDomains": null
-						}
-					},
-					{
-						"system": false,
-						"id": "nakrsayd",
-						"name": "tags",
-						"type": "relation",
-						"required": false,
-						"unique": false,
-						"options": {
-							"collectionId": "p80u1ur1itoh9a0",
-							"cascadeDelete": false,
-							"minSelect": null,
-							"maxSelect": null,
-							"displayFields": []
-						}
-					}
-				],
-				"indexes": [],
-				"listRule": "",
-				"viewRule": "",
-				"createRule": null,
-				"updateRule": null,
-				"deleteRule": null,
-				"options": {}
+					"id": "c8t8dxvcwlmk20e",
+					"name": "order_pos",
+					"type": "base",
+					"system": false,
+					"schema": [
+							{
+									"id": "omimqsxi",
+									"name": "name",
+									"type": "text",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null,
+											"pattern": ""
+									}
+							},
+							{
+									"id": "1w9s78pu",
+									"name": "price",
+									"type": "number",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null
+									}
+							},
+							{
+									"id": "tcz3v9zk",
+									"name": "chip",
+									"type": "bool",
+									"system": false,
+									"required": false,
+									"options": {}
+							},
+							{
+									"id": "cpksoykw",
+									"name": "number",
+									"type": "number",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null
+									}
+							},
+							{
+									"id": "mxosxpap",
+									"name": "sum",
+									"type": "number",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null
+									}
+							}
+					],
+					"indexes": [],
+					"listRule": null,
+					"viewRule": null,
+					"createRule": "",
+					"updateRule": null,
+					"deleteRule": null,
+					"options": {}
 			},
 			{
-				"id": "p80u1ur1itoh9a0",
-				"created": "2023-09-04 16:01:23.040Z",
-				"updated": "2023-09-04 16:01:23.040Z",
-				"name": "tags",
-				"type": "base",
-				"system": false,
-				"schema": [
-					{
-						"system": false,
-						"id": "d988mkdc",
-						"name": "tag",
-						"type": "text",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"pattern": ""
-						}
+					"id": "_pb_users_auth_",
+					"name": "users",
+					"type": "auth",
+					"system": false,
+					"schema": [
+							{
+									"id": "users_name",
+									"name": "name",
+									"type": "text",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null,
+											"pattern": ""
+									}
+							},
+							{
+									"id": "users_avatar",
+									"name": "avatar",
+									"type": "file",
+									"system": false,
+									"required": false,
+									"options": {
+											"maxSelect": 1,
+											"maxSize": 5242880,
+											"mimeTypes": [
+													"image/jpeg",
+													"image/png",
+													"image/svg+xml",
+													"image/gif",
+													"image/webp"
+											],
+											"thumbs": null,
+											"protected": false
+									}
+							}
+					],
+					"indexes": [],
+					"listRule": "id = @request.auth.id",
+					"viewRule": "id = @request.auth.id",
+					"createRule": "",
+					"updateRule": "id = @request.auth.id",
+					"deleteRule": "id = @request.auth.id",
+					"options": {
+							"allowEmailAuth": true,
+							"allowOAuth2Auth": true,
+							"allowUsernameAuth": true,
+							"exceptEmailDomains": null,
+							"manageRule": null,
+							"minPasswordLength": 8,
+							"onlyEmailDomains": null,
+							"requireEmail": false
 					}
-				],
-				"indexes": [],
-				"listRule": "",
-				"viewRule": "",
-				"createRule": null,
-				"updateRule": null,
-				"deleteRule": null,
-				"options": {}
 			},
 			{
-				"id": "67o96hehef2o9rs",
-				"created": "2023-09-04 16:01:23.041Z",
-				"updated": "2023-09-04 16:01:23.041Z",
-				"name": "orders",
-				"type": "base",
-				"system": false,
-				"schema": [
-					{
-						"system": false,
-						"id": "wlkwruys",
-						"name": "sum",
-						"type": "number",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null
-						}
-					},
-					{
-						"system": false,
-						"id": "ecc4zyy4",
-						"name": "items",
-						"type": "relation",
-						"required": false,
-						"unique": false,
-						"options": {
-							"collectionId": "c8t8dxvcwlmk20e",
-							"cascadeDelete": false,
-							"minSelect": null,
-							"maxSelect": null,
-							"displayFields": []
-						}
-					}
-				],
-				"indexes": [],
-				"listRule": null,
-				"viewRule": null,
-				"createRule": "",
-				"updateRule": null,
-				"deleteRule": null,
-				"options": {}
+					"id": "p80u1ur1itoh9a0",
+					"name": "tags",
+					"type": "base",
+					"system": false,
+					"schema": [
+							{
+									"id": "d988mkdc",
+									"name": "tag",
+									"type": "text",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null,
+											"pattern": ""
+									}
+							}
+					],
+					"indexes": [
+							"CREATE INDEX 'dx_jxGrabI' ON 'tags' ('tag')"
+					],
+					"listRule": "",
+					"viewRule": "",
+					"createRule": null,
+					"updateRule": null,
+					"deleteRule": null,
+					"options": {}
 			},
 			{
-				"id": "c8t8dxvcwlmk20e",
-				"created": "2023-09-04 16:01:23.041Z",
-				"updated": "2023-09-04 16:01:23.041Z",
-				"name": "order_pos",
-				"type": "base",
-				"system": false,
-				"schema": [
-					{
-						"system": false,
-						"id": "omimqsxi",
-						"name": "name",
-						"type": "text",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null,
-							"pattern": ""
-						}
-					},
-					{
-						"system": false,
-						"id": "1w9s78pu",
-						"name": "price",
-						"type": "number",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null
-						}
-					},
-					{
-						"system": false,
-						"id": "tcz3v9zk",
-						"name": "chip",
-						"type": "bool",
-						"required": false,
-						"unique": false,
-						"options": {}
-					},
-					{
-						"system": false,
-						"id": "cpksoykw",
-						"name": "number",
-						"type": "number",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null
-						}
-					},
-					{
-						"system": false,
-						"id": "mxosxpap",
-						"name": "sum",
-						"type": "number",
-						"required": false,
-						"unique": false,
-						"options": {
-							"min": null,
-							"max": null
-						}
-					}
-				],
-				"indexes": [],
-				"listRule": null,
-				"viewRule": null,
-				"createRule": "",
-				"updateRule": null,
-				"deleteRule": null,
-				"options": {}
+					"id": "cstboupfjgyje6t",
+					"name": "shop_items",
+					"type": "base",
+					"system": false,
+					"schema": [
+							{
+									"id": "psqublnv",
+									"name": "name",
+									"type": "text",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null,
+											"pattern": ""
+									}
+							},
+							{
+									"id": "vsudhgyk",
+									"name": "price",
+									"type": "number",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null
+									}
+							},
+							{
+									"id": "1hijwpa6",
+									"name": "reference",
+									"type": "relation",
+									"system": false,
+									"required": false,
+									"options": {
+											"collectionId": "cstboupfjgyje6t",
+											"cascadeDelete": false,
+											"minSelect": null,
+											"maxSelect": 1,
+											"displayFields": []
+									}
+							},
+							{
+									"id": "fhbwvyzv",
+									"name": "deposit",
+									"type": "bool",
+									"system": false,
+									"required": false,
+									"options": {}
+							},
+							{
+									"id": "nakrsayd",
+									"name": "tags",
+									"type": "relation",
+									"system": false,
+									"required": false,
+									"options": {
+											"collectionId": "p80u1ur1itoh9a0",
+											"cascadeDelete": false,
+											"minSelect": null,
+											"maxSelect": null,
+											"displayFields": [
+													"tag"
+											]
+									}
+							},
+							{
+									"id": "crjkqshp",
+									"name": "img",
+									"type": "file",
+									"system": false,
+									"required": false,
+									"options": {
+											"maxSelect": 1,
+											"maxSize": 5242880,
+											"mimeTypes": [],
+											"thumbs": [],
+											"protected": false
+									}
+							}
+					],
+					"indexes": [],
+					"listRule": "",
+					"viewRule": "",
+					"createRule": null,
+					"updateRule": null,
+					"deleteRule": null,
+					"options": {}
+			},
+			{
+					"id": "mjtagusuc7o6up9",
+					"name": "alerts",
+					"type": "base",
+					"system": false,
+					"schema": [
+							{
+									"id": "yla34s3x",
+									"name": "active",
+									"type": "bool",
+									"system": false,
+									"required": true,
+									"options": {}
+							},
+							{
+									"id": "b2bmwcvc",
+									"name": "from",
+									"type": "text",
+									"system": false,
+									"required": false,
+									"options": {
+											"min": null,
+											"max": null,
+											"pattern": ""
+									}
+							}
+					],
+					"indexes": [
+							"CREATE INDEX 'idx_FqHoW1N' ON 'alerts' ('from')"
+					],
+					"listRule": "",
+					"viewRule": "",
+					"createRule": "",
+					"updateRule": null,
+					"deleteRule": null,
+					"options": {}
 			}
-		]`
+	]`
 
 		collections := []*models.Collection{}
 		if err := json.Unmarshal([]byte(jsonData), &collections); err != nil {
