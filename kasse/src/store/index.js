@@ -126,7 +126,7 @@ export default new Vuex.Store({
       commit(params.mutation, response_json.data)
     },
     postOrder ({dispatch, commit, getters, state}) {
-
+      
       const payload = {
         target: 'orders',
         data: {

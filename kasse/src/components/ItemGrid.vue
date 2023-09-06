@@ -3,7 +3,7 @@
     {{ items }}
     <v-row>
       <v-col 
-        v-for="item in taggedItems" :key="item.id"
+        v-for="item in items" :key="item.id"
         xs="12" sm="6" md="4" lg="3" xl="2"
       >
         <div class="mx-auto my-3">
