@@ -11,7 +11,7 @@ import (
 
 func init() {
 	m.Register(func(db dbx.Builder) error {
-		jsonData := `[[
+		jsonData := `[
 			{
 					"id": "67o96hehef2o9rs",
 					"name": "orders",
